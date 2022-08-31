@@ -1,4 +1,5 @@
-import { StoreAccount, ISimpleTxFormFull } from '@types';
+import { ISimpleTxFormFull, StoreAccount } from '@types';
+
 import { IMembershipConfig } from './config';
 
 export interface IMembershipStepComponentProps {

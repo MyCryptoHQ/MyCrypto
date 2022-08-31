@@ -5,7 +5,7 @@ import { translateRaw } from '@translations';
 
 import { default as ApiService } from '../ApiService';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 export default class DeFiReserveMapService {
   public static instance = new DeFiReserveMapService();
@@ -23,10 +23,6 @@ export default class DeFiReserveMapService {
   }
 
   public getDeFiReserveMap = () => {
-    try {
-      return this.service.get('').then((res) => res.data);
-    } catch (e) {
-      throw e;
-    }
+    return this.service.get('').then((res) => res.data);
   };
 }

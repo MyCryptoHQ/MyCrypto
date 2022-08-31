@@ -1,24 +1,28 @@
-import React from 'react';
+import { Fragment } from 'react';
+
 import Markdown from 'react-markdown';
 
-import { NewTabLink } from './NewTabLink';
+import { default as LinkApp } from './LinkApp';
 
 interface Props {
   source: string;
 }
 
-export const TranslateMarkdown = ({ source }: Props) => {
+//@ts-expect-error bad typing on props
+const Link = (props) => <LinkApp isExternal={true} {...props} />;
+
+const disallowed = ['html'];
+
+const components = {
+  a: Link,
+  p: Fragment // Remove <p> added by react-markdown.
+};
+
+const TranslateMarkdown = ({ source }: Props) => {
   return (
-    <Markdown
-      escapeHtml={true}
-      unwrapDisallowed={true}
-      allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
-      renderers={{
-        root: React.Fragment,
-        link: NewTabLink
-      }}
-      source={source}
-    />
+    <Markdown disallowedElements={disallowed} components={components}>
+      {source}
+    </Markdown>
   );
 };
 

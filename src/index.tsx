@@ -1,20 +1,21 @@
 // Application styles must come first in order, to allow for overrides
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
-import '@babel/polyfill';
 
 import 'whatwg-fetch'; // @todo: Investigate utility of dependency
 import 'what-input'; // @todo: Investigate utility of dependency; Used in sass/styles.scss for `data-whatintent`
 
-import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { consoleAdvertisement, IS_STAGING, IS_PROD, getRootDomain } from '@utils';
-
-import Root from './Root';
+import { FeatureFlagProvider } from '@services';
+import { createStore } from '@store';
+import { consoleAdvertisement, getRootDomain, IS_DEV, IS_E2E } from '@utils';
+import { ethereumMock } from '@vendor';
 
 /**
- * We use an iframe to migrate user storage from landing to app ie. <MigrateLS/>.
+ * Ensure landing and app have the same domain to handle cross-origin policy.
  * 1. Since an origin is defined as `<protocol>://<host>:<port>` and the websites have different sub-domains,
  *    we need a cross-origin iframe.
  *    https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)
@@ -23,7 +24,7 @@ import Root from './Root';
  * 3. Even if the value is identical to `location.hostname` we need to explicitly set it
  *    in order to set the port part of origin to null.
  *     https://developer.mozilla.org/en-US/docs/Web/API/Document/domain)
- * 4. Since we need run 3 environments we dynamically set the domain to the appropriate hostname.
+ * 4. Since we run 3 environments we dynamically set the domain to the appropriate hostname.
  */
 document.domain = getRootDomain(document.location.hostname);
 
@@ -35,8 +36,34 @@ const doNothing = (event: DragEvent) => {
 document.addEventListener('dragover', doNothing, false);
 document.addEventListener('drop', doNothing, false);
 
-render(<Root />, document.getElementById('app'));
+if (IS_E2E) {
+  // ONLY FOR TESTING
+  (window as CustomWindow).ethereum = ethereumMock();
+}
 
-if (IS_PROD || IS_STAGING) {
+if (!IS_DEV) {
   consoleAdvertisement();
+}
+
+const { store, persistor } = createStore();
+
+export const render = () => {
+  /* eslint-disable-next-line  @typescript-eslint/no-var-requires */
+  const App = require('./App').default;
+  ReactDOM.render(
+    <Provider store={store}>
+      <FeatureFlagProvider>
+        <PersistGate persistor={persistor}>
+          {(isHydrated: boolean) => <App storeReady={isHydrated} />}
+        </PersistGate>
+      </FeatureFlagProvider>
+    </Provider>,
+    document.getElementById('root')
+  );
+};
+
+render();
+
+if (IS_DEV && module.hot) {
+  module.hot.accept('./App', render);
 }

@@ -1,11 +1,14 @@
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Component } from 'react';
+
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from '@components';
-import { SettingsContext } from '@services/Store';
+import { AppState, importError, importState, importSuccess } from '@store';
 import { translateRaw } from '@translations';
-import { ScreenLockContext } from '@features/ScreenLock';
+import { goBack } from '@utils';
 
 import { ImportBox, ImportSuccess } from './components';
 
@@ -13,22 +16,18 @@ const Content = styled.div`
   text-align: center;
 `;
 
-export interface PanelProps {
-  onBack(): void;
-  onNext(): void;
-}
-
-export class Import extends React.Component<RouteComponentProps<{}>> {
+export class Import extends Component<Props> {
   public state = { step: 0 };
 
   public render() {
-    const { history } = this.props;
+    const { history, importState, importSuccess, importFailure } = this.props;
+    const onBackFunc = () => goBack(history);
     const { step } = this.state;
     const steps = [
       {
         heading: translateRaw('SETTINGS_IMPORT_HEADING'),
         component: ImportBox,
-        backOption: history.goBack
+        backOption: onBackFunc
       },
       {
         heading: translateRaw('SETTINGS_IMPORT_SUCCESS_HEADING'),
@@ -38,6 +37,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     ];
     const onBack = steps[step].backOption;
     const Step = steps[step].component;
+
     return (
       <ContentPanel
         width={560}
@@ -49,24 +49,12 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         }}
       >
         <Content>
-          <ScreenLockContext.Consumer>
-            {({ resetEncrypted }) => (
-              <SettingsContext.Consumer>
-                {({ importStorage }) => (
-                  <Step
-                    onNext={this.advanceStep}
-                    importCache={(cache: string) => {
-                      const result = importStorage(cache);
-                      if (result) {
-                        resetEncrypted();
-                      }
-                      return result;
-                    }}
-                  />
-                )}
-              </SettingsContext.Consumer>
-            )}
-          </ScreenLockContext.Consumer>
+          <Step
+            onNext={this.advanceStep}
+            importSuccess={importSuccess}
+            importFailure={importFailure}
+            importState={importState}
+          />
         </Content>
       </ContentPanel>
     );
@@ -83,4 +71,20 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     }));
 }
 
-export default withRouter(Import);
+const mapStateToProps = (state: AppState) => ({
+  importSuccess: importSuccess(state),
+  importFailure: !!importError(state)
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      importState: importState
+    },
+    dispatch
+  );
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & RouteComponentProps;
+
+export default withRouter(connector(Import));

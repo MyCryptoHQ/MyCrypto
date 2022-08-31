@@ -1,15 +1,17 @@
+import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 
 import { toChecksumAddressByChainId } from '@utils';
+
 import {
   FuncParams,
   FunctionOutputMappings,
-  Output,
   Input,
+  ISuppliedArgs,
   ITypeMapping,
-  ISuppliedArgs
+  Output
 } from './types';
 
 export class AbiFunction {
@@ -29,7 +31,7 @@ export class AbiFunction {
     this.init(outputMappings);
   }
 
-  public encodeInput = (suppliedInputs: object = {}) => {
+  public encodeInput = (suppliedInputs: TObject = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
     return encodedCall;
@@ -39,7 +41,7 @@ export class AbiFunction {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
-    const argBuffer = new Buffer(argString, 'hex');
+    const argBuffer = Buffer.from(argString, 'hex');
     // Decode!
     const argArr = abi.rawDecode(this.inputTypes, argBuffer);
     //@todo: parse checksummed addresses
@@ -61,7 +63,7 @@ export class AbiFunction {
     argString = argString.replace('0x', '');
 
     // Convert argdata to a hex buffer for ethereumjs-abi
-    const argBuffer = new Buffer(argString, 'hex');
+    const argBuffer = Buffer.from(argString, 'hex');
     // Decode!
     const argArr = abi.rawDecode(this.outputTypes, argBuffer);
 
@@ -103,7 +105,7 @@ export class AbiFunction {
     if (type === 'bytes') {
       return Buffer.from(stripHexPrefix(value), 'hex');
     }
-    return BN.isBN(value) ? value.toString() : value;
+    return BigNumber.isBigNumber(value) ? value.toString() : value;
   };
 
   private makeFuncParams = () =>

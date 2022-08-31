@@ -1,16 +1,15 @@
-import React from 'react';
+import { FC, ReactElement } from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-import { StoreAccount } from '@types';
-
-// Legacy
 import champagneIcon from '@assets/images/icn-champagne-2.svg';
-import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
+import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
 import questionsIcon from '@assets/images/icn-questions.svg';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
 import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
@@ -40,11 +39,11 @@ const Image = styled.img`
 
 interface ResourceItemProps {
   src: string;
-  title: React.ReactElement<any>;
+  title: ReactElement<any>;
   link: string;
 }
 
-const ResourceItem: React.FC<ResourceItemProps> = ({ src, title, link }) => {
+const ResourceItem: FC<ResourceItemProps> = ({ src, title, link }) => {
   return (
     <ResourceItemWrapper href={link} target="_blank" rel="noopener noreferrer">
       <Image src={src} />
@@ -76,10 +75,10 @@ const getResources = () => {
 };
 
 interface NotificationProps {
-  accounts: StoreAccount[];
+  numOfAccounts: number;
 }
 
-export default function WalletsAdded({ accounts }: NotificationProps) {
+export default function WalletsAdded({ numOfAccounts }: NotificationProps) {
   return (
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
@@ -90,7 +89,9 @@ export default function WalletsAdded({ accounts }: NotificationProps) {
         transform: 'rotateY(180deg)',
         hideOnMobile: true
       }}
-      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', { $numNewAccounts: accounts.length })}
+      title={translate('NOTIFICATIONS_WALLETS_ADDED_TITLE', {
+        $numNewAccounts: numOfAccounts.toString()
+      })}
       additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
     />

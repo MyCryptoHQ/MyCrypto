@@ -1,17 +1,3 @@
-<svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="icn-website">
-<rect id="Rectangle" x="0.8" y="0.8" width="22.4" height="21.4" rx="0.8" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
-<g id="Rectangle_2">
-<mask id="path-2-inside-1" fill="white">
-<rect x="4" y="9.51709" width="6.4" height="8.72414" rx="0.8"/>
-</mask>
-<rect x="4" y="9.51709" width="6.4" height="8.72414" rx="0.8" stroke="#163150" stroke-width="3.2" stroke-linecap="round" mask="url(#path-2-inside-1)"/>
-</g>
-<path id="Line 8" d="M1.31433 5.94831H22.0595" stroke="#163150" stroke-width="1.6" stroke-linecap="square"/>
-<g id="Group 21">
-<path id="Line 8 Copy" d="M12.8 10.8204H18.975" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
-<path id="Line 8 Copy_2" d="M12.8 13.8795H18.975" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
-<path id="Line 8 Copy_3" d="M12.8 16.9386H14.8572" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
-</g>
-</g>
+<svg stroke="#1A334F" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 6.45455V23.9091C1 24.5116 1.48842 25 2.09091 25H23.9091C24.5116 25 25 24.5116 25 23.9091V6.45455M1 6.45455V2.09091C1 1.48842 1.48842 1 2.09091 1H23.9091C24.5116 1 25 1.48842 25 2.09091V6.45455M1 6.45455H25M13.5455 11.9091H21.1818M13.5455 15.7273H21.1818M13.5455 19.5455H17.3636M5.36364 20.6364H9.72727C10.0285 20.6364 10.2727 20.3922 10.2727 20.0909V12.4545C10.2727 12.1533 10.0285 11.9091 9.72727 11.9091H5.36364C5.06239 11.9091 4.81818 12.1533 4.81818 12.4545V20.0909C4.81818 20.3922 5.06239 20.6364 5.36364 20.6364Z"  stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

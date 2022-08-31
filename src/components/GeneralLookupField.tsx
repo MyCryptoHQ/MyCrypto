@@ -1,14 +1,19 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { ResolutionError } from '@unstoppabledomains/resolution/build/resolutionError';
+import { FocusEventHandler, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+
+import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 
 import { DomainStatus, InlineMessage } from '@components';
-import { Network, IReceiverAddress, ErrorObject } from '@types';
-import { getBaseAssetByNetwork, useAssets } from '@services/Store';
-import { isValidETHAddress, isValidENSName } from '@services/EthService';
-import UnstoppableResolution from '@services/UnstoppableService';
-import { isValidETHRecipientAddress } from '@services/EthService/validators';
+import {
+  isValidENSName,
+  isValidETHAddress,
+  isValidETHRecipientAddress,
+  ProviderHandler
+} from '@services/EthService';
+import { createENSResolutionError, isResolutionError } from '@services/EthService/ens';
+import { selectDefaultNetwork, useSelector } from '@store';
+import { ErrorObject, IReceiverAddress, Network } from '@types';
 
-import GeneralLookupDropdown, { LabeledAddress } from './GeneralLookupDropdown';
+import AddressLookupSelector, { LabeledAddress } from './AddressLookupSelector';
 
 export interface IGeneralLookupFieldComponentProps {
   error?: string | ErrorObject;
@@ -18,7 +23,7 @@ export interface IGeneralLookupFieldComponentProps {
   value: IReceiverAddress;
   options: LabeledAddress[];
   placeholder?: string;
-  onBlur?(): void;
+  onBlur?: FocusEventHandler;
   setIsResolvingDomain(isResolving: boolean): void;
   handleEthAddress?(inputString: string): IReceiverAddress;
   handleENSName?(resolvedAddress: string, inputString: string): IReceiverAddress;
@@ -26,7 +31,7 @@ export interface IGeneralLookupFieldComponentProps {
   onChange?(input: string): void;
   setFieldValue?(field: string, value: any, shouldValidate?: boolean): void;
   setFieldTouched?(field: string, touched?: boolean, shouldValidate?: boolean): void;
-  setFieldError?(field: string, value: string | undefined): void;
+  setFieldError?(field: string, value: string | JSX.Element | undefined): void;
 }
 
 const GeneralLookupField = ({
@@ -47,8 +52,11 @@ const GeneralLookupField = ({
   setFieldTouched,
   setFieldError
 }: IGeneralLookupFieldComponentProps) => {
-  const { assets } = useAssets();
-  const errorMessage = typeof error === 'object' ? error.message : error;
+  const ethNetwork = useSelector(selectDefaultNetwork);
+  const errorMessage =
+    error && Object.prototype.hasOwnProperty.call(error, 'message')
+      ? (error as ErrorObject).message
+      : error;
   const errorType = typeof error === 'object' ? error.type : undefined;
   const [resolutionError, setResolutionError] = useState<ResolutionError>();
 
@@ -115,14 +123,14 @@ const GeneralLookupField = ({
     }
 
     if (setFieldValue) {
-      setFieldValue(name, contact, true);
+      setFieldValue(name, contact, false);
     }
     if (setFieldTouched) {
       setFieldTouched(name, true, false);
     }
   };
 
-  const handleDomainResolve = async (domain: string): Promise<string | undefined> => {
+  const handleDomainResolve = async (domain: string): Promise<string | undefined | null> => {
     if (!domain || !network) {
       setIsResolvingDomain(false);
       setResolutionError(undefined);
@@ -131,11 +139,12 @@ const GeneralLookupField = ({
     setIsResolvingDomain(true);
     setResolutionError(undefined);
     try {
-      const unstoppableAddress = await UnstoppableResolution.getResolvedAddress(
-        domain,
-        getBaseAssetByNetwork({ network, assets })!.ticker
-      );
-      return unstoppableAddress;
+      const provider = new ProviderHandler(ethNetwork);
+      const resolvedAddress = await provider.resolveName(domain, network);
+      if (!resolvedAddress) {
+        throw new ResolutionError(ResolutionErrorCode.UnregisteredDomain, { domain });
+      }
+      return resolvedAddress;
     } catch (err) {
       // Force the field value to error so that isValidAddress is triggered!
       if (setFieldValue) {
@@ -148,31 +157,40 @@ const GeneralLookupField = ({
           true
         );
       }
-      if (UnstoppableResolution.isResolutionError(err)) {
+      if (isResolutionError(err)) {
         setResolutionError(err);
-      } else throw err;
+        return;
+      }
+
+      const resErr = createENSResolutionError(err);
+      if (resErr) {
+        setResolutionError(resErr);
+        return;
+      }
+
+      throw err;
     } finally {
       setIsResolvingDomain(false);
     }
   };
 
+  const inputValue = useRef<string>('');
   const GeneralDropdownFieldCallback = useCallback(() => {
-    const inputValue = useRef<string>('');
-
     const handleInputChange = (input: string) => {
       inputValue.current = input;
       return input;
     };
 
-    const handleEnterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleEnterKeyDown = (e: KeyboardEvent<HTMLElement>) => {
       if (e.keyCode === 13) {
         handleNewInput(inputValue.current);
+        if (onChange) onChange(inputValue.current);
       }
     };
 
     return (
       <>
-        <GeneralLookupDropdown
+        <AddressLookupSelector
           name={name}
           value={value}
           options={options}
@@ -192,12 +210,12 @@ const GeneralLookupField = ({
               onSelect(option);
             }
           }}
-          onBlur={() => {
+          onBlur={(e) => {
             handleNewInput(inputValue.current);
             if (setFieldTouched) {
               setFieldTouched(name, true, false);
             }
-            if (onBlur) onBlur();
+            if (onBlur) onBlur(e);
             if (onChange) onChange(inputValue.current);
           }}
           onEnterKeyDown={handleEnterKeyDown}

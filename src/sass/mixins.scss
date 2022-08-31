@@ -1,5 +1,4 @@
 @import './variables';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
 @mixin reset-button {
   margin: 0;
@@ -80,27 +79,6 @@
     border-top-color: $color;
   } @else if $direction == left {
     border-right-color: $color;
-  }
-}
-
-@mixin show-tooltip-on-hover {
-  &:hover .Tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -100%) translateY(-$tooltip-hover-distance);
-    transition-delay: 400ms, 400ms, 300ms;
-
-    &.is-direction-left {
-      transform: translate(-100%, -50%) translateX(-$tooltip-hover-distance);
-    }
-
-    &.is-direction-right {
-      transform: translate(100%, -50%) translateX($tooltip-hover-distance);
-    }
-
-    &.is-direction-bottom {
-      transform: translate(-50%, 100%) translateY($tooltip-hover-distance);
-    }
   }
 }
 

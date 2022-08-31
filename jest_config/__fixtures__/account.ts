@@ -1,16 +1,21 @@
-import { bigNumberify } from 'ethers/utils';
-import { StoreAccount, TUuid, TAddress, WalletId, TTicker } from '@types';
-import { bigify } from '@utils';
-import { DWAccountDisplay } from '@services';
+import { BigNumber } from '@ethersproject/bignumber';
 
-import { fNetwork } from './network';
+import { REPV1UUID } from '@config';
+import { DWAccountDisplay, ExtendedDPath } from '@services';
+import { StoreAccount, TAddress, TTicker, TUuid, WalletId } from '@types';
+
+import { Ethereum, fNetwork } from './network';
 
 export const fAccounts: StoreAccount[] = [
   {
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ethereum',
     wallet: 'WALLETCONNECT' as WalletId,
-    dPath: "m/44'/1'/0'/0", // Mnemonic dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
@@ -19,24 +24,37 @@ export const fAccounts: StoreAccount[] = [
         type: 'base',
         ticker: 'ETH' as TTicker,
         decimal: 18,
-        mappings: {},
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x1b9ced41465be000')
+      },
+      {
+        uuid: REPV1UUID,
+        name: 'REPv1',
+        networkId: 'Ethereum',
+        type: 'erc20',
+        ticker: 'REPv1' as TTicker,
+        decimal: 18,
+        contractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
+        isCustom: false,
+        balance: BigNumber.from('0x3782dace9d900000')
       }
     ],
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
-    network: fNetwork,
+    uuid: '15d5e8f3-c595-5206-b5f3-86c180eb7119' as TUuid,
+    network: Ethereum,
     label: 'WalletConnect Account 1'
   },
   {
     address: '0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c' as TAddress,
     networkId: 'Ropsten',
-    wallet: 'LEDGER' as WalletId,
-    dPath: "m/44'/60'/0'", // Ledger dPath
+    wallet: 'LEDGER_NANO_S' as WalletId,
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -45,17 +63,15 @@ export const fAccounts: StoreAccount[] = [
         type: 'base',
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
-        mappings: {},
         isCustom: false,
-        balance: bigNumberify('0x1b9ced41465be000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x1b9ced41465be000')
       }
     ],
 
     transactions: [],
     favorite: false,
     mtime: 0,
-    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70b' as TUuid,
+    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70c' as TUuid,
     network: fNetwork,
     label: 'Ledger Account'
   },
@@ -63,20 +79,22 @@ export const fAccounts: StoreAccount[] = [
     address: '0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017' as TAddress,
     networkId: 'Ropsten',
     wallet: 'LEDGER_NANO_S' as WalletId,
-    dPath: "m/44'/60'/0'/0", // Ledger dPath
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
     assets: [
       {
         uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
         name: 'RopDAI',
         decimal: 18,
         ticker: 'RopDAI' as TTicker,
-        mappings: {},
         networkId: 'Ropsten',
         contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
         type: 'erc20',
         isCustom: true,
-        balance: bigNumberify('0x54ab1b2ceea88000'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x54ab1b2ceea88000')
       },
       {
         uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
@@ -85,10 +103,8 @@ export const fAccounts: StoreAccount[] = [
         type: 'base',
         ticker: 'RopstenETH' as TTicker,
         decimal: 18,
-        mappings: {},
         isCustom: false,
-        balance: bigNumberify('0x0e2347cb6425dc00'),
-        mtime: 1581530607024
+        balance: BigNumber.from('0x0e2347cb6425dc00')
       }
     ],
     transactions: [],
@@ -97,6 +113,113 @@ export const fAccounts: StoreAccount[] = [
     uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1ad' as TUuid,
     network: fNetwork,
     label: 'Ledger Nano S Account 1'
+  },
+  {
+    address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' as TAddress,
+    networkId: 'Ropsten',
+    wallet: WalletId.VIEW_ONLY,
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
+    assets: [
+      {
+        uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
+        name: 'RopDAI',
+        decimal: 18,
+        ticker: 'RopDAI' as TTicker,
+        networkId: 'Ropsten',
+        contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+        type: 'erc20',
+        isCustom: true,
+        balance: BigNumber.from('0x54ab1b2ceea88000')
+      },
+      {
+        uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
+        name: 'Ropsten',
+        networkId: 'Ropsten',
+        type: 'base',
+        ticker: 'RopstenETH' as TTicker,
+        decimal: 18,
+        isCustom: false,
+        balance: BigNumber.from('0x0e2347cb6425dc00')
+      }
+    ],
+    transactions: [],
+    favorite: false,
+    mtime: 0,
+    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1au' as TUuid,
+    network: fNetwork,
+    label: 'View Only Address 1'
+  },
+  {
+    address: '0x9458a933f00da9a927dbbb9cc2ae3fe7dfa9aed5' as TAddress,
+    networkId: 'Ropsten',
+    wallet: WalletId.TRUST,
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
+    assets: [
+      {
+        uuid: '2783a9ff-d6f1-5c9e-bbab-3b74be91adb1' as TUuid,
+        name: 'RopDAI',
+        decimal: 18,
+        ticker: 'RopDAI' as TTicker,
+        networkId: 'Ropsten',
+        contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+        type: 'erc20',
+        isCustom: true,
+        balance: BigNumber.from('0x54ab1b2ceea88000')
+      },
+      {
+        uuid: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
+        name: 'Ropsten',
+        networkId: 'Ropsten',
+        type: 'base',
+        ticker: 'RopstenETH' as TTicker,
+        decimal: 18,
+
+        isCustom: false,
+        balance: BigNumber.from('0x0e2347cb6425dc00')
+      }
+    ],
+    transactions: [],
+    favorite: false,
+    mtime: 0,
+    uuid: 'cd36fc7c-adda-54ce-825b-f19a55bbc1at' as TUuid,
+    network: fNetwork,
+    label: 'Trust Wallet Address 1'
+  },
+  {
+    address: '0x03a0775e92dc3ad2d2cb3eaf58af5ee99b183d49' as TAddress,
+    networkId: 'Ethereum',
+    wallet: 'WALLETCONNECT' as WalletId,
+    path: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    index: 0,
+    assets: [
+      {
+        uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
+        name: 'Ether',
+        networkId: 'Ethereum',
+        type: 'base',
+        ticker: 'ETH' as TTicker,
+        decimal: 18,
+        isCustom: false,
+        balance: BigNumber.from('0x1b9ced41465be000')
+      }
+    ],
+    transactions: [],
+    favorite: false,
+    mtime: 0,
+    uuid: '4ffb0d4a-adf3-1990-5eb9-fe78e613f70y' as TUuid,
+    network: Ethereum,
+    label: 'WalletConnect Account 2'
   }
 ];
 
@@ -106,28 +229,84 @@ export const fDWAccounts: DWAccountDisplay[] = [
     pathItem: {
       path: "m/44'/60'/0'/0",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 0
     },
-    balance: bigify('0')
+    balance: '100000000000000000000'
   },
   {
     address: '0xE8C0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
     pathItem: {
       path: "m/44'/60'/0'/1",
       baseDPath: {
-        label: 'Ledger (ETH)',
-        value: "m/44'/60'/0'",
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
         offset: 0,
         numOfAddresses: 5
-      } as DPath,
+      } as ExtendedDPath,
       index: 1
     },
-    balance: bigify('0')
+    balance: '0'
+  },
+  {
+    address: '0xE8A0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/2",
+      baseDPath: {
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '1000000000000000000'
+  },
+  {
+    address: '0xE8B0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/3",
+      baseDPath: {
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '1500000000000000000'
+  },
+  {
+    address: '0xE8D0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/4",
+      baseDPath: {
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '0'
+  },
+  {
+    address: '0xE8E0F5417B272f2a1C24419bd2cF6B3F584c6b9A' as TAddress,
+    pathItem: {
+      path: "m/44'/60'/0'/5",
+      baseDPath: {
+        name: 'Ledger (ETH)',
+        path: "m/44'/60'/0'/<account>",
+        offset: 0,
+        numOfAddresses: 5
+      } as ExtendedDPath,
+      index: 1
+    },
+    balance: '12000000000000000000'
   }
 ];
 

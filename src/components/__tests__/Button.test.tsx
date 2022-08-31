@@ -1,6 +1,5 @@
-import React from 'react';
+import { fireEvent, simpleRender } from 'test-utils';
 
-import { simpleRender, fireEvent } from 'test-utils';
 import Button, { Props } from '../Button';
 
 const defaultProps: Props = {

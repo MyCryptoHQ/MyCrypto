@@ -1,10 +1,9 @@
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { Network as INetwork, NetworkId } from '@types';
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import AppProviders from '../../../AppProviders';
+import { Network as INetwork, NetworkId } from '@types';
 
+import AppProviders from '../../../AppProviders';
 import NetworkNodes from './NetworkNodes';
 
 const emptyNetworks: INetwork[] = [];
@@ -45,16 +44,16 @@ const someNetworkNode = () => (
   </div>
 );
 
-storiesOf('NetworkNodes', module)
+storiesOf('Molecules/Selectors/NetworkNodes', module)
   .addDecorator((story) => <AppProviders>{story()}</AppProviders>)
-  .add('Empty', (_) => networkNodesEmpty(), {
+  .add('Empty', () => networkNodesEmpty(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=1522%3A93762'
     }
   })
-  .add('Some networks', (_) => someNetworkNode(), {
+  .add('Some networks', () => someNetworkNode(), {
     design: {
       type: 'figma',
       url:

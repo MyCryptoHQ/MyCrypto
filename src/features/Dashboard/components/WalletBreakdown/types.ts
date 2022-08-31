@@ -2,7 +2,7 @@ import { Balance, Fiat, IAccount } from '@types';
 
 export interface BalancesDetailProps {
   balances: Balance[];
-  totalFiatValue: number;
+  totalFiatValue: string;
   fiat: Fiat;
   accounts: IAccount[];
   selected: string[];

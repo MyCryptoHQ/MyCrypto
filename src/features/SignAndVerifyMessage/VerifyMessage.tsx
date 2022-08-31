@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { FunctionComponent, useEffect, useState } from 'react';
 
-import { InputField } from '@components';
-import { verifySignedMessage } from '@services/EthService';
+import { parse } from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { Button, InputField } from '@components';
+import { ProviderHandler } from '@services/EthService';
+import { selectDefaultNetwork, useSelector } from '@store';
 import { BREAK_POINTS, COLORS } from '@theme';
 import translate, { translateRaw } from '@translations';
 import { ISignedMessage } from '@types';
+import { verifySignedMessage } from '@utils';
+import { normalizeJson, normalizeSingleQuotes } from '@utils/normalize';
+
+import { VerifyParams } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;
@@ -17,12 +24,7 @@ const Content = styled.div`
   align-items: center;
 `;
 
-interface VerifyButtonProps {
-  disabled?: boolean;
-}
-const VerifyButton = styled(Button)<VerifyButtonProps>`
-  ${(props) => props.disabled && 'opacity: 0.4;'}
-
+const VerifyButton = styled(Button)`
   @media (max-width: ${SCREEN_XS}) {
     width: 100%;
   }
@@ -46,25 +48,48 @@ const signatureExample: ISignedMessage = {
 };
 const signaturePlaceholder = JSON.stringify(signatureExample, null, 2);
 
-export default function VerifyMessage() {
+interface Props {
+  setShowSubtitle(show: boolean): void;
+}
+
+const VerifyMessage: FunctionComponent<RouteComponentProps & Props> = ({ location }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const network = useSelector(selectDefaultNetwork);
+  const provider = new ProviderHandler(network);
 
-  const handleVerifySignedMessage = () => {
+  const handleClick = () => handleVerifySignedMessage();
+
+  const handleVerifySignedMessage = async (
+    json?: string,
+    trySingleQuotes?: boolean
+  ): Promise<void> => {
+    const rawMessage = json ?? message;
+    setLoading(true);
+
     try {
-      const parsedSignature: ISignedMessage = JSON.parse(message);
-      const isValid = verifySignedMessage(parsedSignature);
+      const normalizedMessage = trySingleQuotes ? normalizeSingleQuotes(rawMessage) : rawMessage;
+      const parsedSignature: ISignedMessage = normalizeJson(normalizedMessage);
 
-      if (!isValid) {
+      const isValid = verifySignedMessage(parsedSignature);
+      const isValidEIP1271 = !isValid && (await provider.isValidEIP1271Signature(parsedSignature));
+      if (!isValid && !isValidEIP1271) {
         throw Error();
       }
 
       setError(undefined);
       setSignedMessage(parsedSignature);
     } catch (err) {
+      if (!trySingleQuotes) {
+        return handleVerifySignedMessage(rawMessage, true);
+      }
+
       setError(translateRaw('ERROR_38'));
       setSignedMessage(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,6 +98,28 @@ export default function VerifyMessage() {
     setError(undefined);
     setSignedMessage(null);
   };
+
+  useEffect(() => {
+    const { address, message: queryMessage, signature } = parse(location.search) as {
+      [key in VerifyParams]?: string;
+    };
+
+    if (address && queryMessage && signature) {
+      const json = JSON.stringify(
+        {
+          address,
+          msg: queryMessage,
+          sig: signature,
+          version: '2'
+        },
+        null,
+        2
+      );
+
+      setMessage(json);
+      handleVerifySignedMessage(json);
+    }
+  }, []);
 
   return (
     <Content>
@@ -85,11 +132,11 @@ export default function VerifyMessage() {
         height="150px"
         inputError={error}
       />
-      <VerifyButton disabled={!message} onClick={handleVerifySignedMessage}>
+      <VerifyButton disabled={!message} loading={loading} onClick={handleClick}>
         {translate('MSG_VERIFY')}
       </VerifyButton>
       {signedMessage && (
-        <SignedMessage>
+        <SignedMessage data-testid="sign-result">
           {translate('VERIFY_MESSAGE_SIGNED', {
             $address: signedMessage.address,
             $msg: signedMessage.msg
@@ -98,4 +145,6 @@ export default function VerifyMessage() {
       )}
     </Content>
   );
-}
+};
+
+export default withRouter(VerifyMessage);

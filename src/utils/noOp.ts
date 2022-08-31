@@ -1,2 +1,3 @@
-// tslint:disable-next-line
-export const noOp = () => {};
+export const noOp = (..._: any[]): void => {
+  // do nothing.
+};

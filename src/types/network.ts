@@ -1,14 +1,14 @@
-import { Subtract, Omit, Overwrite } from 'utility-types';
+import { Omit, Subtract } from 'utility-types';
 
-import { NodeOptions } from './node';
-import { BlockExplorer } from './blockExplorer';
-import { GasPrice } from './gas';
-import { DPathFormats } from './dPath';
-import { NetworkId } from './networkId';
-import { TUuid } from './uuid';
-import { Contract } from './contract';
-import { Asset, TTicker } from './asset';
 import { TAddress } from './address';
+import { Asset, TTicker } from './asset';
+import { ExplorerConfig } from './blockExplorer';
+import { Contract } from './contract';
+import { DPathFormats } from './dPath';
+import { GasPrice } from './gas';
+import { NetworkId } from './networkId';
+import { NodeOptions } from './node';
+import { TUuid } from './uuid';
 
 type AssetPropsMissingInLegacy = Pick<Asset, 'networkId'> | Pick<Asset, 'contractAddress'>;
 interface AssetPropsInLegacy {
@@ -26,30 +26,26 @@ export interface Network {
   isCustom: boolean;
   isTestnet?: boolean;
   color: string | undefined;
-  blockExplorer?: BlockExplorer;
-  tokenExplorer?: {
-    name: string;
-    address(address: string): string;
-  };
-  assets: TUuid[];
-  contracts: TUuid[];
+  blockExplorer: ExplorerConfig;
+  tokenExplorer?: ExplorerConfig;
   dPaths: DPathFormats;
   gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
   selectedNode?: string;
-  autoNode?: string;
+  baseUnitName?: string;
+  supportsEIP1559?: boolean;
 }
 
 interface NetworkPropsMissingInLegacy {
   nodes: NodeOptions[];
-  assets: string[];
   baseAsset: TUuid;
   baseUnit: TTicker;
 }
 
 interface NetworkUnusedLegacyProps {
   tokens: AssetLegacy[];
+  contracts: ContractLegacy[];
   isTestnet?: boolean;
   unsupportedTabs?: any[];
   hideEquivalentValues?: boolean;
@@ -57,10 +53,7 @@ interface NetworkUnusedLegacyProps {
   nodes?: NodeOptions[];
 }
 
-export type NetworkLegacy = Subtract<
-  Overwrite<Network, { contracts: ContractLegacy[] }>,
-  NetworkPropsMissingInLegacy
-> &
+export type NetworkLegacy = Subtract<Network, NetworkPropsMissingInLegacy> &
   NetworkUnusedLegacyProps;
 
 export interface NetworkNodes {

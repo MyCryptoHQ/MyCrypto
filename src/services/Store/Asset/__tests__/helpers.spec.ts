@@ -5,7 +5,7 @@ import { getTotalByAsset } from '../helpers';
 describe('getTotalByAsset()', () => {
   it('returns a list of unique assets', () => {
     const totals = getTotalByAsset([...fStoreAssets, ...fStoreAssets]);
-    expect(Object.keys(totals).length).toEqual(fStoreAssets.length);
+    expect(Object.keys(totals)).toHaveLength(fStoreAssets.length);
   });
   it('sums the balances of each asset', () => {
     const totals = getTotalByAsset([...fStoreAssets, ...fStoreAssets]);

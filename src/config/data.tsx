@@ -1,36 +1,19 @@
-import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
+import { NetworkId, TURL } from '@types';
 
-import { TURL } from '@types';
-import { makeExplorer } from '@services/EthService/utils/makeExplorer';
+import { IS_DEV } from '../../environment';
 import packageJson from '../../package.json';
-import translate from '@translations';
 
 // Displays in the footer
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;
 
-// Displays at the top of the site, make message empty string to remove.
-// Type can be primary, warning, danger, success, info, or blank for grey.
-// Message must be a JSX element if you want to use HTML.
-export const ANNOUNCEMENT_TYPE = '';
-export const ANNOUNCEMENT_MESSAGE = (
-  <React.Fragment>{translate('ANNOUNCEMENT_MESSAGE')}</React.Fragment>
-);
-
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
-export const ethPlorer = 'https://ethplorer.io';
+export const ETHPLORER_URL = 'https://ethplorer.io';
 
 export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
-export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
-
-export const etherChainExplorerInst = makeExplorer({
-  name: 'Etherchain',
-  origin: 'https://www.etherchain.org',
-  addressPath: 'account'
-});
 
 export const donationAddressMap = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
@@ -47,23 +30,32 @@ export const PROTECTED_TX_MIN_AMOUNT = 5; // 5 dollars minimum fee
 
 export const gasEstimateCacheTime = 60000;
 
-export const MINIMUM_PASSWORD_LENGTH = 12;
-
 export const SUPPORT_EMAIL = 'support@mycrypto.com';
-export const LATEST_NEWS_URL = 'https://medium.com/@mycrypto' as TURL;
+export const LATEST_NEWS_URL = 'https://blog.mycrypto.com' as TURL;
 export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 
-// Handler address will change if the trade contract changes.
-// Can also access handler by calling `approvalHandler()` on the trade contract.
-// Also update eth contracts when updating DexAG addresses
-export const DEXAG_MYC_TRADE_CONTRACT = '0x3d7b19C37d422B43c07C7Ba6353ED2D1689540FD'; //'0xA65440C4CC83D70b44cF244a0da5373acA16a9cb';
-export const DEXAG_MYC_HANDLER_CONTRACT = '0xae0A30ac8C76d85f1E76A3EbDcEdc3047e0da456';
-export const DEX_BASE_URL = 'https://api-v2.dex.ag/';
+export const DEX_BASE_URLS: Partial<Record<NetworkId, string>> = {
+  Ethereum: 'https://swap.mycryptoapi.com/',
+  SmartChain: 'https://bsc.swap.mycryptoapi.com',
+  MATIC: 'https://polygon.swap.mycryptoapi.com',
+  ...(IS_DEV ? { Kovan: 'https://kovan.swap.mycryptoapi.com' } : {})
+};
+export const DEX_NETWORKS = Object.keys(DEX_BASE_URLS);
+export const DEX_FEE_RECIPIENT = '0xD8D46494e200Fa585FC98f86e6A5Ea0DC1F18aD0';
+export const DEX_TRADE_EXPIRATION = 31; // in seconds
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
 export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
 export const BUY_MYCRYPTO_WEBSITE = 'https://buy.mycrypto.com' as TURL;
 export const MOONPAY_SIGNER_API = 'https://moonpay.mycryptoapi.com/sign';
+export const UNISWAP_UNI_CLAIM_API = 'https://uni.mycryptoapi.com/claims';
+export const UNISWAP_TOKEN_DISTRIBUTOR = '0x090D4613473dEE047c3f2706764f49E0821D256e';
+export const DAPPNODE_CLAIM_API = 'https://dappnode.mycryptoapi.com/claims';
+export const DAPPNODE_TOKEN_DISTRIBUTOR = '0x87d6180b65ad76a9443064dcd1596388fcc3ee2a';
+export const ENS_CLAIM_API = 'https://ensclaims.mycryptoapi.com/v1/claims';
+export const ENS_TOKEN_DISTRIBUTOR = '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72';
+export const GIV_CLAIM_API = 'https://giveth.mycryptoapi.com/v1/claims';
+export const GIV_TOKEN_DISTRIBUTOR = '0xFad63adEFb8203F7605F25f6a921c8bf45604A5e';
 
 export const LETS_ENCRYPT_URL = 'https://letsencrypt.org/';
 
@@ -73,3 +65,11 @@ export enum Theme {
 }
 
 export type ThemeType = 'dark' | 'light';
+
+export const FAUCET_NETWORKS: NetworkId[] = ['Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
+
+export const ETHEREUM_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Rinkeby', 'Kovan', 'Goerli'];
+
+export const SUPPORTED_VIDEO_EXTENSIONS = ['mov', 'mp4', 'webm', 'ogv'];
+
+export const SUPPORTED_AUDIO_EXTENSIONS = ['mp3', 'ogg', 'wav'];

@@ -1,36 +1,29 @@
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import queryString from 'query-string';
-import { getParam } from '@utils';
-import { TxParam } from '@features/SendAssets/preFillTx';
+import { ReactElement } from 'react';
 
-const parse = (location: RouteComponentProps<any>['location']): Query => {
+import queryString from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
+import { TxParam } from '@features/SendAssets/preFillTx';
+import { IQueryResults } from '@types';
+import { getParam } from '@utils';
+
+const parse = (location: RouteComponentProps['location']): Query => {
   const searchStr = location.search;
   const query = queryString.parse(searchStr);
   return query;
 };
 
-export interface IQueryResults {
-  [key: string]: string | null;
-}
-
-interface Props extends RouteComponentProps<{}> {
+interface Props {
   params: TxParam[];
-  withQuery(query: IQueryResults): React.ReactElement<any> | null;
+  withQuery(query: IQueryResults): ReactElement<any> | null;
 }
 
 interface Query {
   [key: string]: string;
 }
 
-export const Query = withRouter(
-  class extends React.Component<Props, {}> {
-    public render() {
-      const { withQuery, params, location } = this.props;
-      const query = parse(location);
-      const res = params.reduce((obj, param) => ({ ...obj, [param]: getParam(query, param) }), {});
-
-      return withQuery(res);
-    }
-  }
-);
+export const Query = withRouter(({ withQuery, params, location }: RouteComponentProps & Props) => {
+  const query = parse(location);
+  const res = params.reduce((acc, param) => ({ ...acc, [param]: getParam(query, param) }), {});
+  return withQuery(res);
+});

@@ -1,15 +1,13 @@
-import React from 'react';
-
-import { WalletId } from '@types';
 import { getWalletConfig } from '@config';
 import { translateRaw } from '@translations';
+import { WalletId } from '@types';
 import { noOp } from '@utils';
 
 import { WalletButton } from './WalletButton';
 
-export default { title: 'WalletButton' };
+export default { title: 'Molecules/WalletButton', components: WalletButton };
 
-const walletInfo = getWalletConfig(WalletId.PRIVATE_KEY);
+const walletInfo = getWalletConfig(WalletId.WEB3);
 
 const getWalletButton = (disabled?: boolean) => (
   <WalletButton

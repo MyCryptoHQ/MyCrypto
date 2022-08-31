@@ -1,28 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
+import { TCurrencySymbol, TTicker, TUuid } from '@types';
+import { formatCurrency, isFiatTicker } from '@utils';
 
-import { isFiatTicker } from '@utils';
-import { TTicker, TCurrencySymbol, TUuid } from '@types';
-import { default as Typography } from './Typography';
 import AssetIcon from './AssetIcon';
-
-const SContainer = styled('div')`
-  display: inline-flex;
-`;
-
-const SAssetIconContainer = styled('span')`
-  padding-right: 5px;
-`;
+import Box from './Box';
+import { Body } from './NewTypography';
 
 interface Props {
   amount: string;
   symbol?: TCurrencySymbol;
-  ticker: TTicker;
+  ticker?: TTicker;
   uuid?: TUuid;
   decimals?: number;
   icon?: boolean;
   bold?: boolean;
   fontSize?: string;
+  color?: string;
 }
 
 function Currency({
@@ -34,28 +26,17 @@ function Currency({
   icon = false,
   bold = false,
   fontSize,
+  color,
   ...props
 }: Props) {
-  const format = (value: string, decimalPlaces: number) => {
-    return new Intl.NumberFormat(navigator.language, {
-      minimumFractionDigits: decimalPlaces,
-      maximumFractionDigits: decimalPlaces,
-      ...(isFiatTicker(ticker) && { style: 'currency', currency: ticker })
-    }).format(parseFloat(value));
-  };
-
   return (
-    <SContainer {...props}>
-      {icon && uuid && (
-        <SAssetIconContainer>
-          <AssetIcon size={'19px'} uuid={uuid} />
-        </SAssetIconContainer>
-      )}
-      <Typography bold={bold} fontSize={fontSize}>
-        {format(amount, decimals)}
-        {!isFiatTicker(ticker) && ` ${symbol || ticker}`}
-      </Typography>
-    </SContainer>
+    <Box variant="rowAlign" display="inline-flex" style={{ fontSize: fontSize }} {...props}>
+      {icon && uuid && <AssetIcon uuid={uuid} mr="0.5ch" size="1.2em" />}
+      <Body as="span" fontWeight={bold ? 'bold' : 'normal'} fontSize={'inherit'} color={color}>
+        {formatCurrency(amount, decimals, ticker)}
+        {ticker && !isFiatTicker(ticker) && ` ${symbol ?? ticker}`}
+      </Body>
+    </Box>
   );
 }
 

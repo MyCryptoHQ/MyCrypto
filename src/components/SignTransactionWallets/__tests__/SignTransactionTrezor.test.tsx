@@ -1,16 +1,21 @@
-import React from 'react';
+import { ComponentProps } from 'react';
+
 import { simpleRender, waitFor } from 'test-utils';
 
+import SignTransaction from '@features/SendAssets/components/SignTransaction';
 import { fTxConfig } from '@fixtures';
 import { WalletId } from '@types';
-import SignTransaction from '@features/SendAssets/components/SignTransaction';
 
 import { getHeader } from './helper';
 
-const defaultProps: React.ComponentProps<typeof SignTransaction> = {
+const defaultProps: ComponentProps<typeof SignTransaction> = {
   txConfig: {
     ...fTxConfig,
-    senderAccount: { ...fTxConfig.senderAccount, wallet: WalletId.TREZOR }
+    senderAccount: {
+      ...fTxConfig.senderAccount,
+      address: '0x31497f490293cf5a4540b81c9f59910f62519b63',
+      wallet: WalletId.TREZOR
+    }
   },
   onComplete: jest.fn()
 };
@@ -19,18 +24,10 @@ const getComponent = () => {
   return simpleRender(<SignTransaction {...defaultProps} />);
 };
 
-jest.mock('trezor-connect', () => {
-  // Must be imported here to prevent issues with jest
-  const { mockFactory } = require('../__mocks__/trezor');
-  return mockFactory('', 3, { v: 41, r: 2, s: 4 });
-});
-
 describe('SignTransactionWallets: Trezor', () => {
   beforeEach(() => {
     jest.useFakeTimers();
-  });
-  afterEach(() => {
-    jest.resetAllMocks();
+    jest.setTimeout(60000);
   });
 
   test('Can handle Trezor signing', async () => {
@@ -38,54 +35,12 @@ describe('SignTransactionWallets: Trezor', () => {
     const selector = getHeader(WalletId.TREZOR);
     expect(getByText(selector)).toBeInTheDocument();
 
-    // Expect signed payload to be the following buffer given the v,r,s
-    await waitFor(() =>
-      expect(defaultProps.onComplete).toBeCalledWith(
-        Buffer.from([
-          233,
-          50,
-          132,
-          238,
-          107,
-          40,
-          0,
-          130,
-          82,
-          8,
-          148,
-          144,
-          159,
-          116,
-          255,
-          220,
-          34,
-          53,
-          134,
-          208,
-          211,
-          14,
-          120,
-          1,
-          110,
-          112,
-          123,
-          111,
-          90,
-          69,
-          226,
-          134,
-          90,
-          243,
-          16,
-          122,
-          64,
-          0,
-          128,
-          41,
-          2,
-          4
-        ])
-      )
+    await waitFor(
+      () =>
+        expect(defaultProps.onComplete).toHaveBeenCalledWith(
+          '0xf8693284ee6b280082520894909f74ffdc223586d0d30e78016e707b6f5a45e2865af3107a40008029a0827cfaac70de301d4ced4695979dc7684fb014613b4055eb405d7330e2f6af5ea02a75d8e8afdd32f9097e6c9518bbc3e4748c193ecfcd089a95ec6e7d9674604b'
+        ),
+      { timeout: 60000 }
     );
     expect(defaultProps.onComplete).toHaveBeenCalledTimes(1);
   });

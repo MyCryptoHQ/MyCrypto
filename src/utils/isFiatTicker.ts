@@ -1,4 +1,5 @@
 import has from 'ramda/src/has';
+
 import { Fiats } from '@config';
 import { TFiatTicker, TTicker } from '@types';
 

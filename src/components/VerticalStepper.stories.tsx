@@ -1,10 +1,9 @@
-import React from 'react';
+import step1SVG from '@assets/images/icn-unlock-wallet.svg';
 import { COLORS } from '@theme';
+
 import VerticalStepper from './VerticalStepper';
 
-import step1SVG from '@assets/images/icn-unlock-wallet.svg';
-
-export default { title: 'VerticalStepper' };
+export default { title: 'Organisms/VerticalStepper', component: VerticalStepper };
 
 export const defaultState = () => (
   <VerticalStepper

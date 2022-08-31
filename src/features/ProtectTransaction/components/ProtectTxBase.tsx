@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
 
 const ProtectTxBase = styled.div`
   display: flex;
@@ -38,6 +39,13 @@ const ProtectTxBase = styled.div`
 
   .muted {
     color: ${COLORS.BLUE_GREY};
+  }
+
+  @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
+    padding: ${SPACING.BASE} ${SPACING.SM};
+    svg.close-icon {
+      display: none;
+    }
   }
 `;
 

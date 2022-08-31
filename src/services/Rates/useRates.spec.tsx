@@ -1,65 +1,61 @@
-import React from 'react';
+import { FC } from 'react';
+
 import { renderHook } from '@testing-library/react-hooks';
+import { actionWithPayload, mockAppState, mockUseDispatch, ProvidersWrapper } from 'test-utils';
 
-import { IRates, TUuid } from '@types';
+import { fAssets, fRates, fSettings } from '@fixtures';
+import { IRates } from '@types';
 
-import { DataContext, IDataContext, RatesContext, SettingsContext } from '@services';
-import { fSettings, fAssets, fDefiReserveRates } from '@fixtures';
 import useRates from './useRates';
-import { ReserveMapping } from './RatesProvider';
 
-const renderUseRates = ({
-  rates = {} as IRates,
-  reserveRateMapping = {} as ReserveMapping,
-  trackAsset = jest.fn()
-} = {}) => {
-  const wrapper: React.FC = ({ children }) => (
-    <DataContext.Provider value={({ createActions: jest.fn() } as any) as IDataContext}>
-      <SettingsContext.Provider value={{ settings: fSettings } as any}>
-        <RatesContext.Provider value={{ rates, reserveRateMapping, trackAsset } as any}>
-          {' '}
-          {children}
-        </RatesContext.Provider>
-      </SettingsContext.Provider>
-    </DataContext.Provider>
+const renderUseRates = ({ rates = {} as IRates } = {}) => {
+  const wrapper: FC = ({ children }) => (
+    <ProvidersWrapper initialState={mockAppState({ settings: fSettings, rates })}>
+      {children}
+    </ProvidersWrapper>
   );
   return renderHook(() => useRates(), { wrapper });
 };
 
 describe('useRates', () => {
   it('getAssetRate() gets correct rate from settings', () => {
-    const { result } = renderUseRates({ rates: fSettings.rates });
-    expect(result.current.getAssetRate(fAssets[2])).toBe(195.04);
+    const { result } = renderUseRates({ rates: fRates });
+    expect(result.current.getAssetRate(fAssets[0])).toBe(fRates[fAssets[0].uuid].usd);
   });
 
   it('getAssetRate() calls trackAsset on unknown assets', () => {
-    const mockTrackAsset = jest.fn();
-    const { result } = renderUseRates({ rates: {}, trackAsset: mockTrackAsset });
-    expect(result.current.getAssetRate(fAssets[0])).toBe(0);
-    expect(mockTrackAsset).toBeCalledWith(fAssets[0].uuid);
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseRates({ rates: fRates });
+
+    expect(result.current.getAssetRate(fAssets[3])).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
 
   it('getAssetRateInCurrency() gets correct rate from settings', () => {
-    const { result } = renderUseRates({ rates: fSettings.rates });
-    expect(result.current.getAssetRateInCurrency(fAssets[2], 'EUR')).toBe(179.88);
+    const { result } = renderUseRates({ rates: fRates });
+    expect(result.current.getAssetRateInCurrency(fAssets[0], 'EUR')).toBe(
+      fRates[fAssets[0].uuid].eur
+    );
   });
 
   it('getAssetRateInCurrency() calls trackAsset on unknown assets', () => {
-    const mockTrackAsset = jest.fn();
-    const { result } = renderUseRates({ rates: {}, trackAsset: mockTrackAsset });
-    expect(result.current.getAssetRateInCurrency(fAssets[0], 'EUR')).toBe(0);
-    expect(mockTrackAsset).toBeCalledWith(fAssets[0].uuid);
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseRates({ rates: fRates });
+
+    expect(result.current.getAssetRateInCurrency(fAssets[3], 'EUR')).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
 
-  it('getPoolAssetReserveRate() returns asset with reserveExchangeRate', () => {
-    const { result } = renderUseRates({
-      rates: {},
-      reserveRateMapping: fDefiReserveRates
-    });
-    expect(
-      result.current.getPoolAssetReserveRate('0039e50a-bab5-52fc-a48f-43f36410a87a' as TUuid, [
-        fAssets[0]
-      ])
-    ).toStrictEqual([{ ...fAssets[0], reserveExchangeRate: '2.368285030204416' }]);
+  it('getAssetChange() gets correct change from settings', () => {
+    const { result } = renderUseRates({ rates: fRates });
+    expect(result.current.getAssetChange(fAssets[0])).toBe(fRates[fAssets[0].uuid].usd_24h_change);
+  });
+
+  it('getAssetChange() calls trackAsset on unknown assets', () => {
+    const mockDispatch = mockUseDispatch();
+    const { result } = renderUseRates({ rates: fRates });
+
+    expect(result.current.getAssetChange(fAssets[3])).toEqual(0);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actionWithPayload(fAssets[3]));
   });
 });

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useState } from 'react';
+
 import { History } from 'history';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, Tabs } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { Tab } from '@types';
 import { BREAK_POINTS } from '@theme';
 import translate from '@translations';
+import { Tab } from '@types';
+
 import { tabsConfig } from './constants';
 
 const { SCREEN_SM } = BREAK_POINTS;
@@ -64,14 +66,12 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const tabClickRedirect = (history: History, url: string): void => {
+const tabClickRedirect = (history: History<unknown>, url: string): void => {
   history.push(url);
 };
 
-function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
+function SignAndVerifyMessage({ history, location }: RouteComponentProps) {
   const [showSubtitle, setShowSubtitle] = useState(true);
-
-  const { history, location } = props;
 
   const currentRoute = tabsConfig.find(
     (tabConfig) => ROUTE_PATHS[tabConfig.key].path === location.pathname

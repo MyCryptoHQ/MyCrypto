@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+
 import { default as useUpdateEffect } from '../useUpdateEffect';
 
 it('should run effect on update', () => {

@@ -1,7 +1,8 @@
-import React from 'react';
-import { fNetwork, fContracts } from '@fixtures';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
+
+import { fContracts, fNetwork } from '@fixtures';
 import { IReceiverAddress } from '@types';
+
 import ContractLookupField from './ContractLookupField';
 
 const props = {
@@ -21,7 +22,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-export default { title: 'ContractLookupField' };
+export default { title: 'Molecules/ContractLookupField', component: ContractLookupField };
 
 export const defaultState = () => (
   <div className="sb-container" style={{ width: '100%', maxWidth: '300px' }}>

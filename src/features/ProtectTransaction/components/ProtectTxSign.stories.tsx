@@ -1,25 +1,19 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { Panel } from '@mycrypto/ui';
+import { storiesOf } from '@storybook/react';
 
 import { NETWORKS_CONFIG, NODES_CONFIG } from '@database/data';
-import { Network, NetworkId, WalletId } from '@types';
+import { fAccounts } from '@fixtures';
+import { Network, NetworkId } from '@types';
 import { noOp } from '@utils';
 
-import { ProtectTxSign } from './ProtectTxSign';
 import ProtectTxProvider from '../ProtectTxProvider';
+import { ProtectTxSign } from './ProtectTxSign';
 
 const ropstenId: NetworkId = 'Ropsten';
 const network: Network = {
   ...NETWORKS_CONFIG[ropstenId],
   nodes: NODES_CONFIG[ropstenId]
 } as any;
-
-const account = {
-  address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
-  networkId: 'Ropsten',
-  wallet: WalletId.MNEMONIC_PHRASE
-};
 
 const sampleTxConfig = {
   to: '0xe9c593dc6FaDC38401896C21987E2976f0AF6914',
@@ -38,15 +32,15 @@ const ProtectTxStep2 = () => (
         handleProtectTxConfirmAndSend={noOp}
         txConfig={sampleTxConfig as any}
         network={network}
-        account={account as any}
+        account={fAccounts[0]}
       />
     </Panel>
   </div>
 );
 
-storiesOf('ProtectTransaction', module)
+storiesOf('Features/ProtectTransaction', module)
   .addDecorator((story) => <ProtectTxProvider>{story()}</ProtectTxProvider>)
-  .add('Step 2', (_) => ProtectTxStep2(), {
+  .add('Step 2', () => ProtectTxStep2(), {
     design: {
       type: 'figma',
       url:

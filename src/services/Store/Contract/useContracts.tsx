@@ -1,12 +1,16 @@
-import { useContext } from 'react';
-import { isSameAddress, generateContractUUID } from '@utils';
-
-import { Contract, ExtendedContract, LSKeys, TUuid, TAddress } from '@types';
-import { DataContext } from '@services/Store';
+import {
+  createContract as createAContract,
+  destroyContract,
+  selectContracts,
+  useDispatch,
+  useSelector
+} from '@store';
+import { Contract, ExtendedContract, NetworkId, TAddress, TUuid } from '@types';
+import { generateDeterministicAddressUUID, isSameAddress } from '@utils';
 
 function useContracts() {
-  const { contracts, createActions } = useContext(DataContext);
-  const model = createActions(LSKeys.CONTRACTS);
+  const contracts = useSelector(selectContracts);
+  const dispatch = useDispatch();
 
   /**
    * Save a valid contract. We rely on static typing to verify
@@ -14,29 +18,31 @@ function useContracts() {
    * @param contract
    */
   const createContract = (contract: Contract): ExtendedContract => {
-    const uuid = generateContractUUID(contract.networkId, contract.address);
-    const contractWithUUID: ExtendedContract = { ...contract, uuid };
-    model.create(contractWithUUID);
-    return contractWithUUID;
+    const uuid = generateDeterministicAddressUUID(contract.networkId, contract.address);
+    dispatch(createAContract({ ...contract, uuid }));
+    return { ...contract, uuid };
   };
 
   const deleteContract = (uuid: TUuid) => {
-    model.destroy(contracts.find((a) => a.uuid === uuid) as ExtendedContract);
+    dispatch(destroyContract(uuid));
   };
 
-  const getContractsByIds = (uuids: TUuid[]) => {
-    return uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean);
-  };
+  const getContractsByIds = (uuids: TUuid[]) =>
+    uuids.map((contractId) => contracts.find((c) => c.uuid === contractId)!).filter(Boolean);
 
   const getContractByAddress = (address: TAddress) =>
     contracts.find((x: ExtendedContract) => isSameAddress(x.address, address));
+
+  const getContractsByNetwork = (networkId: NetworkId) =>
+    contracts.filter((c) => c.networkId === networkId);
 
   return {
     contracts,
     createContract,
     deleteContract,
     getContractsByIds,
-    getContractByAddress
+    getContractByAddress,
+    getContractsByNetwork
   };
 }
 

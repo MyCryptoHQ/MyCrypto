@@ -83,25 +83,6 @@ strong,
   font-weight: 600;
 }
 
-a {
-  color: color(link-color);
-  text-decoration: none;
-  cursor: pointer;
-  transition: $transition;
-
-  &:hover {
-    opacity: 0.8;
-    color: color(link-hover-color);
-  }
-  &:active,
-  &:focus {
-    opacity: 1;
-  }
-  &:focus {
-    @include tab-focus;
-  }
-}
-
 .point {
   cursor: pointer;
 }

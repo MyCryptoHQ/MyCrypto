@@ -1,12 +1,13 @@
+import { DerivationPath } from '@mycrypto/wallets';
 import { Overwrite } from 'utility-types';
 
+import { TAddress } from './address';
 import { AssetBalanceObject, StoreAsset } from './asset';
 import { Network } from './network';
 import { NetworkId } from './networkId';
-import { WalletId } from './walletId';
 import { ITxReceipt } from './transaction';
 import { TUuid } from './uuid';
-import { TAddress } from './address';
+import { WalletId } from './walletId';
 
 export interface IAccount {
   uuid: TUuid;
@@ -16,13 +17,14 @@ export interface IAccount {
   assets: AssetBalanceObject[];
   wallet: WalletId;
   transactions: ITxReceipt[];
-  dPath: string;
+
+  path?: DerivationPath;
+  index?: number;
+
   mtime: number;
   favorite: boolean;
   isPrivate?: boolean;
 }
-
-export type IRawAccount = Omit<IAccount, 'uuid'>;
 
 export type StoreAccount = Overwrite<
   IAccount,

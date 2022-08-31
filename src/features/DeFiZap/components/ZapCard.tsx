@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import { formatEther } from '@ethersproject/units';
 import styled from 'styled-components';
-import { formatEther } from 'ethers/utils';
 
-import { RouterLink, Tooltip, Button } from '@components';
+import { Button, LinkApp, Tooltip } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { COLORS, BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
-import { weiToFloat, trimBN } from '@utils';
-import { StoreContext, getTotalByAsset, useRates } from '@services';
-import translate, { translateRaw } from '@translations';
-import { IconID } from '@components/Tooltip';
+import { getTotalByAsset, useRates } from '@services';
+import { getAccountsAssets } from '@services/Store/helpers';
+import { getStoreAccounts, selectCurrentAccounts, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Asset, ReserveAsset, StoreAsset } from '@types';
+import { bigify, multiplyBNFloats, trimBN, weiToFloat } from '@utils';
 
 import { fetchZapRiskObject, IZapConfig } from '../config';
 
@@ -207,15 +208,33 @@ const TooltipWrapper = styled.div`
   right: 2px;
 `;
 
+const WithdrawButton = () => (
+  <ZapCardButton colorScheme={'inverted'}>{translateRaw('WITHDRAW')}</ZapCardButton>
+);
+
 interface Props {
   config: IZapConfig;
 }
 
+// Moved from StoreProvider
+const getDeFiAssetReserveAssets = (poolAsset: StoreAsset, assets: StoreAsset[]) => (
+  getPoolAssetReserveRate: (poolTokenUuid: string, assets: Asset[]) => ReserveAsset[]
+) =>
+  getPoolAssetReserveRate(poolAsset.uuid, assets).map((reserveAsset) => ({
+    ...reserveAsset,
+    balance: multiplyBNFloats(
+      weiToFloat(poolAsset.balance, poolAsset.decimal).toString(),
+      reserveAsset.reserveExchangeRate
+    ),
+    mtime: Date.now()
+  }));
+
 const ZapCard = ({ config }: Props) => {
   const { getPoolAssetReserveRate } = useRates();
-  const { currentAccounts, assets, getDeFiAssetReserveAssets } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
+  const currentAccounts = useSelector(selectCurrentAccounts);
   const IndicatorItem = config.positionDetails;
-  const defiPoolBalances = assets(currentAccounts).filter(
+  const defiPoolBalances = getAccountsAssets(currentAccounts).filter(
     ({ uuid }) => uuid === config.poolTokenUUID
   );
   const userZapBalances = getTotalByAsset(defiPoolBalances)[config.poolTokenUUID];
@@ -226,7 +245,10 @@ const ZapCard = ({ config }: Props) => {
 
   const defiReserveBalances = !userZapBalances
     ? []
-    : getDeFiAssetReserveAssets(userZapBalances)(getPoolAssetReserveRate);
+    : getDeFiAssetReserveAssets(
+        userZapBalances,
+        getAccountsAssets(accounts)
+      )(getPoolAssetReserveRate);
 
   const isZapOwned = !!humanReadableZapBalance;
 
@@ -269,7 +291,7 @@ const ZapCard = ({ config }: Props) => {
                       tooltip={translateRaw('ZAP_BALANCE_TOOLTIP', {
                         $protocol: config.platformsUsed[0]
                       })}
-                      type={IconID.informational}
+                      type="informational"
                     />
                   </TooltipWrapper>
                 </ZapEstimatedBalance>
@@ -277,7 +299,7 @@ const ZapCard = ({ config }: Props) => {
                   {defiReserveBalances && defiReserveBalances.length > 0 ? (
                     defiReserveBalances.map((defiReserveAsset) => (
                       <div key={defiReserveAsset.uuid}>
-                        {`~ ${parseFloat(
+                        {`~ ${bigify(
                           trimBN(formatEther(defiReserveAsset.balance.toString()))
                         ).toFixed(4)} ${defiReserveAsset.ticker}`}
                       </div>
@@ -295,19 +317,23 @@ const ZapCard = ({ config }: Props) => {
       </ZapCardContent>
       <ZapCardContentBottom>
         {!humanReadableZapBalance ? (
-          <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-            <ZapCardButton inverted={true}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
-          </RouterLink>
+          <LinkApp href={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+            <ZapCardButton colorScheme={'inverted'}>{translateRaw('ZAP_CARD_CTA')}</ZapCardButton>
+          </LinkApp>
         ) : (
           <>
-            <RouterLink to={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
-              <ZapCardButton inverted={true}>{translateRaw('ADD')}</ZapCardButton>
-            </RouterLink>
-            <a target="_blank" href={config.link} rel="noreferrer">
-              <Tooltip tooltip={translate('ZAP_WITHDRAW_TOOLTIP')}>
-                <ZapCardButton inverted={true}>{translateRaw('WITHDRAW')}</ZapCardButton>
-              </Tooltip>
-            </a>
+            <LinkApp href={`${ROUTE_PATHS.DEFIZAP.path}/zap?key=${config.key}`}>
+              <ZapCardButton colorScheme={'inverted'}>{translateRaw('ADD')}</ZapCardButton>
+            </LinkApp>
+            <LinkApp href={config.link} isExternal={true}>
+              {config.withdrawTooltip ? (
+                <Tooltip tooltip={config.withdrawTooltip}>
+                  <WithdrawButton />
+                </Tooltip>
+              ) : (
+                <WithdrawButton />
+              )}
+            </LinkApp>
           </>
         )}
       </ZapCardContentBottom>

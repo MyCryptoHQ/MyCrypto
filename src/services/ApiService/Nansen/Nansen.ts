@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { ApiService } from '@services/ApiService';
+
 import { NANSEN_API } from '@config';
+import { ApiService } from '@services/ApiService';
+
 import { NansenServiceResponse } from './types';
 
 export default abstract class NansenService {
@@ -9,6 +11,9 @@ export default abstract class NansenService {
       const { data } = await NansenService.service.post<NansenServiceResponse>('/', { address });
       return data;
     } catch (e) {
+      if (e?.response?.status === 404) {
+        return { result: { name: 'Unknown', labels: [] } };
+      }
       console.debug('[Nansen]: Fetching data from Nansen failed: ', e);
       return null;
     }

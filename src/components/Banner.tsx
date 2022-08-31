@@ -1,21 +1,24 @@
-import React from 'react';
+import { ReactElement } from 'react';
+
 import styled from 'styled-components';
 
-import { BannerType } from '@types';
-import { FONT_SIZE, BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { default as Typography } from './Typography';
 import announcementSVG from '@assets/images/icn-announcement.svg';
 import errorSVG from '@assets/images/icn-toast-error.svg';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import { BannerType } from '@types';
+
+import { default as Typography } from './Typography';
 
 interface Props {
-  value: string | React.ReactElement<any>;
+  value: string | ReactElement<any>;
   type: BannerType;
+  displayIcon?: boolean;
 }
 
 interface Config {
   bgColor: string;
   color: string;
-  icon: string;
+  icon?: string;
 }
 
 interface BannerTypographyProps {
@@ -25,8 +28,7 @@ interface BannerTypographyProps {
 const Container = styled.div`
   background-color: ${(p: { config: Config }) => p.config.bgColor || 'transparent'};
   color: ${(p) => p.config.color || 'inherit'};
-  padding: 5px 10px;
-  padding-right: 30px;
+  padding: 5px 25px;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -92,15 +94,20 @@ const bannerConfig = (type: BannerType): Config => {
         bgColor: COLORS.ERROR_RED,
         icon: errorSVG
       };
+    case BannerType.NOTIFICATION:
+      return {
+        color: COLORS.WHITE,
+        bgColor: COLORS.WARNING_ORANGE
+      };
   }
 };
 
-export const Banner = ({ value, type, ...props }: Props) => {
+export const Banner = ({ value, type, displayIcon = true, ...props }: Props) => {
   const config = bannerConfig(type);
   return (
     <Container config={config} {...props}>
       <RowContainer>
-        <Icon src={config.icon} alt={type} />
+        {config.icon && displayIcon && <Icon src={config.icon} alt={type} />}
 
         <STypography color={config.color} fontSize={FONT_SIZE.SM}>
           {value}

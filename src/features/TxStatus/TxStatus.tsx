@@ -1,35 +1,30 @@
-import React, { useContext, useReducer, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
+
+import { isHexString } from '@ethersproject/bytes';
 import { Input } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { isHexString } from 'ethers/utils';
 
-import { Button, NetworkSelectDropdown, ContentPanel, TxReceipt, InlineMessage } from '@components';
-import { NetworkId } from '@types';
-import { StoreContext, ANALYTICS_CATEGORIES, useAssets, useNetworks } from '@services';
-import { noOp, isVoid, useAnalytics } from '@utils';
-import { useEffectOnce, useUpdateEffect } from '@vendor';
+import {
+  Button,
+  ContentPanel,
+  InlineMessage,
+  NetworkSelector,
+  Spinner,
+  TxReceipt
+} from '@components';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { useAssets, useNetworks } from '@services';
+import { getMergedTxHistory, getStoreAccounts, useSelector } from '@store';
+import { COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { ITxReceipt } from '@types';
+import { isVoid, noOp } from '@utils';
+import { useEffectOnce, useUpdateEffect } from '@vendor';
 
-import { txStatusReducer, generateInitialState } from './TxStatus.reducer';
 import { fetchTxStatus, makeTx } from './helpers';
-
-const SUPPORTED_NETWORKS: NetworkId[] = ['Ethereum', 'Ropsten', 'Goerli', 'Kovan', 'ETC'];
-
-const Loader = styled.div`
-  padding-bottom: 6rem;
-  transform: scale(3.75);
-
-  &&::before {
-    border-width: 0.75px;
-  }
-
-  &&::after {
-    border-width: 0.75px;
-  }
-`;
+import { generateInitialState, txStatusReducer } from './TxStatus.reducer';
 
 const Wrapper = styled.div<{ fullPageLoading: boolean }>`
   ${({ fullPageLoading }) =>
@@ -37,42 +32,41 @@ const Wrapper = styled.div<{ fullPageLoading: boolean }>`
     `
     display: flex;
     justify-content: center;
+    align-items: center;
 `}
   min-height: 600px;
+`;
+
+const SButton = styled(Button)`
+  margin-top: 0;
+`;
+
+const SLabel = styled.label`
+  margin-top: ${SPACING.SM};
+  color: ${COLORS.GREY_DARKEST};
+  font-weight: normal;
 `;
 
 const TxStatus = ({ history, location }: RouteComponentProps) => {
   const qs = queryString.parse(location.search);
 
-  const trackPageLoad = useAnalytics({
-    category: ANALYTICS_CATEGORIES.TX_STATUS
-  });
-
   const { assets } = useAssets();
   const { networks } = useNetworks();
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
+  const txHistory = useSelector(getMergedTxHistory);
 
   const defaultTxHash = qs.hash ? qs.hash : '';
-  const defaultNetwork =
-    qs.network && SUPPORTED_NETWORKS.includes(qs.network) ? qs.network : DEFAULT_NETWORK;
+  const defaultNetwork = qs.network ? qs.network : DEFAULT_NETWORK;
 
   const initialState = generateInitialState(defaultTxHash, defaultNetwork);
 
   const [reducerState, dispatch] = useReducer(txStatusReducer, initialState);
 
-  const { networkId, txHash, tx: txState, error, fetching, fromLink } = reducerState;
-
+  const { networkId, txHash, tx, error, fetching, fromLink } = reducerState;
   // Fetch TX on load if possible
   useEffectOnce(() => {
     if (!isVoid(defaultTxHash)) {
       handleSubmit(true);
-      trackPageLoad({
-        actionName: `Used link sharing`
-      });
-    } else {
-      trackPageLoad({
-        actionName: `Didnt use link sharing`
-      });
     }
   });
 
@@ -87,7 +81,8 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
 
   useEffect(() => {
     if (fetching) {
-      fetchTxStatus({ accounts, networks, txHash, networkId })
+      fetchTxStatus({ networks, txHash, networkId, txCache: txHistory })
+        .then((t) => makeTx({ txHash, networkId, accounts, assets, networks, ...t }))
         .then((t) => dispatch({ type: txStatusReducer.actionTypes.FETCH_TX_SUCCESS, payload: t }))
         .catch((e) => {
           console.error(e);
@@ -104,25 +99,22 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
     dispatch({ type: txStatusReducer.actionTypes.CLEAR_FORM });
   };
 
-  const fullPageLoading = fromLink && !txState;
+  const fullPageLoading = fromLink && !tx;
 
   const isFormValid = txHash.length > 0 && isHexString(txHash);
 
-  const tx = txState && makeTx({ txHash, networkId, accounts, assets, networks, ...txState });
-
   return (
     <ContentPanel heading={translateRaw('TX_STATUS')}>
-      <Wrapper fullPageLoading={fullPageLoading || false}>
+      <Wrapper fullPageLoading={fullPageLoading ?? false}>
         {!tx && !fromLink && (
           <>
-            <NetworkSelectDropdown
+            <NetworkSelector
               network={networkId ? networkId : undefined}
               onChange={(n) =>
                 dispatch({ type: txStatusReducer.actionTypes.SET_NETWORK, payload: n })
               }
-              filter={(n) => SUPPORTED_NETWORKS.includes(n.id)}
             />
-            <label htmlFor="txhash">{translateRaw('TX_HASH')}</label>
+            <SLabel htmlFor="txhash">{translateRaw('TX_HASH')}</SLabel>
             <Input
               name="txhash"
               value={txHash}
@@ -144,20 +136,20 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
             </Button>
           </>
         )}
-        {fullPageLoading && <Loader className="loading" />}
+        {fullPageLoading && <Spinner color="brand" size={4} />}
         {tx && (
           <>
             <TxReceipt
               txConfig={tx.config}
-              txReceipt={tx.receipt}
+              txReceipt={tx.receipt as ITxReceipt}
               resetFlow={noOp}
               onComplete={noOp}
               disableDynamicTxReceiptDisplay={true}
-              disableAddTxToAccount={true}
+              disablePendingState={true}
             />
-            <Button onClick={clearForm} fullwidth={true}>
+            <SButton onClick={clearForm} fullwidth={true} colorScheme={'inverted'}>
               {translateRaw('TX_STATUS_GO_BACK')}
-            </Button>
+            </SButton>
           </>
         )}
       </Wrapper>

@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-import { translateRaw } from '@translations';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ExtendedContentPanel, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { ITxSigned, ITxHash, TxParcel } from '@types';
-import { bigify, useStateReducer, useTxMulti } from '@utils';
-import { useEffectOnce, usePromise } from '@vendor';
-import { StoreContext } from '@services';
+import { appendSender } from '@helpers';
+import { useTxMulti } from '@hooks';
+import { getDefaultAccount } from '@store/account.slice';
+import { useSelector } from '@store/selectors';
+import { translateRaw } from '@translations';
+import { ITxHash, ITxSigned, ITxStatus, TxParcel } from '@types';
+import { bigify, useStateReducer } from '@utils';
 
-import { SwapAssets, SwapTransactionReceipt, ConfirmSwapMultiTx, ConfirmSwap } from './components';
-import { getTradeOrder } from './helpers';
+import { ConfirmSwap, ConfirmSwapMultiTx, SwapAssets, SwapTransactionReceipt } from './components';
 import { SwapFormFactory, swapFormInitialState } from './stateFormFactory';
-import { SwapFormState, IAssetPair } from './types';
+import { IAssetPair, SwapFormState } from './types';
 
 interface TStep {
   title?: string;
@@ -23,11 +25,10 @@ interface TStep {
   backBtnText: string;
 }
 
-const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
-  const { defaultAccount } = useContext(StoreContext);
+const SwapAssetsFlow = (props: RouteComponentProps) => {
+  const defaultAccount = useSelector(getDefaultAccount());
   const {
-    fetchSwapAssets,
-    setSwapAssets,
+    setNetwork,
     handleFromAssetSelected,
     handleToAssetSelected,
     calculateNewFromAmount,
@@ -35,6 +36,10 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     handleFromAmountChanged,
     handleToAmountChanged,
     handleAccountSelected,
+    handleGasLimitEstimation,
+    handleRefreshQuote,
+    handleFlipAssets,
+    handleSwapMax,
     formState
   } = useStateReducer(SwapFormFactory, { ...swapFormInitialState, account: defaultAccount });
   const {
@@ -50,13 +55,20 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
     toAmountError,
     lastChangedAmount,
     exchangeRate,
-    initialToAmount,
-    markup
+    approvalGasLimit,
+    tradeGasLimit,
+    gasPrice,
+    expiration,
+    approvalTx,
+    isEstimatingGas,
+    tradeTx,
+    selectedNetwork,
+    gas
   }: SwapFormState = formState;
 
   const [assetPair, setAssetPair] = useState({});
   const { state, initWith, prepareTx, sendTx, reset, stopYield } = useTxMulti();
-  const { canYield, isSubmitting, transactions } = state;
+  const { canYield, isSubmitting, transactions, error: txError } = state;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -90,11 +102,18 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         isCalculatingToAmount,
         fromAmountError,
         toAmountError,
-        initialToAmount,
+        txError,
         exchangeRate,
-        markup,
         account,
-        isSubmitting
+        approvalGasLimit,
+        tradeGasLimit,
+        gasPrice,
+        expiration,
+        approvalTx,
+        isEstimatingGas,
+        isSubmitting,
+        selectedNetwork,
+        gas
       },
       actions: {
         handleFromAssetSelected,
@@ -104,17 +123,30 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         handleFromAmountChanged,
         handleToAmountChanged,
         handleAccountSelected,
+        handleGasLimitEstimation,
+        handleRefreshQuote,
+        handleFlipAssets,
+        handleSwapMax,
+        setNetwork,
         onSuccess: () => {
           const pair: IAssetPair = {
             fromAsset,
             toAsset,
             fromAmount: bigify(fromAmount),
             toAmount: bigify(toAmount),
-            rate: bigify(exchangeRate),
-            markup: bigify(markup),
+            rate: bigify(exchangeRate!),
             lastChangedAmount
           };
-          initWith(getTradeOrder(pair, account), account, account.network);
+          initWith(
+            () =>
+              Promise.resolve(
+                (approvalTx ? [approvalTx, tradeTx!] : [tradeTx!]).map(
+                  appendSender(account.address)
+                )
+              ),
+            account,
+            account.network
+          );
           setAssetPair(pair);
         }
       }
@@ -125,20 +157,22 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
         backBtnText: translateRaw('SWAP'),
         component: transactions.length > 1 ? ConfirmSwapMultiTx : ConfirmSwap,
         props: {
-          assetPair,
+          flowConfig: assetPair,
           account,
           isSubmitting,
           transactions,
-          currentTxIdx: idx
+          currentTxIdx: idx,
+          error: txError?.reason ?? txError?.message
         },
         actions: {
-          onClick: () => {
+          onComplete: () => {
             prepareTx(tx.txRaw);
           }
         }
       },
       {
-        title: translateRaw('SWAP'),
+        // No title as signing page already has a title
+        title: '',
         backBtnText: translateRaw('SWAP_CONFIRM_TITLE'),
         component: account && WALLET_STEPS[account.wallet],
         props: {
@@ -173,17 +207,15 @@ const SwapAssetsFlow = (props: RouteComponentProps<{}>) => {
 
   useEffect(() => {
     if (!canYield) return;
-    goToNextStep();
+    // Make sure to prepare single tx before showing to user
+    if (transactions.length === 1 && transactions[0].status === ITxStatus.PREPARING) {
+      prepareTx(transactions[0].txRaw);
+    } else {
+      // Go to next step after preparing tx for MTX
+      goToNextStep();
+    }
     stopYield();
   }, [canYield]);
-
-  const mounted = usePromise();
-  useEffectOnce(() => {
-    (async () => {
-      const [fetchedAssets, fetchedFromAsset, fetchedToAsset] = await mounted(fetchSwapAssets());
-      setSwapAssets(fetchedAssets, fetchedFromAsset, fetchedToAsset);
-    })();
-  });
 
   return (
     <ExtendedContentPanel

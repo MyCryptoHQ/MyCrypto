@@ -1,11 +1,11 @@
-import { BigNumber } from 'ethers/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
-import { TAddress, StoreAsset, Network, StoreAccount } from '@types';
+import { NetworkId, StoreAccount, StoreAsset, TAddress } from '@types';
 
 export interface ISender {
   address: TAddress;
   assets: StoreAsset[];
-  network: Network;
+  networkId: NetworkId;
   accountBalance?: BigNumber;
   account?: StoreAccount;
 }

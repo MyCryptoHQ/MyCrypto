@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+
 import styled from 'styled-components';
+
+import { LinkApp } from '@components';
 import { socialMediaLinks, SUPPORT_EMAIL } from '@config';
 import { COLORS, FONT_SIZE } from '@theme';
 import { Trans } from '@translations';
-import { LinkOut } from '@components';
+
 import { ProtectTxError } from '../types';
 
 const ProtectedTransactionErrorWrapper = styled.div`
@@ -32,26 +35,24 @@ export const ProtectTxShowError: FC<Props> = ({ shown, protectTxError }) => {
           id="PROTECTED_TX_ERROR_ETH_ONLY"
           variables={{
             $supportEmail: () => (
-              <LinkOut
-                showIcon={false}
-                inline={true}
-                fontSize={FONT_SIZE.SM}
-                fontColor={COLORS.PASTEL_RED}
-                underline={true}
-                link={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction ETH only`}
-                text={SUPPORT_EMAIL}
-              />
+              <LinkApp
+                color={'PASTEL_RED'}
+                $underline={true}
+                isExternal={true}
+                href={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction ETH only`}
+              >
+                {SUPPORT_EMAIL}
+              </LinkApp>
             ),
             $twitter: () => (
-              <LinkOut
-                showIcon={false}
-                inline={true}
-                fontSize={FONT_SIZE.SM}
-                fontColor={COLORS.PASTEL_RED}
-                underline={true}
-                link={twitter ? twitter.link : ''}
-                text="Twitter"
-              />
+              <LinkApp
+                color={'PASTEL_RED'}
+                $underline={true}
+                isExternal={true}
+                href={twitter!.link}
+              >
+                {'Twitter'}
+              </LinkApp>
             )
           }}
         />
@@ -64,26 +65,24 @@ export const ProtectTxShowError: FC<Props> = ({ shown, protectTxError }) => {
           id="PROTECTED_TX_ERROR_LESS_THAN_MIN_AMOUNT"
           variables={{
             $supportEmail: () => (
-              <LinkOut
-                showIcon={false}
-                inline={true}
-                fontSize={FONT_SIZE.SM}
-                fontColor={COLORS.PASTEL_RED}
-                underline={true}
-                link={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction $5.00 limit`}
-                text={SUPPORT_EMAIL}
-              />
+              <LinkApp
+                color={'PASTEL_RED'}
+                $underline={true}
+                isExternal={true}
+                href={`mailto:${SUPPORT_EMAIL}?subject=Protected transaction $5.00 limit`}
+              >
+                {SUPPORT_EMAIL}
+              </LinkApp>
             ),
             $twitter: () => (
-              <LinkOut
-                showIcon={false}
-                inline={true}
-                fontSize={FONT_SIZE.SM}
-                fontColor={COLORS.PASTEL_RED}
-                underline={true}
-                link={twitter ? twitter.link : ''}
-                text="Twitter"
-              />
+              <LinkApp
+                color={'PASTEL_RED'}
+                $underline={true}
+                isExternal={true}
+                href={twitter!.link}
+              >
+                {'Twitter'}
+              </LinkApp>
             )
           }}
         />

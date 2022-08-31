@@ -1,8 +1,9 @@
-import React from 'react';
-import GeneralLookupField from './GeneralLookupField';
+import { Form, Formik } from 'formik';
+
 import { fNetwork } from '@fixtures';
-import { Formik, Form } from 'formik';
 import { IReceiverAddress } from '@types';
+
+import GeneralLookupField from './GeneralLookupField';
 
 const customProps = {
   network: fNetwork,
@@ -25,7 +26,7 @@ const initialFormikValues: { address: IReceiverAddress } = {
   }
 };
 
-export default { title: 'GeneralLookupField' };
+export default { title: 'Molecules/GeneralLookupField', component: GeneralLookupField };
 
 export const defaultState = () => {
   return (

@@ -1,12 +1,11 @@
-import React from 'react';
 import styled from 'styled-components';
 
-import { COLORS, BREAK_POINTS } from '@theme';
 import { Button } from '@components';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
 
 /*
-  Passed to CollapisableTable and Table by AccountList and AddressBook
+  Passed to CollapsibleTable and Table by AccountList and AddressBook
   It handles its own display to adapt to overlay on table row or over
   StackCard.
 */
@@ -20,7 +19,7 @@ const TableOverlay = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1em;
+  padding: 1em ${SPACING.BASE}; /* Same padding as table rows */
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     align-items: space-between;
     flex-direction: column;
@@ -51,13 +50,23 @@ const OverlayButtons = styled.div`
   }
 `;
 
-const RowDeleteOverlay = (props: any) => (
+const RowDeleteOverlay = ({
+  prompt,
+  deleteText,
+  deleteAction,
+  cancelAction
+}: {
+  prompt: string;
+  deleteText?: string;
+  deleteAction(): void;
+  cancelAction(): void;
+}) => (
   <TableOverlay>
-    <OverlayText>{props.prompt}</OverlayText>
+    <OverlayText>{prompt}</OverlayText>
     <OverlayButtons>
-      <Button onClick={props.deleteAction}>{translateRaw('ACTION_15')}</Button>
-      <Button secondary={true} onClick={props.cancelAction}>
-        {translateRaw('ACTION_2')}
+      <Button onClick={deleteAction}>{deleteText ? deleteText : translateRaw('ACTION_15')}</Button>
+      <Button secondary={true} onClick={cancelAction}>
+        {translateRaw('CANCEL_ACTION')}
       </Button>
     </OverlayButtons>
   </TableOverlay>

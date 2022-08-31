@@ -1,14 +1,15 @@
 import { ValuesType } from 'utility-types';
-import { TransactionResponse } from 'ethers/providers';
 
-import { ITxReceipt, TAction, NetworkId } from '@types';
 import { DEFAULT_NETWORK } from '@config';
 import translate from '@translations';
+import { NetworkId, TAction } from '@types';
+
+import { makeTx } from './helpers';
 
 interface State {
   txHash: string;
   networkId: NetworkId;
-  tx?: { cachedTx?: ITxReceipt; fetchedTx?: TransactionResponse };
+  tx?: ReturnType<typeof makeTx>;
   fetching: boolean;
   fromLink?: boolean;
   error?: JSX.Element;

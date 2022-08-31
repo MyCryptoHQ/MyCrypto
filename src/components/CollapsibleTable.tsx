@@ -3,46 +3,38 @@
   In order to style the headers particularyly the Icon caret
 */
 
-import React, { Component, ReactNode } from 'react';
-import throttle from 'lodash/throttle';
-import isFunction from 'lodash/isFunction';
+import { ComponentProps, ReactNode, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
+import { useScreenSize } from '@utils';
 
-import { Table, TableData, TableConfig } from './Table';
+import { default as Box } from './Box';
+import { default as Icon } from './Icon';
+import { Text } from './NewTypography';
 import { StackedCard } from './StackedCard';
+import { Table, TableConfig, TableData } from './Table';
 
-export enum CollapsibleTableModes {
-  Mobile,
-  Desktop
-}
+type StackedCardData = ComponentProps<typeof StackedCard>;
 
-export interface CollapsibleTableConfig extends TableConfig {
-  primaryColumn: string;
-  iconColumns?: string[];
-}
-
-export interface CollapsibleTableData extends TableData {
-  config: CollapsibleTableConfig;
-}
+type CollapsibleTableData = TableData & {
+  config: TableConfig & {
+    primaryColumn: string;
+    iconColumns?: string[];
+  };
+};
 
 interface CollapsedGroups {
   [title: string]: boolean;
 }
 
-interface Flippable {
-  isFlipped?: boolean;
-}
-
-interface Props extends CollapsibleTableData {
-  breakpoint: number;
-}
-
-interface State {
-  mode: CollapsibleTableModes;
-  collapsedGroups: CollapsedGroups;
-}
+const StackedCardOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+`;
 
 export const transformRowToCards = (
   row: ReactNode[],
@@ -93,137 +85,62 @@ export const transformTableToCards = (
   return cards;
 };
 
-export const screenIsMobileSized = (breakpoint: number): boolean =>
-  window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+export const CollapsibleTable = ({
+  overlay: Overlay,
+  overlayRows,
+  ...props
+}: CollapsibleTableData & { breakpoint?: number }) => {
+  const { isMobile } = useScreenSize();
+  const [collapsedGroups, setCollapsedGroups] = useState<CollapsedGroups>({});
 
-const GroupHeading = styled(Typography)`
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0.9375rem;
-  border-bottom: 0.0625rem solid #dde3ee;
-  background: ${(props) => props.theme.tableHeadBackground};
-  text-transform: uppercase;
-  font-size: ${scale(2)};
-  cursor: pointer;
-`;
+  const toggleCollapseGroup = (title: string) =>
+    setCollapsedGroups({
+      ...collapsedGroups,
+      [title]: !collapsedGroups[title]
+    });
 
-GroupHeading.defaultProps = {
-  as: 'section',
-  role: 'button'
-};
-
-const GroupHeadingCaret = styled(Icon)<Flippable>`
-  margin-left: 0.5em;
-  ${(props) =>
-    props.isFlipped &&
-    `
-    svg {
-      transform: rotateX(180deg)
-    }
-  `};
-`;
-
-const StackedCardContainer = styled.div`
-  position: relative;
-`;
-const StackedCardOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-`;
-
-export class CollapsibleTable extends Component<Props, State> {
-  public static defaultProps = {
-    head: [],
-    body: [],
-    groups: [],
-    config: {},
-    breakpoint: 450
-  };
-
-  public constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      mode: screenIsMobileSized(props.breakpoint)
-        ? CollapsibleTableModes.Mobile
-        : CollapsibleTableModes.Desktop,
-      collapsedGroups: {}
-    };
-
-    this.checkWindowSize = throttle(this.checkWindowSize, 200);
-  }
-
-  public componentDidMount() {
-    window.addEventListener('resize', this.checkWindowSize);
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener('resize', this.checkWindowSize);
-  }
-
-  public render() {
-    const { mode, collapsedGroups } = this.state;
-    const { overlay, overlayRows } = this.props;
-
-    return mode === CollapsibleTableModes.Mobile ? (
-      transformTableToCards(this.props, collapsedGroups).map((cardData, index) =>
-        typeof cardData === 'string' ? (
-          // The element being iterated on is a group heading.
-          <GroupHeading key={index} onClick={this.toggleCollapseGroup.bind(this, cardData)}>
-            {cardData}
-            <GroupHeadingCaret icon="navDownCaret" isFlipped={collapsedGroups[cardData]} />
-          </GroupHeading>
-        ) : (
-          // The element being iterated on is table data.
-          <StackedCardContainer key={index}>
-            <StackedCard {...cardData} />
-            {overlay && overlayRows!.includes(index) && (
-              <StackedCardOverlay>
-                {isFunction(overlay) ? overlay(index) : overlay}
-              </StackedCardOverlay>
-            )}
-          </StackedCardContainer>
+  return (
+    <>
+      {isMobile ? (
+        transformTableToCards(props, collapsedGroups).map((cardData, index) =>
+          typeof cardData === 'string' ? (
+            // The element being iterated on is a group heading.
+            <Box
+              key={index}
+              as="section"
+              variant="rowAlign"
+              padding="16px"
+              role="button"
+              backgroundColor="tableHeadBackground"
+              onClick={() => toggleCollapseGroup(cardData)}
+            >
+              <Text as="span" textTransform="uppercase">
+                {cardData}
+              </Text>
+              <Icon
+                ml="0.5ch"
+                type="expandable"
+                isExpanded={!collapsedGroups[cardData]}
+                height="1em"
+              />
+            </Box>
+          ) : (
+            // The element being iterated on is table data.
+            <Box key={index} position="relative">
+              <StackedCard {...cardData} />
+              {Overlay && overlayRows!.includes(index) && (
+                <StackedCardOverlay>
+                  <Overlay indexKey={index} />
+                </StackedCardOverlay>
+              )}
+            </Box>
+          )
         )
-      )
-    ) : (
-      <Table {...this.props} />
-    );
-  }
-
-  private readonly checkWindowSize = () => {
-    const { breakpoint } = this.props;
-    const { mode } = this.state;
-    const wasMobile = mode === CollapsibleTableModes.Mobile;
-    const isMobile = screenIsMobileSized(breakpoint);
-
-    if (wasMobile && !isMobile) {
-      // Mobile-to-Desktop
-      this.setState({
-        mode: CollapsibleTableModes.Desktop,
-        collapsedGroups: {}
-      });
-    }
-
-    if (!wasMobile && isMobile) {
-      // Desktop-to-Mobile
-      this.setState({
-        mode: CollapsibleTableModes.Mobile,
-        collapsedGroups: {}
-      });
-    }
-  };
-
-  private readonly toggleCollapseGroup = (title: string) =>
-    this.setState((prevState) => ({
-      collapsedGroups: {
-        ...prevState.collapsedGroups,
-        [title]: !prevState.collapsedGroups[title]
-      }
-    }));
-}
+      ) : (
+        <Table {...props} overlay={Overlay} overlayRows={overlayRows} />
+      )}
+    </>
+  );
+};
 
 export default CollapsibleTable;

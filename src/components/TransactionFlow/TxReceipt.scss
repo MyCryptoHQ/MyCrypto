@@ -33,13 +33,10 @@
       margin-bottom: 24px;
     }
     &-column {
-
       flex: 1;
       margin-bottom: 24px;
 
       &:first-child {
-        font-weight: bold;
-
         @media (min-width: 500px) {
           flex: 1;
         }
@@ -52,13 +49,6 @@
       @media (min-width: 550px) {
         margin-bottom: 0;
       }
-      img {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-      }
-
-
     }
   }
   &-addressWrapper {
@@ -87,10 +77,6 @@
       &-column {
         &:first-child {
           font-weight: bold;
-
-          @media (min-width: 500px) {
-            flex: 1;
-          }
         }
         &:nth-child(2) {
           flex: 2;
@@ -102,6 +88,24 @@
   &-another {
     width: 100%;
     margin-bottom: 15px;
+  }
+  &-tweet {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    div,
+    span {
+      width: 100%;
+    }
+  }
+  &-tweet-icon {
+    display: inline-block;
+    font-size: 20px;
+    float: left;
+  }
+  &-tweet-text {
+    flex: 1;
   }
   &-back {
     width: 100%;
@@ -118,14 +122,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  img {
-    margin-right: 10px;
-    @media (max-width: 550px) {
-      display: none;
-    }
-  }
-  .Amount .Amount-fiat{
-    color: #B5BFC7;
+  .Amount .Amount-fiat {
+    color: #b5bfc7;
     font-size: 16px;
   }
 }

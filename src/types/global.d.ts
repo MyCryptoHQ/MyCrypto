@@ -3,6 +3,10 @@
 // https://spectrum.chat/styled-components/general/typescript-refs~5857d917-966e-4a71-940f-524206896f43
 type SCref = any;
 
+// Don't use `{}` as a type. `{}` actually means "any non-nullish value"
+// ie. https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
+type TObject = Record<string, unknown>;
+
 interface CustomWindow extends Window {
   // Web3
   ethereum?: any;
@@ -11,8 +15,12 @@ interface CustomWindow extends Window {
   Web3Signer?: Web3Provider;
 
   // Makes FeatureFlagProvider functions available during E2E testing
-  setFeatureFlag?(key: keyof IIS_ACTIVE_FEATURE, value: boolean): void;
+  setFeatureFlag?(key: FeatureFlag, value: boolean): void;
   resetFeatureFlags?(): void;
+}
+
+interface CustomError extends Error {
+  reason?: string; // Used by Ethers.js
 }
 
 // Polyfill for ResizeObserver since type is missing from TS
@@ -41,7 +49,7 @@ interface ResizeObserver {
   disconnect(): void;
 }
 
-declare var ResizeObserver: {
+declare const ResizeObserver: {
   prototype: ResizeObserver;
   new (callback: ResizeObserverCallback): ResizeObserver;
 };

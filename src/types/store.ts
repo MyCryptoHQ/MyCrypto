@@ -1,66 +1,74 @@
-import { SymmetricDifference, ValuesType, $ElementType } from 'utility-types';
+import { ClaimsState } from '@store/claims.slice';
+import { ConnectionsState } from '@store/connections.slice';
+import { PromoPoapsState } from '@store/promoPoaps.slice';
 import {
   Asset,
-  Contact,
+  ExtendedAsset,
+  ExtendedContact,
   ExtendedContract,
+  ExtendedNotification,
+  ExtendedUserAction,
+  IAccount,
+  IRates,
   ISettings,
   Network,
-  Notification,
-  ExtendedContact,
-  IAccount,
-  ExtendedAsset,
-  ExtendedNotification,
-  TUuid,
   NetworkId,
-  NetworkNodes
+  NetworkNodes,
+  Notification,
+  TUuid,
+  UserAction
 } from '@types';
+
+import { IProvidersMappings } from './asset';
 
 export enum LSKeys {
   ADDRESS_BOOK = 'addressBook',
   ACCOUNTS = 'accounts',
   ASSETS = 'assets',
+  RATES = 'rates',
+  TRACKED_ASSETS = 'trackedAssets',
   CONTRACTS = 'contracts',
   NETWORKS = 'networks',
   NOTIFICATIONS = 'notifications',
   SETTINGS = 'settings',
-  PASSWORD = 'password',
-  NETWORK_NODES = 'networkNodes'
+  NETWORK_NODES = 'networkNodes',
+  USER_ACTIONS = 'userActions',
+  PROMO_POAPS = 'promoPoaps',
+  CONNECTIONS = 'connections',
+  CLAIMS = 'claims'
 }
 
 export interface LocalStorage {
   readonly version: string;
   readonly mtime: number;
-  readonly [LSKeys.SETTINGS]: ISettings;
   readonly [LSKeys.ACCOUNTS]: Record<TUuid, IAccount>;
   readonly [LSKeys.ASSETS]: Record<TUuid, Asset>;
-  readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
+  readonly [LSKeys.RATES]: IRates;
+  readonly [LSKeys.TRACKED_ASSETS]: Record<string, IProvidersMappings>;
+  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, ExtendedContact>;
   readonly [LSKeys.CONTRACTS]: Record<TUuid, ExtendedContract>;
-  readonly [LSKeys.ADDRESS_BOOK]: Record<TUuid, Contact>;
-  readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
-  readonly [LSKeys.PASSWORD]: string;
+  readonly [LSKeys.NETWORKS]: Record<NetworkId, Network>;
   readonly [LSKeys.NETWORK_NODES]: Record<NetworkId, NetworkNodes>;
+  readonly [LSKeys.NOTIFICATIONS]: Record<TUuid, Notification>;
+  readonly [LSKeys.SETTINGS]: ISettings;
+  readonly [LSKeys.USER_ACTIONS]: Record<TUuid, UserAction>;
+  readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
+  readonly [LSKeys.CONNECTIONS]: ConnectionsState;
+  readonly [LSKeys.CLAIMS]: ClaimsState;
 }
-
-export type DSKeys = Exclude<LSKeys, LSKeys.NETWORK_NODES>;
-
 export interface DataStore {
   readonly version: string;
   readonly [LSKeys.ACCOUNTS]: IAccount[];
   readonly [LSKeys.ASSETS]: ExtendedAsset[];
-  readonly [LSKeys.NETWORKS]: Network[];
-  readonly [LSKeys.CONTRACTS]: ExtendedContract[];
+  readonly [LSKeys.RATES]: IRates;
+  readonly [LSKeys.TRACKED_ASSETS]: Record<string, IProvidersMappings>;
   readonly [LSKeys.ADDRESS_BOOK]: ExtendedContact[];
+  readonly [LSKeys.CONTRACTS]: ExtendedContract[];
+  readonly [LSKeys.NETWORKS]: Network[];
   readonly [LSKeys.NOTIFICATIONS]: ExtendedNotification[];
   readonly [LSKeys.SETTINGS]: ISettings;
-  readonly [LSKeys.PASSWORD]: string;
+  readonly [LSKeys.USER_ACTIONS]: ExtendedUserAction[];
+  readonly [LSKeys.PROMO_POAPS]: PromoPoapsState;
+  readonly [LSKeys.CONNECTIONS]: ConnectionsState;
+  readonly [LSKeys.CLAIMS]: ClaimsState;
 }
-
-export interface EncryptedDataStore {
-  readonly data?: string;
-}
-
-export type DataStoreEntry = ValuesType<Omit<DataStore, 'version' | 'password'>>;
-
-export type DataStoreItem =
-  | $ElementType<SymmetricDifference<DataStoreEntry, ISettings>, number>
-  | ISettings;

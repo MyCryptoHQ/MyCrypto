@@ -1,11 +1,16 @@
-import { TURL, ITxType, StoreAsset } from '@types';
+import { Property } from 'csstype';
+
+import { TIcon } from '@components';
+import { ITxType, TURL } from '@types';
+
 export interface Action {
-  icon: string;
+  icon?: TIcon;
   faded?: boolean;
   title: string;
   description: string;
   link: string | TURL;
-  assetFilter?(asset: StoreAsset): boolean;
+  justifyContent?: Property.JustifyContent;
+  filter?(isMobile: boolean): boolean;
 }
 
 enum IStandardTxType {

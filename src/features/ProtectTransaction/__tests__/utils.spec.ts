@@ -1,5 +1,6 @@
-import { NansenReportType, getProtectTxFee, getNansenReportType, getLastTx, getBalance } from '..';
-import { GetTxResponse, GetTokenTxResponse, GetBalanceResponse } from '@services';
+import { GetBalanceResponse, GetTokenTxResponse, GetTxResponse } from '@services';
+
+import { getBalance, getLastTx, getNansenReportType, getProtectTxFee, NansenReportType } from '..';
 
 describe('getProtectTransactionFee', () => {
   const rate = 250.5;
@@ -24,8 +25,8 @@ describe('getProtectTransactionFee', () => {
 
   it('should return null in case of missing values', () => {
     const { fee, amount } = getProtectTxFee(formValues, undefined);
-    expect(amount).toBe(null);
-    expect(fee).toBe(null);
+    expect(amount).toBeNull();
+    expect(fee).toBeNull();
   });
 });
 
@@ -46,9 +47,9 @@ describe('getNansenReportType', () => {
 describe('getLastTx', () => {
   const receiverAddress = '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520';
   it('should null if either report has failed', () => {
-    expect(getLastTx(null, null, receiverAddress)).toBe(null);
-    expect(getLastTx(null, generateMockTokenReport('15000000'), receiverAddress)).toBe(null);
-    expect(getLastTx(generateMockTxReport('15000000'), null, receiverAddress)).toBe(null);
+    expect(getLastTx(null, null, receiverAddress)).toBeNull();
+    expect(getLastTx(null, generateMockTokenReport('15000000'), receiverAddress)).toBeNull();
+    expect(getLastTx(generateMockTxReport('15000000'), null, receiverAddress)).toBeNull();
   });
 
   it('should return single possibility if only one available', () => {
@@ -75,7 +76,8 @@ describe('getLastTx', () => {
   it('should return properly formatted output', () => {
     const mockTxReport = generateMockTxReport('15000000');
     const mockTokenReport = generateMockTokenReport('15000001');
-    expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.timestamp).toBe('06/23/1970');
+
+    expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.timestamp).toBe('1970-06-23');
     expect(getLastTx(mockTxReport, mockTokenReport, receiverAddress)?.value).toBe('0.076421');
   });
 });
@@ -87,7 +89,7 @@ describe('getBalance', () => {
     message: 'OK'
   };
   it('should null if report has failed', () => {
-    expect(getBalance(null)).toBe(null);
+    expect(getBalance(null)).toBeNull();
   });
   it('should return properly formatted value if if report is valid', () => {
     expect(getBalance(mockBalanceReport)).toBe('963.281665');

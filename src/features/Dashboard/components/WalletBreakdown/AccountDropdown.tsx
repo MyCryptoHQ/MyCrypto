@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Identicon } from '@mycrypto/ui';
+import { useEffect, useRef, useState } from 'react';
+
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { Checkbox } from '@components';
-import { useOnClickOutside, truncate, trimEllipsis } from '@utils';
+import { Checkbox, Icon, Identicon } from '@components';
 import { getLabelByAccount, useContacts } from '@services/Store';
 import { COLORS } from '@theme';
-import { IAccount, ExtendedContact, TUuid } from '@types';
+import { translateRaw } from '@translations';
+import { ExtendedContact, IAccount, TUuid } from '@types';
+import { trimEllipsis, truncate, useOnClickOutside } from '@utils';
 
-const { BLUE_BRIGHT, BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
+const { BLUE_LIGHT, GREY_LIGHTEST } = COLORS;
 
 interface AccountDropdownProps {
   className?: string;
@@ -24,7 +24,7 @@ interface SDropdownProps {
 }
 
 const Divider = styled('div')`
-  border-bottom: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border-bottom: ${(props) => `1px solid ${props.theme.colors.GREY_ATHENS}`};
   margin: 0px 20px 15px;
 `;
 
@@ -34,20 +34,20 @@ const SDropdown = styled('div')<SDropdownProps>`
   position: relative;
   height: 48px;
   padding: 9px 15px;
-  border: ${(props) => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
+  border: ${(props) => `1px solid ${props.theme.colors.GREY_ATHENS}`};
   border-radius: 2px;
   background-color: #ffffff;
   cursor: pointer;
 
   ${(props) =>
     props.isOpen &&
-    `{
+    `
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border: 2px solid ${BLUE_LIGHT};
     padding: 8px 14px;
-  }`}
+  `}
 
   & > div {
     border-top-left-radius: 0;
@@ -76,16 +76,6 @@ const LabelRow = styled.span`
   min-width: 20px;
 `;
 
-const IconWrapper = styled(Icon)`
-  margin: 0;
-  margin-left: 6px;
-  font-size: 0.75rem;
-
-  svg {
-    color: ${BLUE_BRIGHT};
-  }
-`;
-
 const SCheckbox = styled(Checkbox)`
   padding: 5px 20px 5px 20px;
   height: 50px;
@@ -102,6 +92,11 @@ const SCheckbox = styled(Checkbox)`
   img {
     min-width: 30px;
   }
+`;
+
+const ItemContainer = styled.div`
+  overflow-y: scroll;
+  max-height: 450px;
 `;
 
 const renderAccounts = (
@@ -175,11 +170,11 @@ const AccountDropdown = ({
     <SDropdown ref={ref as SCref} role="button" onClick={toggleOpen} isOpen={isOpen} {...props}>
       <LabelRow>
         <span>{label}</span>
-        <IconWrapper icon="navDownCaret" />
+        <Icon type="down-caret" width="10px" />
       </LabelRow>
 
       {isOpen && (
-        <div onClick={(e) => e.stopPropagation()}>
+        <ItemContainer onClick={(e) => e.stopPropagation()}>
           <SCheckbox
             name="all-accounts"
             checked={allVisible}
@@ -188,7 +183,7 @@ const AccountDropdown = ({
           />
           <Divider />
           {renderAccounts(accounts, draftSelected, contacts, toggleSingleAccount)}
-        </div>
+        </ItemContainer>
       )}
     </SDropdown>
   );

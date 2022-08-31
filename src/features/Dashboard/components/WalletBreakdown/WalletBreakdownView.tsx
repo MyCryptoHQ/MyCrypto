@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import BigNumber from 'bignumber.js';
 import styled, { css } from 'styled-components';
 
-import translate, { translateRaw } from '@translations';
-import { EMPTYUUID, buildTotalFiatValue } from '@utils';
-import { TUuid, Balance } from '@types';
+import {
+  AssetIcon,
+  Currency,
+  Icon,
+  LinkApp,
+  PoweredByText,
+  SkeletonLoader,
+  Tooltip,
+  Typography
+} from '@components';
+import { EMPTYUUID } from '@config';
+import { buildTotalFiatValue } from '@helpers';
+import { isScanning as isScanningSelector, useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
-import { AssetIcon, Currency, Typography, Tooltip, PoweredByText } from '@components';
+import translate, { translateRaw } from '@translations';
+import { Balance, TTicker, TUuid } from '@types';
+import { bigify } from '@utils';
 
 import BreakdownChart from './BreakdownChart';
-import NoAssets from './NoAssets';
 import { calculateShownIndex } from './helpers';
-
-import moreIcon from '@assets/images/icn-more.svg';
+import NoAssets from './NoAssets';
 import { BalancesDetailProps } from './types';
 
 export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
@@ -50,7 +62,7 @@ const BreakDownChartWrapper = styled.div`
   padding-left: ${SPACING.BASE};
   padding-top: ${SPACING.BASE};
   padding-bottom: ${SPACING.BASE};
-  height: 530px;
+  height: 544px;
 
   @media (max-width: ${BREAK_POINTS.SCREEN_MD}) {
     padding-right: ${SPACING.BASE};
@@ -66,6 +78,9 @@ const PanelFigures = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+  }
+  svg {
+    width: 160px;
   }
 `;
 
@@ -130,7 +145,7 @@ const BreakDownHeadingWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const BreakDownMore = styled.img`
+const BreakDownMore = styled(Icon)`
   cursor: pointer;
   display: block;
 `;
@@ -181,6 +196,12 @@ const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
     `};
 `;
 
+const BreakDownBalanceChange = styled(BreakDownBalanceAssetName)<{ change: number }>`
+  text-align: right;
+  font-size: ${FONT_SIZE.SM};
+  color: ${(props) => (props.change > 0 ? COLORS.SUCCESS_GREEN_LIGHT : COLORS.ERROR_RED_LIGHT)};
+`;
+
 const BalanceTotalWrapper = styled.div`
   margin-top: auto;
 `;
@@ -190,10 +211,6 @@ const BreakDownBalanceTotal = styled.div`
   justify-content: space-between;
   font-size: ${FONT_SIZE.BASE};
   font-weight: normal;
-`;
-
-const ViewDetailsLink = styled.a`
-  color: ${COLORS.BLUE_BRIGHT};
 `;
 
 const PoweredBy = styled.div`
@@ -212,6 +229,7 @@ export default function WalletBreakdownView({
   accounts,
   selected
 }: BalancesDetailProps) {
+  const isScanning = useSelector(isScanningSelector);
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(initialSelectedAssetIndex);
   const [isChartAnimating, setIsChartAnimating] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(true);
@@ -261,7 +279,11 @@ export default function WalletBreakdownView({
 
   const balance = chartBalances[selectedAssetIndex.balance];
   const selectedAssetPercentage =
-    balance && parseFloat(((balance.fiatValue / totalFiatValue) * 100).toFixed(2));
+    balance &&
+    new BigNumber(balance.fiatValue)
+      .dividedBy(new BigNumber(totalFiatValue))
+      .multipliedBy(100)
+      .toFixed(2);
 
   return (
     <>
@@ -270,8 +292,8 @@ export default function WalletBreakdownView({
           {translate('WALLET_BREAKDOWN_TITLE')}
           <BreakDownLabel>({label})</BreakDownLabel>
         </BreakDownHeading>
-        {totalFiatValue === 0 ? (
-          <NoAssets />
+        {!isScanning && bigify(totalFiatValue).eq(0) ? (
+          <NoAssets numOfAssets={balances.length} />
         ) : (
           <>
             <BreakdownChart
@@ -283,33 +305,54 @@ export default function WalletBreakdownView({
               isChartAnimating={isChartAnimating}
               shouldAnimate={shouldAnimate}
               setShouldAnimate={setShouldAnimate}
+              isScanning={isScanning}
             />
             {balance && (
               <PanelFigures>
                 <PanelFigure>
                   <PanelFigureValue>
-                    <Typography bold={true} fontSize={'1.3rem'}>
-                      {balance.name}
-                    </Typography>
+                    {isScanning ? (
+                      <SkeletonLoader type="account-list-value" />
+                    ) : (
+                      <Typography bold={true} fontSize={'1.3rem'}>
+                        {balance.name}
+                      </Typography>
+                    )}
                   </PanelFigureValue>
                   <PanelFigureLabel>
-                    {selectedAssetPercentage}
-                    {translate('WALLET_BREAKDOWN_PERCENTAGE')}
+                    {isScanning ? (
+                      <SkeletonLoader type="wallet-breakdown-total-small" />
+                    ) : (
+                      <>
+                        {selectedAssetPercentage}
+                        {translate('WALLET_BREAKDOWN_PERCENTAGE')}
+                      </>
+                    )}
                   </PanelFigureLabel>
                 </PanelFigure>
                 <PanelFigure>
                   <PanelFigureValue>
-                    <Currency
-                      amount={balance.fiatValue.toString()}
-                      symbol={fiat.symbol}
-                      ticker={fiat.ticker}
-                      decimals={2}
-                      bold={true}
-                      fontSize={'1.3rem'}
-                    />
+                    {isScanning ? (
+                      <SkeletonLoader type="account-list-value" />
+                    ) : (
+                      <Currency
+                        amount={balance.fiatValue.toString()}
+                        symbol={fiat.symbol}
+                        ticker={fiat.ticker}
+                        decimals={2}
+                        bold={true}
+                        fontSize={'1.3rem'}
+                      />
+                    )}
                   </PanelFigureValue>
                   <PanelFigureLabel>
-                    {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
+                    {isScanning ? (
+                      <SkeletonLoader type="wallet-breakdown-total-small" />
+                    ) : (
+                      <>
+                        {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.ticker}
+                      </>
+                    )}
                   </PanelFigureLabel>
                 </PanelFigure>
               </PanelFigures>
@@ -325,77 +368,101 @@ export default function WalletBreakdownView({
       <BreakDownBalances>
         <BreakDownHeadingWrapper>
           <BreakDownHeading>{translate('WALLET_BREAKDOWN_BALANCES')}</BreakDownHeading>
-          <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
+          <BreakDownMore type="more" height="24px" alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {breakdownBalances.map(
-            ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid }, index) => (
-              <BreakDownBalance
-                key={`${uuid}${name}`}
-                onMouseOver={() => handleMouseOver(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <BreakDownBalanceAssetInfo>
-                  <div>
-                    <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
-                  </div>
-                  <div>
-                    <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
-                    <BreakDownBalanceAssetAmount silent={true}>
-                      {!isOther && `${amount.toFixed(4)} ${ticker}`}
-                    </BreakDownBalanceAssetAmount>
-                  </div>
-                </BreakDownBalanceAssetInfo>
-                <Tooltip
-                  tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
-                    $exchangeRate: (exchangeRate || 0).toFixed(3),
-                    $fiatTicker: fiat.ticker,
-                    $cryptoTicker: ticker
-                  })}
-                >
-                  <BreakDownBalanceAssetAmount>
-                    <Currency
-                      amount={fiatValue.toString()}
-                      symbol={fiat.symbol}
-                      ticker={fiat.ticker}
-                      decimals={2}
-                    />
-                  </BreakDownBalanceAssetAmount>
-                </Tooltip>
-              </BreakDownBalance>
-            )
+          {isScanning && (
+            <div style={{ paddingTop: '16px' }}>
+              <SkeletonLoader type="wallet-breakdown-balances" />{' '}
+            </div>
           )}
+          {!isScanning &&
+            breakdownBalances.map(
+              ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid, change }, index) => (
+                <BreakDownBalance
+                  key={`${uuid}${name}`}
+                  onMouseOver={() => handleMouseOver(index)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <BreakDownBalanceAssetInfo>
+                    <div>
+                      <BreakDownBalanceAssetIcon uuid={uuid as TUuid} size={'26px'} />
+                    </div>
+                    <div>
+                      <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
+                      <BreakDownBalanceAssetAmount silent={true}>
+                        {!isOther && (
+                          <Currency amount={bigify(amount).toFixed(4)} ticker={ticker as TTicker} />
+                        )}
+                      </BreakDownBalanceAssetAmount>
+                    </div>
+                  </BreakDownBalanceAssetInfo>
+                  <Tooltip
+                    tooltip={translateRaw('WALLET_BREAKDOWN_BALANCE_TOOLTIP', {
+                      $exchangeRate: bigify(exchangeRate).toFixed(3),
+                      $fiatTicker: fiat.ticker,
+                      $cryptoTicker: ticker
+                    })}
+                  >
+                    <BreakDownBalanceAssetAmount>
+                      <Currency
+                        amount={fiatValue.toString()}
+                        symbol={fiat.symbol}
+                        ticker={fiat.ticker}
+                        decimals={2}
+                      />
+                    </BreakDownBalanceAssetAmount>
+                    {change != null && change !== 0 && (
+                      <BreakDownBalanceChange change={change}>
+                        {change > 0 && '+'}
+                        {change.toFixed(2)}%
+                      </BreakDownBalanceChange>
+                    )}
+                  </Tooltip>
+                </BreakDownBalance>
+              )
+            )}
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
-          <ViewDetailsLink onClick={toggleShowChart}>
-            {translate('WALLET_BREAKDOWN_MORE')}
-          </ViewDetailsLink>
+          {!isScanning && (
+            <LinkApp href="#" onClick={toggleShowChart}>
+              {translate('WALLET_BREAKDOWN_MORE')}
+            </LinkApp>
+          )}
           <PanelDivider />
-          <BreakDownBalanceTotal>
-            <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
-            <div>
-              <Currency
-                amount={totalFiatValue.toString()}
-                symbol={fiat.symbol}
-                ticker={fiat.ticker}
-                decimals={2}
-              />
-            </div>
-          </BreakDownBalanceTotal>
+          {isScanning ? (
+            <SkeletonLoader type="wallet-breakdown-totals" />
+          ) : (
+            <BreakDownBalanceTotal>
+              <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
+              <div data-testid="walletbreakdown-total">
+                <Currency
+                  amount={totalFiatValue.toString()}
+                  symbol={fiat.symbol}
+                  ticker={fiat.ticker}
+                  decimals={2}
+                />
+              </div>
+            </BreakDownBalanceTotal>
+          )}
         </BalanceTotalWrapper>
       </BreakDownBalances>
     </>
   );
 }
 
-const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
+const createChartBalances = (balances: Balance[], totalFiatValue: string) => {
   /* Construct a chartBalances array which consists of assets and a otherTokensAsset
   which combines the fiat value of all remaining tokens that are in the balances array*/
-  const balancesVisibleInChart = balances.filter(
-    (balanceObject) => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
+  const balancesVisibleInChart = balances.filter((balanceObject) =>
+    bigify(balanceObject.fiatValue)
+      .dividedBy(bigify(totalFiatValue))
+      .isGreaterThanOrEqualTo(SMALLEST_CHART_SHARE_SUPPORTED)
   );
-  const otherBalances = balances.filter(
-    (balanceObject) => balanceObject.fiatValue / totalFiatValue < SMALLEST_CHART_SHARE_SUPPORTED
+  const otherBalances = balances.filter((balanceObject) =>
+    bigify(balanceObject.fiatValue)
+      .dividedBy(bigify(totalFiatValue))
+      .isLessThan(SMALLEST_CHART_SHARE_SUPPORTED)
   );
   const chartBalances = balancesVisibleInChart.splice(0, NUMBER_OF_ASSETS_DISPLAYED);
   otherBalances.push(...balancesVisibleInChart);
@@ -420,7 +487,8 @@ const createOtherTokenAsset = (otherBalances: Balance[]) => ({
   name: translateRaw('WALLET_BREAKDOWN_OTHER'),
   ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
   isOther: true,
-  amount: 0,
+  amount: '0',
+  exchangeRate: '0',
   uuid: EMPTYUUID as TUuid,
   fiatValue: buildTotalFiatValue(otherBalances)
 });

@@ -8,7 +8,7 @@ export default class AddressOnlyWallet implements IReadOnlyWallet {
     this.address = address;
   }
 
-  public getAddressString() {
+  public getAddress() {
     return this.address;
   }
 }

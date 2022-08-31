@@ -1,8 +1,7 @@
-import React from 'react';
-
 import { simpleRender, waitFor } from 'test-utils';
-import { fAccount, fTransaction, fNetwork } from '@fixtures';
-import { DataContext } from '@services';
+
+import { fAccount, fApproveErc20TxConfig, fNetwork, fTransaction } from '@fixtures';
+import { translateRaw } from '@translations';
 
 import { default as WalletConnectComponent } from '../WalletConnect';
 
@@ -14,11 +13,7 @@ const defaultProps = {
 };
 
 const getComponent = ({ ...props }: typeof defaultProps) =>
-  simpleRender(
-    <DataContext.Provider value={{ networks: [fNetwork], createActions: jest.fn() } as any}>
-      <WalletConnectComponent {...props} />
-    </DataContext.Provider>
-  );
+  simpleRender(<WalletConnectComponent {...props} />);
 
 const mockCreateSession = jest.fn().mockResolvedValue('uri');
 const mockKillSession = jest.fn();
@@ -35,7 +30,7 @@ const mockOn = jest.fn().mockImplementation((type, cb) => {
   }
 });
 const mockSend = jest.fn().mockImplementation(() => 'txhash');
-jest.mock('@walletconnect/browser', () =>
+jest.mock('@walletconnect/client', () =>
   jest.fn().mockImplementation(() => ({
     createSession: mockCreateSession,
     killSession: mockKillSession,
@@ -45,13 +40,13 @@ jest.mock('@walletconnect/browser', () =>
 );
 
 describe('SignTransactionWallets: WalletConnect', () => {
-  afterEach(() => {
+  afterAll(() => {
     jest.resetAllMocks();
   });
 
-  test('It renders and can sign', async () => {
+  it('renders and can sign', async () => {
     const titleText = /Connect and Unlock/i;
-    const footerText = /Here are some troubleshooting/i;
+    const footerText = /What is WalletConnect/i;
 
     const { getByText } = getComponent(defaultProps);
     // Check html
@@ -59,9 +54,24 @@ describe('SignTransactionWallets: WalletConnect', () => {
     expect(getByText(footerText)).toBeDefined();
 
     // Ensure service is triggered
-    expect(mockCreateSession).toBeCalledTimes(1);
+    expect(mockCreateSession).toHaveBeenCalledTimes(1);
 
-    await waitFor(() => expect(defaultProps.onSuccess).toBeCalledWith('txhash'));
+    await waitFor(() => expect(defaultProps.onSuccess).toHaveBeenCalledWith('txhash'));
     expect(mockSend).toHaveBeenCalled();
+  });
+
+  it('Shows contract info if needed', async () => {
+    const { getByText } = getComponent({
+      ...defaultProps,
+      rawTransaction: fApproveErc20TxConfig.rawTransaction
+    });
+    expect(
+      getByText(
+        translateRaw('TRANSACTION_PERFORMED_VIA_CONTRACT', {
+          $contractName: translateRaw('UNKNOWN').toLowerCase()
+        }),
+        { exact: false }
+      )
+    ).toBeInTheDocument();
   });
 });

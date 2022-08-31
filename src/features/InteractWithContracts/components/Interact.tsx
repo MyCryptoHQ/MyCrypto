@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import styled from 'styled-components';
-import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+
 import { Formik } from 'formik';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import { object, string } from 'yup';
 
 import {
-  NetworkSelectDropdown,
-  InputField,
-  InlineMessage,
   Button,
-  ContractLookupField
+  ContractLookupField,
+  Icon,
+  InlineMessage,
+  InputField,
+  LinkApp,
+  NetworkSelector
 } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
+import { BREAK_POINTS, COLORS } from '@theme';
+import { translateRaw } from '@translations';
 import {
   Contract,
-  StoreAccount,
-  ITxConfig,
   ExtendedContract,
-  Network,
   IReceiverAddress,
+  ISimpleTxForm,
+  Network,
+  StoreAccount,
   TAddress
 } from '@types';
-import { COLORS, BREAK_POINTS } from '@theme';
-import { translateRaw } from '@translations';
-import { isValidETHAddress } from '@services/EthService/validators';
-import { getNetworkById, useNetworks } from '@services';
-import { isValidENSName } from '@services/EthService';
 import { isSameAddress } from '@utils';
 
-import GeneratedInteractionForm from './GeneratedInteractionForm';
 import { CUSTOM_CONTRACT_ADDRESS } from '../constants';
 import { ABIItem } from '../types';
 import { getParsedQueryString } from '../utils';
+import GeneratedInteractionForm from './GeneratedInteractionForm';
 
 const { BLUE_BRIGHT, WHITE, BLUE_LIGHT } = COLORS;
 const { SCREEN_SM } = BREAK_POINTS;
@@ -125,7 +127,11 @@ interface Props {
   showGeneratedForm: boolean;
   account: StoreAccount;
   customContractName: string;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
   handleContractSelected(contract: Contract | undefined): void;
   handleNetworkSelected(networkId: string): void;
   handleContractAddressChanged(address: string): void;
@@ -136,16 +142,20 @@ interface Props {
   displayGeneratedForm(visible: boolean): void;
   handleInteractionFormSubmit(submitedFunction: ABIItem): any;
   goToNextStep(): void;
-  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount): void;
   handleSaveContractSubmit(): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
   handleDeleteContract(contractUuid: string): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
-const FormSchema = Yup.object().shape({
-  address: Yup.object({
-    value: Yup.string().test(
+const FormSchema = object().shape({
+  address: object({
+    value: string().test(
       'check-eth-address',
       translateRaw('TO_FIELD_ERROR'),
       (value) => isValidETHAddress(value) || isValidENSName(value)
@@ -153,7 +163,7 @@ const FormSchema = Yup.object().shape({
   }).required(translateRaw('REQUIRED'))
 });
 
-type CombinedProps = RouteComponentProps<{}> & Props;
+type CombinedProps = RouteComponentProps & Props;
 
 function Interact(props: CombinedProps) {
   const {
@@ -176,9 +186,15 @@ function Interact(props: CombinedProps) {
     handleAccountSelected,
     handleInteractionFormWriteSubmit,
     handleSaveContractSubmit,
-    rawTransaction,
+    nonce,
+    gasLimit,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
     handleGasSelectorChange,
-    handleDeleteContract
+    handleDeleteContract,
+    handleGasLimitChange,
+    handleNonceChange
   } = props;
 
   const [error, setError] = useState<string | undefined>(undefined);
@@ -265,7 +281,8 @@ function Interact(props: CombinedProps) {
       // Hack as we don't really use Formik for this flow
       onSubmit={() => undefined}
     >
-      {({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched }) => {
+      {({ values, errors, touched, setFieldValue, setFieldError, setFieldTouched, resetForm }) => {
+        /* eslint-disable react-hooks/rules-of-hooks */
         useEffect(() => {
           if (
             !getNetworkById(networkIdFromUrl, networks) ||
@@ -297,14 +314,16 @@ function Interact(props: CombinedProps) {
 
           setError(undefined);
         }, [contract]);
+        /* eslint-enable react-hooks/rules-of-hooks */
 
         return (
           <>
             <NetworkSelectorWrapper>
-              <NetworkSelectDropdown
+              <NetworkSelector
                 network={network.id}
                 onChange={(networkId) => {
                   handleNetworkSelected(networkId);
+                  resetForm();
                 }}
               />
             </NetworkSelectorWrapper>
@@ -328,7 +347,7 @@ function Interact(props: CombinedProps) {
                   isResolvingName={isResolvingName}
                   setIsResolvingDomain={setIsResolvingDomain}
                   onSelect={(option) => {
-                    // @ts-ignore
+                    // @ts-expect-error: Contract vs IReceiverAddress. @todo: this is a bug.
                     handleContractSelected(option);
 
                     handleAddressOrDomainChanged(option.value);
@@ -344,7 +363,18 @@ function Interact(props: CombinedProps) {
             <FieldWrapper>
               <InputWrapper onClick={() => setWasContractInteracted(false)}>
                 <InputField
-                  label={translateRaw('CONTRACT_JSON')}
+                  name="abi"
+                  label={
+                    <>
+                      {translateRaw('CONTRACT_JSON')}
+                      <LinkApp
+                        href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_CONTRACT_ABI)}
+                        isExternal={true}
+                      >
+                        <Icon width="16px" type="questionBlack" />
+                      </LinkApp>
+                    </>
+                  }
                   value={abi}
                   placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
                   onChange={({ target: { value } }) => {
@@ -388,7 +418,12 @@ function Interact(props: CombinedProps) {
             </FieldWrapper>
 
             <ButtonWrapper>
-              <Button color={WHITE} disabled={wasContractInteracted} onClick={submitInteract}>
+              <Button
+                color={WHITE}
+                disabled={wasContractInteracted}
+                onClick={submitInteract}
+                fullwidth={true}
+              >
                 {translateRaw('INTERACT_WITH_CONTRACT')}
               </Button>
             </ButtonWrapper>
@@ -400,10 +435,16 @@ function Interact(props: CombinedProps) {
                 handleAccountSelected={handleAccountSelected}
                 handleInteractionFormWriteSubmit={handleInteractionFormWriteSubmit}
                 network={network}
-                rawTransaction={rawTransaction}
                 handleGasSelectorChange={handleGasSelectorChange}
                 contractAddress={contractAddress}
                 interactionDataFromURL={interactionDataFromURL}
+                nonce={nonce}
+                gasLimit={gasLimit}
+                gasPrice={gasPrice}
+                maxFeePerGas={maxFeePerGas}
+                maxPriorityFeePerGas={maxPriorityFeePerGas}
+                handleNonceChange={handleNonceChange}
+                handleGasLimitChange={handleGasLimitChange}
               />
             )}
           </>

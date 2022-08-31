@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+
 import useMountedState from './useMountedState';
 
 export type UsePromise = () => <T>(promise: Promise<T>) => Promise<T>;

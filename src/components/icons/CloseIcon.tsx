@@ -1,14 +1,14 @@
-import React from 'react';
+import { FC, MouseEventHandler } from 'react';
+
 import { COLORS } from '@theme';
 
 interface CloseIconProps {
   fillColor?: string;
   size?: 'sm' | 'lg' | 'md';
-
-  onClick?(e?: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onClick?: MouseEventHandler<SVGSVGElement>;
 }
 
-const CloseIcon: React.FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }) => {
+const CloseIcon: FC<CloseIconProps> = ({ fillColor = COLORS.BLUE_SKY, size = 'sm', onClick }) => {
   const dimensions = (s: string) => {
     switch (s) {
       case 'sm':
@@ -30,18 +30,8 @@ const CloseIcon: React.FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
-      <path
-        d="M1 1L19 21"
-        stroke={fillColor || COLORS.BLUE_SKY}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M19 1L1 21"
-        stroke={fillColor || COLORS.BLUE_SKY}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M1 1L19 21" stroke={fillColor} strokeWidth="2" strokeLinecap="round" />
+      <path d="M19 1L1 21" stroke={fillColor} strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 };

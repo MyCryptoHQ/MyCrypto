@@ -1,7 +1,8 @@
-import { makeExplorer } from '@services';
-import { Network, NodeType, TUuid, TTicker } from '@types';
+import { XDAIUUID } from '@config';
+import { Network, NodeType, TTicker, TUuid } from '@types';
+import { makeExplorer } from '@utils';
 
-const Ethereum: Network = {
+export const Ethereum: Network = {
   id: 'Ethereum',
   name: 'Ethereum',
   chainId: 1,
@@ -15,24 +16,18 @@ const Ethereum: Network = {
   },
   dPaths: {
     TREZOR: {
-      label: 'Trezor (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Trezor (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
-    },
-    MNEMONIC_PHRASE: {
-      label: 'Default (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
     },
     default: {
-      label: 'Default (ETH)',
-      value: "m/44'/60'/0'/0"
+      name: 'Default (ETH)',
+      path: "m/44'/60'/0'/0/<account>"
     }
   },
-  contracts: [],
-  assets: ['356a192b-7913-504c-9457-4d18c28d46e6'] as TUuid[],
   baseAsset: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
   baseUnit: 'ETH' as TTicker,
   nodes: [
@@ -52,11 +47,10 @@ const Ethereum: Network = {
   blockExplorer: makeExplorer({
     name: 'Etherscan',
     origin: 'https://etherscan.io'
-  }),
-  selectedNode: 'eth_mycrypto'
+  })
 };
 
-const Ropsten: Network = {
+export const Ropsten: Network = {
   id: 'Ropsten',
   name: 'Ropsten',
   chainId: 3,
@@ -70,32 +64,18 @@ const Ropsten: Network = {
   },
   dPaths: {
     TREZOR: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
+      name: 'Testnet (ETH)',
+      path: "m/44'/1'/0'/0/<account>"
     },
     LEDGER_NANO_S: {
-      label: 'Ledger (ETH)',
-      value: "m/44'/60'/0'"
-    },
-    MNEMONIC_PHRASE: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
     },
     default: {
-      label: 'Testnet (ETH)',
-      value: "m/44'/1'/0'/0"
+      name: 'Testnet (ETH)',
+      path: "m/44'/1'/0'/0/<account>"
     }
   },
-  contracts: [],
-  assets: [
-    '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7',
-    'e0977bcb-30be-53cf-99d2-e5f031e8624b',
-    '8fa21ab1-48ac-544a-b13c-69d86528d126',
-    '3849a248-49b4-5e85-91cb-0f9f97eaa0c9',
-    '528fb72f-8536-5219-8b65-20fbd0e4355d',
-    '4f6380d2-303e-5fe4-8f0b-25f944e5dc84',
-    '39a543b0-ac4f-5b14-9467-86fd6538a6a2'
-  ] as TUuid[],
   baseAsset: '77de68da-ecd8-53ba-bbb5-8edb1c8e14d7' as TUuid,
   baseUnit: 'RopstenETH' as TTicker,
   nodes: [
@@ -112,6 +92,50 @@ const Ropsten: Network = {
   })
 };
 
-export const fNetworks = [Ethereum, Ropsten];
+export const xDAI: Network = {
+  id: 'xDAI',
+  name: 'xDAI',
+  chainId: 100,
+  isCustom: false,
+  color: '#15bba6',
+  blockExplorer: makeExplorer({
+    name: 'xDai',
+    origin: 'https://blockscout.com/poa/xdai',
+    addressPath: 'address',
+    blockPath: 'blocks'
+  }),
+  dPaths: {
+    TREZOR: {
+      name: 'Trezor (XDAI)',
+      path: "m/44'/700'/0'/0/<account>"
+    },
+    LEDGER_NANO_S: {
+      name: 'Ledger (ETH)',
+      path: "m/44'/60'/0'/<account>"
+    },
+    default: {
+      name: 'Default (XDAI)',
+      path: "m/44'/700'/0'/0/<account>"
+    }
+  },
+  gasPriceSettings: {
+    min: 0.01,
+    max: 30,
+    initial: 1
+  },
+  shouldEstimateGasPrice: false,
+  baseAsset: XDAIUUID as TUuid,
+  baseUnit: 'xDAI' as TTicker,
+  nodes: [
+    {
+      name: 'Blockscout',
+      type: NodeType.RPC,
+      service: 'Blockscout',
+      url: 'https://blockscout.com/poa/xdai'
+    }
+  ]
+};
+
+export const fNetworks = [Ethereum, Ropsten, xDAI];
 
 export const fNetwork = fNetworks[1];

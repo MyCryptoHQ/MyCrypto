@@ -1,15 +1,6 @@
-import { Asset, IAccount, StoreAccount, NetworkId, TAddress } from '@types';
 import { DEFAULT_NETWORK } from '@config';
+import { Asset, IAccount, NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
-
-export const getDashboardAccounts = (
-  accounts: StoreAccount[],
-  currentAccounts: string[]
-): StoreAccount[] => {
-  return accounts
-    .filter((account) => account && 'uuid' in account)
-    .filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
-};
 
 export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   address: string,
@@ -18,6 +9,19 @@ export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   return accounts.find(
     (account) =>
       isSameAddress(account.address, address as TAddress) && account.networkId === networkId
+  );
+};
+
+export const getIdenticalAccount = (accounts: IAccount[]) => (
+  address: string,
+  networkId: NetworkId,
+  walletId: WalletId
+): IAccount | undefined => {
+  return accounts.find(
+    (account) =>
+      isSameAddress(account.address, address as TAddress) &&
+      account.networkId === networkId &&
+      account.wallet === walletId
   );
 };
 

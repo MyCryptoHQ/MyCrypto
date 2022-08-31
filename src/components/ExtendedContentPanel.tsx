@@ -1,11 +1,10 @@
-import React from 'react';
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { translateRaw } from '@translations';
-import Stepper from './Stepper';
 
-// Legacy
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import { translateRaw } from '@translations';
+
+import Stepper from './Stepper';
 
 interface ContentPanelWrapperProps {
   centered: boolean | undefined;
@@ -87,11 +86,6 @@ const ContentPanelTop = styled.div<ContentPanelTopProps>`
   align-items: center;
   justify-content: ${(props) => (props.stepperOnly ? 'flex-end' : 'space-between')};
   margin-bottom: 10px;
-  padding: 0 30px;
-
-  @media (min-width: 700px) {
-    padding: 0;
-  }
 `;
 
 const StyledPanel = styled(Panel)`

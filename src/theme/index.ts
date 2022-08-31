@@ -1,5 +1,4 @@
 export {
-  GAU_THEME,
   COLORS,
   BREAK_POINTS,
   FONT_SIZE,
@@ -10,3 +9,4 @@ export {
 } from './constants';
 export { monospace } from './fonts';
 export { breakpointToNumber } from './helpers';
+export { default as theme, textVariants, TextVariants, flexVariants, FlexVariants } from './theme';

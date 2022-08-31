@@ -1,11 +1,12 @@
 import { AxiosInstance } from 'axios';
 
 import { MYC_API } from '@config';
-import { TUuid, ExtendedAsset } from '@types';
+import { ExtendedAsset, ITxTypeMeta, TUuid, TxType } from '@types';
+import { mapObjIndexed } from '@vendor';
 
 import { default as ApiService } from '../ApiService';
 
-let instantiated: boolean = false;
+let instantiated = false;
 
 export default class MyCryptoApiService {
   public static instance = new MyCryptoApiService();
@@ -24,10 +25,20 @@ export default class MyCryptoApiService {
 
   public getAssets = async (): Promise<Record<TUuid, ExtendedAsset>> => {
     try {
-      const { data } = await this.service.get('assets.json');
+      const { data } = await this.service.get<Record<TUuid, ExtendedAsset>>('assets.json');
+      return mapObjIndexed((asset) => ({ ...asset, isCustom: false }), data);
+    } catch (e) {
+      console.log('[MyCryptoApiService]: Fetching assets failed: ', e);
+      return {};
+    }
+  };
+
+  public getSchemaMeta = async (): Promise<Record<TxType, ITxTypeMeta>> => {
+    try {
+      const { data } = await this.service.get<Record<TxType, ITxTypeMeta>>('schemas.json');
       return data;
     } catch (e) {
-      console.debug('[MyCryptoApiService]: Fetching assets failed: ', e);
+      console.log('[MyCryptoApiService]: Fetching schemas meta failed: ', e);
       return {};
     }
   };

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { Accordion } from '@mycrypto/ui';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { Accordion } from '@mycrypto/ui';
 
-import { Button, AppLogo, Typography, FullSizeContentPanel } from '@components';
-import translate, { translateRaw } from '@translations';
+import { AppLogo, Button, FullSizeContentPanel, Typography } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { COLORS, BREAK_POINTS, SPACING } from '@theme';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 import { FullSizePanelSection, SpacedPanelSection } from '../../../components/FullSizeContentPanel';
-
-import { ZAPS_CONFIG, IZapId, defaultZapId, riskAndReward, accordionContent } from '../config';
+import { accordionContent, defaultZapId, IZapId, riskAndReward, ZAPS_CONFIG } from '../config';
 import RiskAndRewardCard from './RiskAndRewardCard';
 
 const Illustration = styled.img`
@@ -167,22 +167,6 @@ const ZapEducation = withRouter(({ history, location }) => {
         <Typography>{translate('DEFI_DESC_SECOND')}</Typography>
         <Typography>{translate('DEFI_DESC_THIRD')}</Typography>
         <Typography>{translate('VISIT_DEFIZAP')}</Typography>
-        {/* To re-activate later when we have content
-        <LinkContainer>
-          <RowContainer>
-            <Typography bold={true}>More from the Knowledgebase:</Typography>
-          </RowContainer>
-          <RowContainer>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-          </RowContainer>
-          <RowContainer>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-            <Link href="https://example.com">Some Link</Link>
-          </RowContainer>
-        </LinkContainer> */}
       </SpacedPanelSection>
       <SpacedPanelSection>
         <Title>{translate('ZAP_QUESTIONS_HEADER')}</Title>

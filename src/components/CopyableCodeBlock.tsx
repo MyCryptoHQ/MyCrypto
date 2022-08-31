@@ -1,12 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import { ReactNode } from 'react';
+
 import { Copyable } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 interface Props {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const truncate = (_: string) => {
+const truncate = () => {
   return '';
 };
 
@@ -18,6 +19,18 @@ const CopyableCodeBlockWrapper = styled('div')`
   box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
   border: 1px solid #e5ecf3;
   display: flex;
+  div {
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    position: relative;
+    line-height: 0px;
+    right: 0px;
+    max-height: 320px;
+    padding: 9px 6px 9px 6px;
+    font-size: 14px;
+    white-space: pre;
+  }
 `;
 
 const CodeDisplay = styled('pre')`
@@ -35,20 +48,13 @@ const CodeDisplay = styled('pre')`
     text-align: left;
     max-height: 320px;
     font-size: 14px;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    font-family: 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
-`;
-
-const CodeCopyButton = styled('div')`
-  display: block;
-  align-content: center;
-  justify-items: center;
-  position: relative;
-  line-height: 0px;
-  right: 0px;
-  max-height: 320px;
-  padding: 9px 6px 9px 6px;
-  font-size: 14px;
-  white-space: pre;
 `;
 
 const CopyableCodeBlock = ({ children }: Props) => (
@@ -56,9 +62,7 @@ const CopyableCodeBlock = ({ children }: Props) => (
     <CodeDisplay>
       <code>{children}</code>
     </CodeDisplay>
-    <CodeCopyButton>
-      <Copyable text={`${children}`} truncate={truncate} />
-    </CodeCopyButton>
+    <Copyable text={`${children}`} truncate={truncate} disableTooltip={true} />
   </CopyableCodeBlockWrapper>
 );
 

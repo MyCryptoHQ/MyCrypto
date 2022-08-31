@@ -1,21 +1,14 @@
-import { Brand, Overwrite } from 'utility-types';
+import { BigNumber } from '@ethersproject/bignumber';
 import BN from 'bn.js';
-import { BigNumber } from 'ethers/utils';
+import { Brand } from 'utility-types';
 
-import { Wei, Address } from '@services/EthService';
+import { Address, Wei } from '@utils';
 
-import { Asset } from './asset';
-import {
-  ITxType,
-  ITxStatus,
-  ITxToAddress,
-  ITxValue,
-  ITxGasPrice,
-  ITxData,
-  ITxNonce,
-  ITxFromAddress
-} from './transactionFlow';
 import { TAddress } from './address';
+import { Asset } from './asset';
+import { DistributiveOmit } from './omit';
+import { ITxStatus, ITxType } from './transactionFlow';
+import { TUuid } from './uuid';
 
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
@@ -32,32 +25,11 @@ export interface ITransaction {
   s: Buffer;
 }
 
-export interface IHexStrTransaction {
-  to: ITxToAddress;
-  value: ITxValue;
-  data: ITxData;
-  gasLimit: any; // number? string?
-  gasPrice: ITxGasPrice;
-  nonce: ITxNonce;
-  chainId: number;
-}
-
-export interface IHexStrWeb3Transaction {
-  from: ITxFromAddress;
-  to: ITxToAddress;
-  value: ITxValue;
-  data: ITxData;
-  gas: string; // 21000 - not hex
-  gasPrice: ITxGasPrice;
-  nonce: ITxNonce;
-  chainId: number;
-}
-
 export type ITxHash = Brand<string, 'TxHash'>;
 
 export type ITxSigned = Brand<Uint8Array, 'TxSigned'>;
 
-export interface ITxReceipt {
+export interface IBaseTxReceipt {
   readonly asset: Asset;
   readonly baseAsset: Asset;
   readonly txType: ITxType;
@@ -67,30 +39,53 @@ export interface ITxReceipt {
   readonly amount: string;
   readonly data: string;
 
-  readonly gasPrice: BigNumber;
   readonly gasLimit: BigNumber;
   readonly to: TAddress;
   readonly from: TAddress;
   readonly value: BigNumber;
-  readonly nonce: string;
+  readonly nonce: BigNumber;
   readonly hash: ITxHash;
   readonly blockNumber?: number;
   readonly timestamp?: number;
 
   readonly gasUsed?: BigNumber;
   readonly confirmations?: number;
+
+  // Metadata
+  readonly metadata?: ITxMetadata;
 }
 
-export type IPendingTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.PENDING }>;
+export interface ILegacyTxReceipt extends IBaseTxReceipt {
+  readonly gasPrice: BigNumber;
+  readonly type?: 0;
+}
 
-export type IUnknownTxReceipt = Overwrite<ITxReceipt, { status: ITxStatus.UNKNOWN }>;
+// @todo Rename?
+export interface ITxType2Receipt extends IBaseTxReceipt {
+  readonly maxFeePerGas: BigNumber;
+  readonly maxPriorityFeePerGas: BigNumber;
+  readonly type: 2;
+}
 
-export type ISuccessfulTxReceipt = Overwrite<
+export type ITxReceipt = ILegacyTxReceipt | ITxType2Receipt;
+
+export interface ITxMetadata {
+  receivingAsset?: TUuid;
+}
+
+export type IPendingTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
+  status: ITxStatus.PENDING;
+};
+
+export type IUnknownTxReceipt = DistributiveOmit<ITxReceipt, 'status'> & {
+  status: ITxStatus.UNKNOWN;
+};
+
+export type IFinishedTxReceipt = DistributiveOmit<
   ITxReceipt,
-  { status: ITxStatus.SUCCESS; timestamp: number; blockNumber: number }
->;
-
-export type IFailedTxReceipt = Overwrite<
-  ITxReceipt,
-  { status: ITxStatus.FAILED; timestamp: number; blockNumber: number }
->;
+  'status' | 'timestamp' | 'blockNumber'
+> & {
+  status: ITxStatus.SUCCESS | ITxStatus.FAILED;
+  timestamp: number;
+  blockNumber: number;
+};

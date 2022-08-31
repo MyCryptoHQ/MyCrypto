@@ -1,41 +1,49 @@
-import React, { useCallback, useState } from 'react';
-import { Field, FieldProps, Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { Button } from '@mycrypto/ui';
-import styled from 'styled-components';
+import { MouseEventHandler, useCallback, useState } from 'react';
 
-import { BREAK_POINTS, COLORS, SPACING } from '@theme';
-import { Checkbox, DashboardPanel, InputField, NetworkSelectDropdown, LinkOut } from '@components';
-import {
-  CustomNodeConfig,
-  Network,
-  NetworkId,
-  NodeOptions,
-  NodeType,
-  WalletId,
-  TTicker,
-  ExtendedAsset,
-  TUuid
-} from '@types';
-import { translateRaw, Trans } from '@translations';
-import {
-  DEFAULT_NETWORK,
-  GITHUB_RELEASE_NOTES_URL,
-  LETS_ENCRYPT_URL,
-  EXT_URLS,
-  DPathsList as DPaths
-} from '@config';
-import { generateAssetUUID } from '@utils';
-import { NetworkUtils } from '@services/Store/Network';
-import { ProviderHandler } from '@services/EthService/network';
+import { Tooltip, Button as UIButton } from '@mycrypto/ui';
+import { DEFAULT_ETH } from '@mycrypto/wallets';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import styled from 'styled-components';
+import { boolean, lazy, object, string } from 'yup';
 
 import backArrowIcon from '@assets/images/icn-back-arrow.svg';
+import {
+  Button,
+  Checkbox,
+  DashboardPanel,
+  InputField,
+  LinkApp,
+  NetworkSelector
+} from '@components';
+import {
+  DEFAULT_NETWORK,
+  ETHPLORER_URL,
+  EXT_URLS,
+  GITHUB_RELEASE_NOTES_URL,
+  LETS_ENCRYPT_URL
+} from '@config';
+import { useAssets } from '@services';
+import { ProviderHandler } from '@services/EthService/network';
+import { NetworkUtils, useNetworks } from '@services/Store/Network';
+import { canDeleteNode as canDeleteNodeSelector, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
+import { Trans, translateRaw } from '@translations';
+import {
+  CustomNodeConfig,
+  ExtendedAsset,
+  Network,
+  NetworkId,
+  NodeType,
+  TTicker,
+  WalletId
+} from '@types';
+import { generateAssetUUID, makeExplorer } from '@utils';
 
 const AddToNetworkNodePanel = styled(DashboardPanel)`
   padding: 0 ${SPACING.MD} ${SPACING.SM};
 `;
 
-const BackButton = styled(Button)`
+const BackButton = styled(UIButton)`
   margin-right: ${SPACING.BASE};
 `;
 
@@ -59,7 +67,7 @@ const Column = styled.div<{ alignSelf?: string }>`
   flex: 1;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
+    ${({ alignSelf = 'auto' }) => `align-self: ${alignSelf};`};
 
     &:not(:first-child) {
       padding-left: ${SPACING.BASE};
@@ -103,7 +111,7 @@ const NetworkNodeFieldsButtons = styled.div`
   }
 `;
 
-const SNetworkSelectDropdown = styled(NetworkSelectDropdown)`
+const SNetworkSelector = styled(NetworkSelector)`
   margin-bottom: ${SPACING.SM};
 `;
 
@@ -119,11 +127,17 @@ const SError = styled.div`
   color: ${COLORS.PASTEL_RED};
 `;
 
-const DeleteButton = styled(Button)`
-  background-color: ${COLORS.PASTEL_RED};
+const DeleteButton = styled(Button)<{ disabled: boolean }>`
+  ${(props) =>
+    !props.disabled &&
+    `
+    background-color: ${COLORS.PASTEL_RED};
+
+
   :hover {
     background-color: ${COLORS.ERROR_RED};
   }
+  `}
 `;
 
 const ReferralLink = styled.div`
@@ -154,30 +168,26 @@ interface Props {
   editNode: CustomNodeConfig | undefined;
   isAddingCustomNetwork: boolean;
   onComplete(): void;
-  addNetwork(network: Network): void;
-  addAsset(asset: ExtendedAsset, id: TUuid): void;
-  addNodeToNetwork(node: NodeOptions, network: Network | NetworkId): void;
-  isNodeNameAvailable(networkId: NetworkId, nodeName: string, ignoreNames?: string[]): boolean;
-  getNetworkById(networkId: NetworkId): Network;
-  updateNode(node: NodeOptions, network: Network | NetworkId, nodeName: string): void;
-  deleteNode(nodeName: string, network: Network | NetworkId): void;
 }
 
 export default function AddOrEditNetworkNode({
   networkId,
   isAddingCustomNetwork,
   onComplete,
-  addNodeToNetwork,
-  addNetwork,
-  addAsset,
-  isNodeNameAvailable,
-  getNetworkById,
-  editNode,
-  updateNode,
-  deleteNode
+  editNode
 }: Props) {
+  const {
+    addNetwork,
+    addNodeToNetwork,
+    isNodeNameAvailable,
+    getNetworkById,
+    updateNode,
+    deleteNodeOrNetwork
+  } = useNetworks();
+  const { createAsset } = useAssets();
   const [isConnectionError, setIsConnectionError] = useState(false);
   const [editMode] = useState(!!editNode);
+  const canDeleteNode = useSelector(canDeleteNodeSelector(networkId)) && editMode;
   const initialState = useCallback((): NetworkNodeFields => {
     if (editNode) {
       return {
@@ -200,30 +210,28 @@ export default function AddOrEditNetworkNode({
     };
   }, []);
 
-  const onDeleteNodeClick = useCallback(
-    (e) => {
-      e.preventDefault();
+  const onDeleteNodeClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
 
-      deleteNode(editNode!.name, networkId);
-      onComplete();
-    },
-    [deleteNode, onComplete]
-  );
+    deleteNodeOrNetwork(networkId, editNode!.name);
 
-  const Schema = Yup.lazy((values: NetworkNodeFields) =>
-    Yup.object().shape({
-      name: Yup.string()
+    onComplete();
+  };
+
+  const Schema = lazy((values: NetworkNodeFields) =>
+    object().shape({
+      name: string()
         .required(translateRaw('REQUIRED'))
         .test('check-name-available', 'Duplicated name, please change name!', (name) => {
           return isNodeNameAvailable(values.networkId, name, editNode ? [editNode.name] : []);
         }),
-      networkId: Yup.string().required(translateRaw('REQUIRED')),
-      url: Yup.string().required(translateRaw('REQUIRED')),
-      auth: Yup.boolean().nullable(false),
-      username: Yup.string().test('auth-required', translateRaw('REQUIRED'), (username) => {
+      networkId: string().required(translateRaw('REQUIRED')),
+      url: string().required(translateRaw('REQUIRED')),
+      auth: boolean().nullable(false),
+      username: string().test('auth-required', translateRaw('REQUIRED'), (username) => {
         return values.auth ? !!username : true;
       }),
-      password: Yup.string().test('auth-required', translateRaw('REQUIRED'), (password) => {
+      password: string().test('auth-required', translateRaw('REQUIRED'), (password) => {
         return values.auth ? !!password : true;
       })
     })
@@ -249,13 +257,13 @@ export default function AddOrEditNetworkNode({
               return (
                 <>
                   {tSplit[0]}
-                  <a href={GITHUB_RELEASE_NOTES_URL} rel="noopener noreferrer" target="_blank">
+                  <LinkApp href={GITHUB_RELEASE_NOTES_URL} isExternal={true}>
                     {translateRaw('CUSTOM_NODE_SUBTITLE_REPO')}
-                  </a>
+                  </LinkApp>
                   {tSplit[1]}
-                  <a href={LETS_ENCRYPT_URL} rel="noopener noreferrer" target="_blank">
+                  <LinkApp href={LETS_ENCRYPT_URL} isExternal={true}>
                     LetsEncrypt
-                  </a>
+                  </LinkApp>
                   {tSplit[2]}
                 </>
               );
@@ -305,13 +313,11 @@ export default function AddOrEditNetworkNode({
                   baseUnit: baseUnit as TTicker,
                   baseAsset: generateAssetUUID(chainId!),
                   isCustom: true,
-                  assets: [],
-                  contracts: [],
                   nodes: [node],
                   dPaths: {
-                    [WalletId.TREZOR]: DPaths.ETH_DEFAULT,
-                    [WalletId.LEDGER_NANO_S]: DPaths.ETH_DEFAULT,
-                    [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+                    [WalletId.TREZOR]: DEFAULT_ETH,
+                    [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
+                    default: DEFAULT_ETH
                   },
                   gasPriceSettings: {
                     min: 1,
@@ -320,10 +326,14 @@ export default function AddOrEditNetworkNode({
                   },
                   shouldEstimateGasPrice: false,
                   color: undefined,
-                  selectedNode: node.name
+                  selectedNode: node.name,
+                  blockExplorer: makeExplorer({
+                    name: networkName!,
+                    origin: ETHPLORER_URL
+                  })
                 };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
-            await provider.getCurrentBlock();
+            await provider.getLatestBlockNumber();
 
             if (isAddingCustomNetwork) {
               const baseAsset: ExtendedAsset = {
@@ -334,7 +344,7 @@ export default function AddOrEditNetworkNode({
                 networkId: network.id,
                 isCustom: true
               };
-              addAsset(baseAsset, network.baseAsset);
+              createAsset(baseAsset);
               addNetwork(network);
             } else if (editNode) {
               updateNode(node, selectedNetworkId, editNode.name);
@@ -373,7 +383,7 @@ export default function AddOrEditNetworkNode({
                   <AddressFieldset>
                     <Field name="networkId">
                       {({ field, form }: FieldProps<NetworkId>) => (
-                        <SNetworkSelectDropdown
+                        <SNetworkSelector
                           network={field.value}
                           onChange={(e) => form.setFieldValue(field.name, e)}
                           disabled={editMode}
@@ -410,7 +420,7 @@ export default function AddOrEditNetworkNode({
                         <InputField
                           {...field}
                           inputError={errors && errors.baseUnit}
-                          placeholder={translateRaw('CUSTOM_NODE_FORM_BASE_UNIT_PLACEHOLDER')}
+                          placeholder={translateRaw('BASE_UNIT')}
                         />
                       )}
                     </Field>
@@ -494,16 +504,12 @@ export default function AddOrEditNetworkNode({
             <Row>
               <ReferralLink>
                 <Trans
-                  id="CUSTOM_NODE_QUIKNODE_LINK"
+                  id="CUSTOM_NODE_QUICKNODE_LINK"
                   variables={{
                     $link: () => (
-                      <LinkOut
-                        showIcon={false}
-                        inline={true}
-                        fontColor={COLORS.BLUE_BRIGHT}
-                        link={EXT_URLS.QUIKNODE_REFERRAL.url}
-                        text={translateRaw('CUSTOM_NODE_QUIKNODE_TEXT')}
-                      />
+                      <LinkApp href={EXT_URLS.QUICKNODE_REFERRAL.url} isExternal={true}>
+                        {translateRaw('CUSTOM_NODE_QUICKNODE_TEXT')}
+                      </LinkApp>
                     )
                   }}
                 />
@@ -516,9 +522,16 @@ export default function AddOrEditNetworkNode({
                     {translateRaw('CUSTOM_NODE_SAVE_NODE')}
                   </Button>
                   {editMode && (
-                    <DeleteButton type="button" onClick={onDeleteNodeClick}>
-                      {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
-                    </DeleteButton>
+                    <Tooltip tooltip={translateRaw('DELETE_NETWORK_TOOLTIP')}>
+                      <DeleteButton
+                        type="button"
+                        onClick={onDeleteNodeClick}
+                        disabled={!canDeleteNode}
+                        data-testid="deleteButton"
+                      >
+                        {translateRaw('CUSTOM_NODE_REMOVE_NODE')}
+                      </DeleteButton>
+                    </Tooltip>
                   )}
                 </NetworkNodeFieldsButtons>
               </Column>

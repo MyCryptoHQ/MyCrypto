@@ -1,16 +1,16 @@
-import React from 'react';
+import { FC, ReactElement } from 'react';
+
 import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import NotificationWrapper from './NotificationWrapper';
-import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
-
-// Legacy
-import sadWalletIcon from '@assets/images/icn-sad-wallet.svg';
-import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from '@assets/images/icn-don-t-lose-crypto.svg';
+import howBuyIcon from '@assets/images/icn-how-do-i-buy-crypto.svg';
 import questionsIcon from '@assets/images/icn-questions.svg';
+import sadWalletIcon from '@assets/images/icn-sad-wallet.svg';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { HOME, SECURING_YOUR_ETH, BUY_CRYPTO } = KB_HELP_ARTICLE;
@@ -39,11 +39,11 @@ const Image = styled.img`
 
 interface ResourceItemProps {
   src: string;
-  title: React.ReactElement<any>;
+  title: ReactElement<any>;
   link: string;
 }
 
-const ResourceItem: React.FC<ResourceItemProps> = ({ src, title, link }) => {
+const ResourceItem: FC<ResourceItemProps> = ({ src, title, link }) => {
   return (
     <ResourceItemWrapper href={link} target="_blank" rel="noopener noreferrer">
       <Image src={src} />

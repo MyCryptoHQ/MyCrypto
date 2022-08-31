@@ -1,29 +1,36 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button } from '@mycrypto/ui';
+import { parseEther } from '@ethersproject/units';
+import { Field, FieldProps, Form, Formik } from 'formik';
 import isEmpty from 'lodash/isEmpty';
-import * as Yup from 'yup';
-import { parseEther } from 'ethers/utils';
+import { connect, ConnectedProps } from 'react-redux';
+import styled from 'styled-components';
+import { Overwrite } from 'utility-types';
+import { number, object } from 'yup';
 
-import translate, { translateRaw } from '@translations';
-import { SPACING } from '@theme';
-import { IAccount, Network, StoreAccount, Asset, ISimpleTxFormFull } from '@types';
-import { AccountSelector, InlineMessage, AmountInput, PoweredByText } from '@components';
+import {
+  AccountSelector,
+  AmountInput,
+  Button,
+  DemoGatewayBanner,
+  InlineMessage,
+  PoweredByText
+} from '@components';
+import { ETHUUID } from '@config';
 import { validateAmountField } from '@features/SendAssets/components/validators/validators';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
-import { ETHUUID } from '@utils';
-
-import { ZapInteractionState } from '../types';
-import ZapSelectedBanner from './ZapSelectedBanner';
-import { IZapConfig } from '../config';
-import { StoreContext } from '@services/Store/StoreProvider';
-import { useNetworks } from '@services/Store/Network';
-import { getAccountBalance, useAssets } from '@services/Store';
 import { fetchGasPriceEstimates } from '@services/ApiService';
 import { getNonce } from '@services/EthService';
+import { getAccountBalance, useAssets } from '@services/Store';
+import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { useNetworks } from '@services/Store/Network';
+import { AppState, getDefaultAccount, getIsDemoMode, getStoreAccounts, useSelector } from '@store';
+import { SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, IAccount, ISimpleTxFormFull, Network, StoreAccount } from '@types';
 
-interface Props extends ZapInteractionState {
+import { IZapConfig } from '../config';
+import { ZapInteractionState } from '../types';
+import ZapSelectedBanner from './ZapSelectedBanner';
+
+interface ZapProps extends ZapInteractionState {
   onComplete(fields: any): void;
   handleUserInputFormSubmit(fields: any): void;
 }
@@ -33,7 +40,8 @@ interface UIProps {
   network: Network;
   zapSelected: IZapConfig;
   relevantAccounts: StoreAccount[];
-  defaultAccount: StoreAccount;
+  defaultAccount?: StoreAccount;
+  isDemoMode: boolean;
   onComplete(fields: any): void;
 }
 
@@ -62,8 +70,9 @@ const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
 
-const ZapForm = ({ onComplete, zapSelected }: Props) => {
-  const { accounts, defaultAccount } = useContext(StoreContext);
+const ZapForm = ({ onComplete, zapSelected, isDemoMode }: Props) => {
+  const accounts = useSelector(getStoreAccounts);
+  const defaultAccount = useSelector(getDefaultAccount());
   const { assets } = useAssets();
   const { networks } = useNetworks();
   const ethAsset = assets.find((asset) => asset.uuid === ETHUUID) as Asset;
@@ -77,6 +86,7 @@ const ZapForm = ({ onComplete, zapSelected }: Props) => {
       zapSelected={zapSelected as IZapConfig}
       relevantAccounts={relevantAccounts}
       defaultAccount={defaultAccount}
+      isDemoMode={isDemoMode}
       onComplete={onComplete}
     />
   );
@@ -88,9 +98,10 @@ export const ZapFormUI = ({
   zapSelected,
   relevantAccounts,
   defaultAccount,
+  isDemoMode,
   onComplete
 }: UIProps) => {
-  const initialFormikValues: ISimpleTxFormFull = {
+  const initialFormikValues: Overwrite<ISimpleTxFormFull, { account?: StoreAccount }> = {
     account: defaultAccount,
     amount: '',
     asset: ethAsset,
@@ -98,11 +109,13 @@ export const ZapFormUI = ({
     gasPrice: '10',
     address: '',
     gasLimit: '',
-    network
+    network,
+    maxFeePerGas: '20',
+    maxPriorityFeePerGas: '1'
   };
 
-  const ZapFormSchema = Yup.object().shape({
-    amount: Yup.number()
+  const ZapFormSchema = object().shape({
+    amount: number()
       .min(0, translateRaw('ERROR_0'))
       .required(translateRaw('REQUIRED'))
       .typeError(translateRaw('ERROR_0'))
@@ -126,6 +139,7 @@ export const ZapFormUI = ({
 
   return (
     <div>
+      {isDemoMode && <DemoGatewayBanner />}
       <Formik
         initialValues={initialFormikValues}
         validationSchema={ZapFormSchema}
@@ -187,7 +201,7 @@ export const ZapFormUI = ({
                   )}
                 </Field>
               </FormFieldItem>
-              <FormFieldSubmitButton type="submit">
+              <FormFieldSubmitButton disabled={isDemoMode} type="submit">
                 {translateRaw('ACTION_6')}
               </FormFieldSubmitButton>
               <DeFiZapLogoContainer>
@@ -201,4 +215,11 @@ export const ZapFormUI = ({
   );
 };
 
-export default ZapForm;
+const mapStateToProps = (state: AppState) => ({
+  isDemoMode: getIsDemoMode(state)
+});
+
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & ZapProps;
+
+export default connector(ZapForm);

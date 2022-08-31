@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import { FC } from 'react';
 
-import { Button, Link } from '@components';
-import { getExportFileName, getCurrentDBConfig } from '@database';
-import { makeBlob } from '@utils';
-import translate from '@translations';
 import { COLORS } from '@theme';
+import translate from '@translations';
+import { makeBlob } from '@utils';
 
-const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
-  data,
-  onClick,
-  children
-}) => {
-  const [blob, setBlob] = useState('');
-  const [fileName, setFileName] = useState('');
+import { default as Button } from './Button';
+import { default as LinkApp } from './LinkApp';
 
-  useEffect(() => {
-    const settingsBlob = makeBlob('text/json;charset=UTF-8', data);
-    setBlob(settingsBlob);
-    setFileName(getExportFileName(getCurrentDBConfig(), moment()));
-  }, [data]);
+export const Downloader: FC<{
+  data: string | TObject;
+  onClick?(): void;
+  fileName: string;
+  mime?: string;
+}> = ({ data, fileName, mime = 'text/json', onClick, children, ...props }) => {
+  const blob = makeBlob(`${mime};charset=UTF-8`, data);
 
   const handleDownload = () => {
     // Callback triggered after download
@@ -27,15 +21,22 @@ const Downloader: React.FC<{ data: string | object; onClick?(): void }> = ({
   };
 
   return (
-    <Link fullWidth={true} href={blob} download={fileName} onClick={handleDownload}>
+    <LinkApp
+      data-testid="export-json-link"
+      width={'100%'}
+      href={blob}
+      isExternal={true}
+      download={fileName}
+      target="_self"
+      onClick={handleDownload}
+      {...props}
+    >
       {children}
       {!children && (
         <Button color={COLORS.WHITE} fullwidth={true}>
           {translate('SETTINGS_EXPORT_DOWNLOAD')}
         </Button>
       )}
-    </Link>
+    </LinkApp>
   );
 };
-
-export default Downloader;

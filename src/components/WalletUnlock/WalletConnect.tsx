@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import isEmpty from 'ramda/src/isEmpty';
+import { useEffect } from 'react';
 
+import isEmpty from 'ramda/src/isEmpty';
+import styled, { css } from 'styled-components';
+
+import { BusyBottom, Button, Overlay, QRCodeContainer, Typography } from '@components';
+import { IUseWalletConnect, WalletFactory } from '@services/WalletService';
+import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { WalletId } from '@types';
-import { getWalletConfig } from '@config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
-import { QRCodeContainer, Overlay, Button, Typography } from '@components';
-import { WalletFactory, IUseWalletConnect } from '@services/WalletService';
+import { BusyBottomConfig, WalletId } from '@types';
 
 interface OwnProps {
   useWalletConnectProps: IUseWalletConnect;
@@ -53,12 +53,6 @@ const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
   font-size: ${FONT_SIZE.MD};
 `;
 
-const SFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
-`;
-
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,21 +63,28 @@ const SContainer = styled.div`
   }
 `;
 
-const WalletService = WalletFactory(WalletId.WALLETCONNECT);
-const wikiLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
+const WalletService = WalletFactory[WalletId.WALLETCONNECT];
 
 export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnProps) {
-  const { state, requestConnection, signMessage } = useWalletConnectProps;
+  const { state, requestConnection, signMessage, kill } = useWalletConnectProps;
 
   useEffect(() => {
     if (!state.detectedAddress) return;
-    onUnlock(WalletService.init(state.detectedAddress, signMessage));
+    onUnlock(
+      WalletService.init({
+        address: state.detectedAddress,
+        signMessageHandler: signMessage,
+        killHandler: kill
+      })
+    );
   }, [state.detectedAddress]);
 
   return (
     <>
       <SHeader>
-        {translateRaw('UNLOCK_WALLET_TITLE', { $wallet: translateRaw('X_WALLETCONNECT') })}
+        {translateRaw('SIGNER_SELECT_WALLETCONNECT', {
+          $walletId: translateRaw('X_WALLETCONNECT')
+        })}
       </SHeader>
       <SContent>
         <SSection center={true}>
@@ -107,9 +108,7 @@ export function WalletConnectDecrypt({ onUnlock, useWalletConnectProps }: OwnPro
           <QRCodeContainer data={state.uri} disableSpinner={true} />
         </SSection>
       </SContent>
-      <SFooter>
-        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: wikiLink })}</Typography>
-      </SFooter>
+      <BusyBottom type={BusyBottomConfig.WALLETCONNECT} />
     </>
   );
 }

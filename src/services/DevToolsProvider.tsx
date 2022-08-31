@@ -1,4 +1,5 @@
-import React, { Component, createContext } from 'react';
+import { Component, createContext, useContext } from 'react';
+
 import { StateInspector } from 'reinspect';
 
 export interface ProviderState {
@@ -27,7 +28,7 @@ class DevToolsProvider extends Component {
 }
 
 function useDevTools() {
-  const context = React.useContext(DevToolsContext);
+  const context = useContext(DevToolsContext);
   if (context === undefined) {
     throw new Error('useDevTools must be used with a DevTools Provider');
   }

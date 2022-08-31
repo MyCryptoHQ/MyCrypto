@@ -1,5 +1,5 @@
-import { TUseStateReducerFactory } from '@utils';
 import { TStepAction } from '@types';
+import { TUseStateReducerFactory } from '@utils';
 
 import { MembershipPurchaseState, MembershipSimpleTxFormFull } from './types';
 

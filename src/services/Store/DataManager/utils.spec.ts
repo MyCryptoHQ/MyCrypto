@@ -1,18 +1,17 @@
-import { fNetwork, customNodeConfig } from '@fixtures';
-
+import { NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
+import { createDefaultValues } from '@database/generateDefaultValues';
+import { customNodeConfig, fNetwork } from '@fixtures';
 import {
-  NetworkId,
-  LSKeys,
-  LocalStorage,
-  ExtendedContract,
   ExtendedAsset,
+  ExtendedContract,
+  LocalStorage,
+  LSKeys,
+  NetworkId,
   NodeOptions
 } from '@types';
-import { createDefaultValues } from '@database';
-import { NETWORKS_CONFIG, SCHEMA_BASE } from '@database/data';
 import { generateUUID } from '@utils';
 
-import { constructNetworkNodes, mergeConfigWithLocalStorage } from './utils';
+import { constructNetworkNodes, mergeConfigWithLocalStorage, objToExtendedArray } from './utils';
 
 describe('constructNetworkNodes()', () => {
   it('returns empty networkNodes object if no custom nodes present and default node is auto selected', () => {
@@ -26,8 +25,8 @@ describe('constructNetworkNodes()', () => {
     const networks = [{ ...fNetwork, selectedNode: customNodeConfig.name }, customNetwork];
     const networkNodes = constructNetworkNodes(networks);
 
-    expect(Object.keys(networkNodes).length).toEqual(1);
-    expect(networkNodes[customNetwork.id]).toEqual(undefined);
+    expect(Object.keys(networkNodes)).toHaveLength(1);
+    expect(networkNodes[customNetwork.id]).toBeUndefined();
     expect(networkNodes[fNetwork.id].selectedNode).toEqual(customNodeConfig.name);
   });
 
@@ -40,8 +39,8 @@ describe('constructNetworkNodes()', () => {
     const networks = [fNetwork, customNetwork];
     const networkNodes = constructNetworkNodes(networks);
 
-    expect(Object.keys(networkNodes).length).toEqual(1);
-    expect(networkNodes[fNetwork.id]).toEqual(undefined);
+    expect(Object.keys(networkNodes)).toHaveLength(1);
+    expect(networkNodes[fNetwork.id]).toBeUndefined();
     expect(networkNodes[customNetwork.id].nodes).toEqual(customNetwork.nodes);
   });
 });
@@ -78,7 +77,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
 
     const mergedLsContracts = Object.values(mergedLs[LSKeys.CONTRACTS]);
-    expect(mergedLsContracts.length).toEqual(Object.values(defaultLs[LSKeys.CONTRACTS]).length + 1);
+    expect(mergedLsContracts).toHaveLength(Object.values(defaultLs[LSKeys.CONTRACTS]).length + 1);
     expect(
       mergedLsContracts.find((c: ExtendedContract) => c.name === customContract.name)
     ).toBeTruthy();
@@ -99,7 +98,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
 
     const mergedLsAssets = Object.values(mergedLs[LSKeys.ASSETS]);
-    expect(mergedLsAssets.length).toEqual(Object.values(defaultLs[LSKeys.ASSETS]).length + 1);
+    expect(mergedLsAssets).toHaveLength(Object.values(defaultLs[LSKeys.ASSETS]).length + 1);
     expect(mergedLsAssets.find((a: ExtendedAsset) => a.name === customAsset.name)).toBeTruthy();
   });
 
@@ -117,7 +116,7 @@ describe('mergeConfigWithLocalStorage()', () => {
     const mergedLs = mergeConfigWithLocalStorage(NETWORKS_CONFIG, ls);
 
     const mergedNetwork = mergedLs[LSKeys.NETWORKS][customNetwork.id];
-    expect(mergedNetwork.nodes.length).toEqual(
+    expect(mergedNetwork.nodes).toHaveLength(
       defaultLs[LSKeys.NETWORKS][customNetwork.id].nodes.length + 1
     );
     expect(
@@ -143,9 +142,23 @@ describe('mergeConfigWithLocalStorage()', () => {
 
     const mergedNetwork = mergedLs[LSKeys.NETWORKS][customNetwork.id];
     expect(mergedNetwork).toBeTruthy();
-    expect(mergedNetwork.nodes.length).toEqual(1);
+    expect(mergedNetwork.nodes).toHaveLength(1);
     expect(
       mergedNetwork.nodes.find((n: NodeOptions) => n.name === customNodeConfig.name)
     ).toBeTruthy();
+  });
+});
+
+describe('objToExtendedArray()', () => {
+  it('should tranform an object with an uuid key to an array containing the uuid', () => {
+    const lsObject = {
+      '19345669-8bad-4597-b541-02486696fcc1': {
+        foo: 'bar'
+      }
+    };
+    const expected = [{ uuid: '19345669-8bad-4597-b541-02486696fcc1', foo: 'bar' }];
+    const result = objToExtendedArray(lsObject);
+
+    expect(result).toEqual(expected);
   });
 });

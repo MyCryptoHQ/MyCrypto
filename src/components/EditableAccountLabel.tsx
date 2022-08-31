@@ -1,47 +1,55 @@
-import React from 'react';
-import styled from 'styled-components';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
 
-import { ExtendedContact, TAddress, NetworkId } from '@types';
-import { useContacts } from '@services';
-import { BREAK_POINTS } from '@theme';
+import { createOrUpdateContact, updateUserActionStateByName } from '@store';
 import { translateRaw } from '@translations';
+import { ACTION_NAME, ACTION_STATE, ExtendedContact, NetworkId, TAddress } from '@types';
 
 import EditableText from './EditableText';
 
-export interface Props {
+interface OwnProps {
   addressBookEntry?: ExtendedContact;
   address: TAddress;
   networkId: NetworkId;
 }
 
-const SWrapper = styled.span`
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    font-weight: bold;
-  }
-`;
+export const EditableAccountLabel = ({
+  addressBookEntry,
+  address,
+  networkId,
+  createOrUpdateContact,
+  updateUserActionStateByName
+}: Props) => {
+  const handleChange = (value: string) => {
+    const contact = {
+      address,
+      network: networkId,
+      ...addressBookEntry,
+      label: value
+    };
+    createOrUpdateContact(contact);
+    if (addressBookEntry) {
+      updateUserActionStateByName({
+        name: ACTION_NAME.UPDATE_LABEL,
+        state: ACTION_STATE.COMPLETED
+      });
+    }
+  };
 
-const EditableAccountLabel = ({ addressBookEntry, address, networkId }: Props) => {
-  const { updateContact, createContact } = useContacts();
   return (
-    <SWrapper>
-      <EditableText
-        truncate={true}
-        saveValue={(value) => {
-          if (addressBookEntry) {
-            updateContact(addressBookEntry.uuid, { ...addressBookEntry, label: value });
-          } else {
-            createContact({
-              address,
-              label: value,
-              network: networkId,
-              notes: ''
-            });
-          }
-        }}
-        value={addressBookEntry ? addressBookEntry.label : translateRaw('NO_LABEL')}
-      />
-    </SWrapper>
+    <EditableText
+      bold={true}
+      truncate={true}
+      onChange={handleChange}
+      value={addressBookEntry ? addressBookEntry.label : translateRaw('NO_LABEL')}
+    />
   );
 };
 
-export default EditableAccountLabel;
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ createOrUpdateContact, updateUserActionStateByName }, dispatch);
+
+const connector = connect(() => ({}), mapDispatchToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export default connector(EditableAccountLabel);

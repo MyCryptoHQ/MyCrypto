@@ -1,4 +1,5 @@
-import { TAddress, Network } from '@types';
+import { Network, TAddress } from '@types';
+
 import { ProviderHandler } from './network';
 
 export function getNonce(network: Network, address: TAddress) {

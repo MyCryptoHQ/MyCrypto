@@ -1,6 +1,5 @@
-import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import { simpleRender, fireEvent } from 'test-utils';
+import { MemoryRouter, Route, Switch } from 'react-router-dom';
+import { fireEvent, simpleRender } from 'test-utils';
 import { Required } from 'utility-types';
 
 import { GeneralStepper, StepperProps } from '../GeneralStepper';
@@ -15,11 +14,11 @@ const ExampleButtonFinalComponent = ({
   onComplete,
   onCompleteText,
   resetFlow,
-  completeButtonText
+  completeButton
 }: any) => (
   <>
     <button onClick={() => onComplete(onCompleteText)}>Click Me</button>
-    <button onClick={() => resetFlow()}>{completeButtonText}</button>
+    <button onClick={() => resetFlow()}>{completeButton}</button>
   </>
 );
 
@@ -40,7 +39,10 @@ const testSteps = [
   }
 ];
 
-const defaultProps: Required<Omit<StepperProps, 'wrapperClassName' | 'basic' | 'onRender'>> = {
+const defaultProps: Required<Omit<
+  StepperProps,
+  'wrapperClassName' | 'basic' | 'onRender' | 'txNumber'
+>> = {
   steps: testSteps,
   defaultBackPath: '/dashboard',
   defaultBackPathLabel: 'Dashboard',

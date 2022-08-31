@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import { RefObject, useEffect } from 'react';
 
 // Simple Effect to replace react-onclickoutside
 // https://usehooks.com/useOnClickOutside/
 
-export function useOnClickOutside(ref: React.RefObject<HTMLElement>, handler: (e: Event) => void) {
+export function useOnClickOutside(ref: RefObject<HTMLElement>, handler: (e: Event) => void) {
   useEffect(() => {
     const listener = (event: any) => {
       // Do nothing if clicking ref's element or descendent elements

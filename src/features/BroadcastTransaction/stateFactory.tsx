@@ -1,17 +1,17 @@
-import { useContext } from 'react';
-
-import { TUseStateReducerFactory, makePendingTxReceipt, makeTxConfigFromSignedTx } from '@utils';
-import { ITxReceipt, ITxConfig, ISignedTx, NetworkId, ITxType, ITxHash } from '@types';
 import { DEFAULT_NETWORK } from '@config';
-import { StoreContext, useAssets, useNetworks } from '@services/Store';
+import { makePendingTxReceipt, makeTxConfigFromSignedTx } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
-import { ToastContext } from '@features/Toasts';
+import { useAssets, useNetworks } from '@services/Store';
+import { getStoreAccounts, useSelector } from '@store';
+import { ISignedTx, ITxConfig, ITxHash, ITxReceipt, ITxType, NetworkId } from '@types';
+import { TUseStateReducerFactory } from '@utils';
 
 const broadcastTxInitialState: State = {
   network: DEFAULT_NETWORK,
   txReceipt: undefined,
   txConfig: undefined,
-  signedTx: ''
+  signedTx: '',
+  error: undefined
 };
 
 interface State {
@@ -19,13 +19,13 @@ interface State {
   txConfig: ITxConfig | undefined;
   txReceipt: ITxReceipt | undefined;
   signedTx: ISignedTx;
+  error: string | undefined;
 }
 
 const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const { networks, getNetworkById } = useNetworks();
   const { assets } = useAssets();
-  const { displayToast, toastTemplates } = useContext(ToastContext);
-  const { accounts } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
 
   const handleNetworkChanged = (network: NetworkId) => {
     setState((prevState: State) => ({
@@ -36,9 +36,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
 
   const handleSendClicked = (signedTx: ISignedTx, cb: any) => {
     const { network } = state;
-    const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, {
-      network: getNetworkById(network)
-    } as ITxConfig);
+    const txConfig = makeTxConfigFromSignedTx(signedTx, assets, networks, accounts, network);
 
     setState((prevState: State) => ({
       ...prevState,
@@ -55,7 +53,7 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
       if (!txConfig) {
         throw new Error();
       }
-      const provider = new ProviderHandler(txConfig.network);
+      const provider = new ProviderHandler(getNetworkById(txConfig.networkId));
       const response = await provider.sendRawTx(signedTx);
       const pendingTxReceipt = makePendingTxReceipt(response.hash as ITxHash)(
         ITxType.STANDARD,
@@ -68,7 +66,10 @@ const BroadcastTxConfigFactory: TUseStateReducerFactory<State> = ({ state, setSt
       cb();
     } catch (err) {
       console.debug(`[BroadcastTx] ${err}`);
-      displayToast(toastTemplates.failedTransaction);
+      setState((prevState: State) => ({
+        ...prevState,
+        error: err.reason ? err.reason : err.message
+      }));
     }
   };
 

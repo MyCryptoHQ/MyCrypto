@@ -1,21 +1,22 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { useStateReducer, useTxMulti } from '@utils';
-import { ITxReceipt, ITxConfig, TxParcel, ITxStatus } from '@types';
+import { createSignConfirmAndReceiptSteps } from '@components';
 import { default as GeneralStepper, IStepperPath } from '@components/GeneralStepper';
 import { ROUTE_PATHS } from '@config';
+import { useTxMulti } from '@hooks';
 import { translateRaw } from '@translations';
-import { WALLET_STEPS } from '@components';
+import { ITxConfig, ITxReceipt, ITxStatus, ITxType } from '@types';
+import { useStateReducer } from '@utils';
 
-import { defaultMembershipObject } from './config';
-import MembershipInteractionFactory from './stateFactory';
-import { MembershipSimpleTxFormFull, MembershipPurchaseState } from './types';
-import { createPurchaseTx, createApproveTx } from './helpers';
-import { isERC20Tx } from '../SendAssets';
-import MembershipPurchaseForm from './components/MembershipPurchaseForm';
-import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import { isERC20Asset } from '../SendAssets';
 import ConfirmMembershipPurchase from './components/ConfirmMembershipPurchase';
+import ConfirmMembershipPurchaseMultiTx from './components/ConfirmMembershipPurchaseMultiTx';
+import MembershipPurchaseForm from './components/MembershipPurchaseForm';
 import MembershipPurchaseReceipt from './components/MembershipPurchaseReceipt';
+import { defaultMembershipObject } from './config';
+import { createApproveTx, createPurchaseTx } from './helpers';
+import MembershipInteractionFactory from './stateFactory';
+import { MembershipPurchaseState, MembershipSimpleTxFormFull } from './types';
 
 const initialMembershipFlowState = {
   membershipSelected: defaultMembershipObject,
@@ -30,7 +31,7 @@ const PurchaseMembershipStepper = () => {
   );
 
   const { state, prepareTx, sendTx, stopYield, initWith } = useTxMulti();
-  const { canYield, isSubmitting, transactions } = state;
+  const { canYield, isSubmitting, transactions, error } = state;
   const { account, membershipSelected }: MembershipPurchaseState = purchaseMembershipFlowState;
 
   const steps: IStepperPath[] = [
@@ -40,15 +41,19 @@ const PurchaseMembershipStepper = () => {
       props: {
         account,
         membershipSelected,
-        isSubmitting
+        isSubmitting,
+        error
       },
       actions: (formData: MembershipSimpleTxFormFull) => {
         initWith(
           () => {
-            const purchaseTx = createPurchaseTx(formData);
-            const approveTx = createApproveTx(formData);
+            const purchaseTx = {
+              ...createPurchaseTx(formData),
+              txType: ITxType.PURCHASE_MEMBERSHIP
+            };
+            const approveTx = { ...createApproveTx(formData), txType: ITxType.APPROVAL };
             return Promise.resolve(
-              isERC20Tx(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
+              isERC20Asset(formData.asset) ? [approveTx, purchaseTx] : [purchaseTx]
             );
           },
           formData.account,
@@ -57,54 +62,29 @@ const PurchaseMembershipStepper = () => {
         handleUserInputFormSubmit(formData);
       }
     },
-    ...transactions.flatMap((tx: Required<TxParcel>, idx) => [
-      {
-        label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: translateRaw('PURCHASE_MEMBERSHIP'),
-        component:
-          transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
-        props: {
-          membershipSelected,
-          account,
-          isSubmitting,
-          transactions,
-          currentTxIdx: idx
-        },
-        actions: (_: MembershipSimpleTxFormFull, goToNextStep: () => void) => {
-          if (transactions.length > 1) {
-            prepareTx(tx.txRaw);
-          } else {
-            goToNextStep();
-          }
-        }
-      },
-      {
-        label: translateRaw('CONFIRM_TRANSACTION'),
-        backBtnText: translateRaw('CONFIRM_TRANSACTION'),
-        component: account && WALLET_STEPS[account.wallet],
-        props: {
-          network: account && account.network,
-          senderAccount: account,
-          rawTransaction: tx.txRaw,
-          onSuccess: sendTx
-        }
-      }
-    ]),
-    {
-      label: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
-      component: MembershipPurchaseReceipt,
-      props: {
-        account,
-        transactions,
-        membershipSelected
-      }
-    }
+    ...createSignConfirmAndReceiptSteps({
+      transactions,
+      backStepTitle: translateRaw('PURCHASE_MEMBERSHIP'),
+      amount: membershipSelected!.price,
+      account,
+      error,
+      flowConfig: membershipSelected!,
+      receiptTitle: translateRaw('PURCHASE_MEMBERSHIP_RECEIPT'),
+      multiTxTitle: translateRaw('CONFIRM_TRANSACTION'),
+      isSubmitting,
+      receiptComponent: MembershipPurchaseReceipt,
+      multiTxComponent:
+        transactions.length > 1 ? ConfirmMembershipPurchaseMultiTx : ConfirmMembershipPurchase,
+      sendTx,
+      prepareTx
+    })
   ];
 
   return (
     <GeneralStepper
       onRender={(goToNextStep) => {
         // Allows to execute code when state has been updated after MTX hook has run
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
           if (!canYield) return;
           // Make sure to prepare ETH tx before showing to user

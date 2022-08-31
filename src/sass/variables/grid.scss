@@ -6,13 +6,6 @@ $screen-md: 1060px;
 $screen-lg: 1280px;
 $screen-xl: 1440px;
 $screen-xxl: 1600px;
-@if ($is-electron) {
-  $screen-xs: $screen-xs + $electron-sidebar-width;
-  $screen-sm: $screen-sm + $electron-sidebar-width;
-  $screen-md: $screen-md + $electron-sidebar-width;
-  $screen-lg: $screen-lg + $electron-sidebar-width;
-  $screen-xl: $screen-xl + $electron-sidebar-width;
-}
 
 $screen-xs-min: $screen-xs;
 $screen-sm-min: $screen-sm;

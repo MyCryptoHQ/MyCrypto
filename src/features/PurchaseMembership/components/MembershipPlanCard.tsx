@@ -1,25 +1,24 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import { Typography } from '@components';
-import { SPACING, COLORS, BREAK_POINTS } from '@theme';
-import { useAssets, getAssetByUUID } from '@services/Store';
+import { getAssetByUUID, useAssets } from '@services/Store';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { Asset } from '@types';
 
-import { IMembershipConfig, IMembershipId } from '../config';
+import { IMembershipConfig } from '../config';
 
-const PlanCard = styled.div<{ fullwith?: boolean }>`
+const PlanCard = styled.div`
   @media screen and (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: ${(props) => (props.fullwith ? '100%' : '48%')};
+    width: 48%;
     margin-top: ${SPACING.SM};
-    flex-direction: ${(props) => (props.fullwith ? 'row' : 'column')};
-    justify-content: ${(props) => (props.fullwith ? 'space-evenly' : 'flex-start')};
-    height: ${(props) => (props.fullwith ? '150px' : '212px')};
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 212px;
   }
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 18%;
+  width: 24%;
   padding: ${SPACING.BASE};
   background-color: ${COLORS.WHITE};
   border-radius: 6px;
@@ -44,10 +43,10 @@ const STypography = styled(Typography)`
 
 export default ({ plan }: { plan: IMembershipConfig }) => {
   const { assets } = useAssets();
-  const planAsset = getAssetByUUID(assets)(plan.assetUUID) || ({} as Asset);
+  const planAsset = getAssetByUUID(assets)(plan.assetUUID) ?? ({} as Asset);
 
   return (
-    <PlanCard fullwith={plan.key === IMembershipId.lifetime ? true : false}>
+    <PlanCard>
       <img src={plan.icon} />
       <Description>
         <Typography bold={true}>{plan.title}</Typography>

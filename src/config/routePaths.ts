@@ -1,9 +1,11 @@
-import { IRoutePath, IRoutePaths } from '@types';
 import { translateRaw } from '@translations';
+import { IRoutePath, IRoutePaths } from '@types';
+import { filter, head, pipe, whereEq } from '@vendor';
 
 const PATHS: IRoutePath[] = [
   {
     name: 'ROOT',
+    title: translateRaw('NAVIGATION_HOME'),
     path: '/'
   },
   {
@@ -27,16 +29,6 @@ const PATHS: IRoutePath[] = [
     path: '/create-wallet'
   },
   {
-    name: 'CREATE_WALLET_MNEMONIC',
-    title: translateRaw('CREATE_WALLET_MNEMONIC'),
-    path: '/create-wallet/mnemonic'
-  },
-  {
-    name: 'CREATE_WALLET_KEYSTORE',
-    title: translateRaw('CREATE_WALLET_KEYSTORE'),
-    path: '/create-wallet/keystore'
-  },
-  {
     name: 'DOWNLOAD_DESKTOP_APP',
     title: translateRaw('DOWNLOAD_DESKTOP_APP'),
     path: '/download-desktop-app'
@@ -50,21 +42,6 @@ const PATHS: IRoutePath[] = [
     name: 'REQUEST_ASSETS',
     title: translateRaw('REQUEST'),
     path: '/request'
-  },
-  {
-    name: 'SCREEN_LOCK_NEW',
-    title: translateRaw('SCREEN_LOCK_NEW'),
-    path: '/screen-lock/new'
-  },
-  {
-    name: 'SCREEN_LOCK_LOCKED',
-    title: translateRaw('SCREEN_LOCK_LOCKED'),
-    path: '/screen-lock/locked'
-  },
-  {
-    name: 'SCREEN_LOCK_FORGOT',
-    title: translateRaw('SCREEN_LOCK_FORGOT'),
-    path: '/screen-lock/forgot-password'
   },
   {
     name: 'SEND',
@@ -93,7 +70,7 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: translateRaw('SWAP_ROUTE_TITLE'),
+    title: translateRaw('SWAP'),
     path: '/swap'
   },
   {
@@ -142,9 +119,19 @@ const PATHS: IRoutePath[] = [
     path: '/tx-status'
   },
   {
-    name: 'REP_TOKEN_MIGRATION',
-    title: 'REP Token Migration',
-    path: '/migrate/rep'
+    name: 'TOKEN_MIGRATION',
+    title: 'Token Migration',
+    path: '/migrate'
+  },
+  {
+    name: 'FAUCET',
+    title: translateRaw('FAUCET'),
+    path: '/faucet'
+  },
+  {
+    name: 'NFT_DASHBOARD',
+    title: 'NFT Dashboard',
+    path: '/nft-dashboard'
   }
 ];
 
@@ -156,3 +143,7 @@ function createNavLinksFromRoutePaths(paths: IRoutePath[]) {
 }
 
 export const ROUTE_PATHS: IRoutePaths = createNavLinksFromRoutePaths(PATHS);
+
+export const getRouteConfigByPath = (path: IRoutePath['path']): IRoutePath =>
+  // @ts-expect-error: pipe and TS
+  pipe(filter(whereEq({ path: path })), head)(PATHS);

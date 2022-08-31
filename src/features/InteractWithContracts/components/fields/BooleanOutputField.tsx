@@ -1,12 +1,10 @@
-import React from 'react';
 import styled from 'styled-components';
-
-import { Typography } from '@components';
-
-import FieldLabel from './FieldLabel';
 
 import checkmark from '@assets/images/checkmark_outline.svg';
 import cross from '@assets/images/cross_outline.svg';
+import { Typography } from '@components';
+
+import FieldLabel from './FieldLabel';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,7 +12,7 @@ const Wrapper = styled.div`
   height: 65px;
 `;
 
-const LabelWraper = styled(Typography)`
+const LabelWrapper = styled(Typography)`
   margin-left: 4px;
   opacity: 0.9;
 `;
@@ -33,19 +31,19 @@ const Icon = styled.img<IconProps>`
 interface Props {
   fieldName: string;
   fieldType: string;
-  fieldValue: string;
+  fieldValue: string | boolean;
 }
 
 export default function BooleanOutputField(props: Props) {
   const { fieldName, fieldType, fieldValue } = props;
 
-  const isTrue = fieldValue === 'true';
+  const isTrue = fieldValue === 'true' || fieldValue === true;
   return (
     <>
       <FieldLabel fieldName={fieldName} fieldType={fieldType} isOutput={true} />
       <Wrapper>
         <Icon src={isTrue ? checkmark : cross} isTrue={isTrue} />
-        <LabelWraper>{isTrue ? 'TRUE' : 'FALSE'}</LabelWraper>
+        <LabelWrapper>{isTrue ? 'TRUE' : 'FALSE'}</LabelWrapper>
       </Wrapper>
     </>
   );

@@ -1,25 +1,12 @@
-import React from 'react';
+import { SUPPORTED_TRANSACTION_QUERY_PARAMS } from '@config';
+import { IQueryResults, TxQueryTypes } from '@types';
+import { isQueryValid } from '@utils';
 
-import { MANDATORY_TRANSACTION_QUERY_PARAMS } from '@config';
-import { TxParam } from '@features/SendAssets/preFillTx';
-
-import { Query, IQueryResults } from './Query';
+import { Query } from './Query';
 
 interface Props {
   displayQueryMessage(id?: string): JSX.Element | null;
 }
-
-const params: TxParam[] = [
-  'type',
-  'gasPrice',
-  'gasLimit',
-  'to',
-  'data',
-  'nonce',
-  'from',
-  'value',
-  'chainId'
-];
 
 export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // This message banner is shown on the send form.
@@ -27,18 +14,16 @@ export const WhenQueryExists = ({ displayQueryMessage }: Props) => {
   // stepper will slice out the first step UNLESS they don't have an associated network or account with the specified details
   // Therefore, we only display errors / messages.
   const deriveSendFormQueryWarning = (queries: IQueryResults) => {
-    const queriesArePresent = Object.values(queries).some((v) => !!v);
-    const resubmitQueriesArePresent = MANDATORY_TRANSACTION_QUERY_PARAMS.every(
-      (resubmitParam) => queries[resubmitParam]
-    );
-    if (!queriesArePresent) return null;
-    if (resubmitQueriesArePresent) {
+    if (!Object.values(queries).some((v) => !!v)) return null;
+    if (isQueryValid(queries)) {
       return displayQueryMessage('WARN_SEND_UNDETECTED_NETWORK_OR_ACCOUNT');
     }
-    if (queries.type && queries.type === 'resubmit') {
+    if (queries.type && [TxQueryTypes.SPEEDUP, TxQueryTypes.CANCEL].includes(queries.type)) {
       return displayQueryMessage('WARN_SEND_INCORRECT_PROPS');
     }
     return displayQueryMessage();
   };
-  return <Query params={params} withQuery={deriveSendFormQueryWarning} />;
+  return (
+    <Query params={SUPPORTED_TRANSACTION_QUERY_PARAMS} withQuery={deriveSendFormQueryWarning} />
+  );
 };

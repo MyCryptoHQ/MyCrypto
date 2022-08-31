@@ -1,21 +1,22 @@
-import React from 'react';
-
-import styled from 'styled-components';
 import 'rc-steps/assets/index.css';
-//@ts-ignore No types available at the moment
-import Steps, { Step } from 'rc-steps';
+import { ComponentProps, ReactNode } from 'react';
 
-import Typography from './Typography';
-import Button from './Button';
-import { COLORS, SPACING, FONT_SIZE } from '@theme';
+import Steps, { Step } from 'rc-steps';
+import styled from 'styled-components';
 
 import checkmark from '@assets/images/icn-checkmark-white.svg';
-import { translateRaw } from '@translations';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { formatSupportEmail } from '@utils';
+
+import Button from './Button';
+import { InlineMessage } from './InlineMessage';
+import Typography from './Typography';
 
 export interface StepData {
   icon?: string;
-  title: React.ReactNode | string;
-  content: React.ReactNode | string;
+  title: ReactNode | string;
+  content: ReactNode | string;
   buttonText?: string;
   loading?: boolean;
   onClick?(): void;
@@ -26,6 +27,7 @@ export interface Props {
   size?: 'sm' | 'lg';
   color?: string;
   steps: StepData[];
+  error?: boolean;
 }
 
 interface StepProps {
@@ -37,7 +39,7 @@ interface StepProps {
 
 // Can't use the usual way since the Step component adds all props to an underlying div which React doesn't like
 const SStep = styled(
-  ({ active, finished, size, color, ...rest }: StepProps & React.ComponentProps<typeof Step>) => (
+  ({ active, finished, size, color, ...rest }: StepProps & ComponentProps<typeof Step>) => (
     <Step {...rest} />
   )
 )`
@@ -100,7 +102,8 @@ function VerticalStepper({
   currentStep = 0,
   steps,
   size = 'sm',
-  color = COLORS.BLUE_BRIGHT
+  color = COLORS.BLUE_BRIGHT,
+  error
 }: Props) {
   const icons = {
     finish: <img src={checkmark} />
@@ -126,6 +129,7 @@ function VerticalStepper({
                   buttonText={s.buttonText}
                   loading={s.loading}
                   size={size}
+                  error={error}
                   onClick={s.onClick}
                 />
               )
@@ -139,7 +143,7 @@ function VerticalStepper({
 
 interface TitleProps {
   icon?: string;
-  title: React.ReactNode | string;
+  title: ReactNode | string;
   finished: boolean;
   size?: 'sm' | 'lg';
 }
@@ -184,9 +188,10 @@ function StepperTitle({ icon, title, finished, size }: TitleProps) {
 
 interface DescriptionProps {
   active: boolean;
-  content: React.ReactNode | string;
+  content: ReactNode | string;
   buttonText?: string;
   loading?: boolean;
+  error?: boolean;
   size?: 'sm' | 'lg';
   onClick?(): void;
 }
@@ -203,14 +208,27 @@ const SButton = styled(Button)`
   margin-top: ${SPACING.SM};
 `;
 
-function StepperContent({ active, content, buttonText, loading, size, onClick }: DescriptionProps) {
+function StepperContent({
+  active,
+  content,
+  buttonText,
+  loading,
+  error,
+  size,
+  onClick
+}: DescriptionProps) {
   return (
     <ContentWrapper size={size}>
       <Typography as={'div'}>{content}</Typography>
       {buttonText && (
-        <SButton disabled={!active} loading={loading} onClick={onClick}>
+        <SButton disabled={!active || error} loading={loading} onClick={onClick}>
           {buttonText}
         </SButton>
+      )}
+      {active && error && (
+        <InlineMessage>
+          {translate('MTX_GENERIC_ERROR', { $link: formatSupportEmail('Multi TX Error') })}
+        </InlineMessage>
       )}
     </ContentWrapper>
   );

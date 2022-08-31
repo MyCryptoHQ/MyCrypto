@@ -1,4 +1,5 @@
-import React from 'react';
+import { ReactNode } from 'react';
+
 import styled from 'styled-components';
 
 import { COLORS } from '@theme';
@@ -25,7 +26,7 @@ const Code = styled.div`
 `;
 
 interface Props {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 

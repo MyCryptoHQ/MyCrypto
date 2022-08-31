@@ -1,14 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import translate from '@translations';
-import { BREAK_POINTS } from '@theme';
-import { EXT_URLS } from '@config';
-import NotificationWrapper from './NotificationWrapper';
-
-// Legacy
 import walletIcon from '@assets/images/icn-new-wallet.svg';
+import { LinkApp } from '@components';
+import { EXT_URLS } from '@config';
+import { BREAK_POINTS } from '@theme';
+import translate from '@translations';
+
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -32,30 +31,19 @@ const ResourceItem = styled(Button)`
   }
 `;
 
-interface ResourceItemWrapperProps {
-  title: React.ReactElement<any>;
-  link: string;
-}
-
-const ResourceItemWrapper: React.FC<ResourceItemWrapperProps> = ({ title, link }) => {
-  return (
-    <a href={link} target="_blank" rel="noopener noreferrer">
-      <ResourceItem secondary={true}>{title}</ResourceItem>
-    </a>
-  );
-};
-
 const getResources = () => {
   return (
     <>
-      <ResourceItemWrapper
-        title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
-        link={EXT_URLS.TREZOR_REFERRAL.url}
-      />
-      <ResourceItemWrapper
-        title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
-        link={EXT_URLS.LEDGER_REFERRAL.url}
-      />
+      <LinkApp href={EXT_URLS.TREZOR_REFERRAL.url} isExternal={true}>
+        <ResourceItem secondary={true}>
+          {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
+        </ResourceItem>
+      </LinkApp>
+      <LinkApp href={EXT_URLS.LEDGER_REFERRAL.url} isExternal={true}>
+        <ResourceItem secondary={true}>
+          {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
+        </ResourceItem>
+      </LinkApp>
     </>
   );
 };

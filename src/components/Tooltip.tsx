@@ -1,39 +1,60 @@
-import React from 'react';
+import { ComponentProps, FC, ReactNode } from 'react';
 
 import { Tooltip as UITooltip } from '@mycrypto/ui';
+import styled from 'styled-components';
+import {
+  display,
+  DisplayProps,
+  space,
+  SpaceProps,
+  verticalAlign,
+  VerticalAlignProps
+} from 'styled-system';
+import { SetIntersection } from 'utility-types';
 
-import questionSVG from '@assets/images/icn-question.svg';
-import informationalSVG from '@assets/images/icn-info-blue.svg';
-import warningSVG from '@assets/images/icn-warning.svg';
+import Icon from './Icon';
 
-export enum IconID {
-  question = 'question',
-  informational = 'informational',
-  warning = 'warning'
-}
+type ToolTipIcon = SetIntersection<
+  ComponentProps<typeof Icon>['type'],
+  'questionBlack' | 'questionWhite' | 'informational' | 'warning'
+>;
 
-interface Props {
-  tooltip: React.ReactNode;
-  type?: IconID;
-  children?: React.ReactNode;
-}
-
-const selectIconType = (type: IconID): any => {
-  switch (type) {
-    default:
-    case IconID.question:
-      return questionSVG;
-    case IconID.informational:
-      return informationalSVG;
-    case IconID.warning:
-      return warningSVG;
+const Override = styled.div<SpaceProps & VerticalAlignProps & DisplayProps>`
+  /** Allow caller to control spacing  */
+  ${space}
+  ${verticalAlign}
+  ${display}
+  /** Migrate Rep has an input inside a Tooltip. The input should fill the width of its container */
+  span {
+    width: 100%;
   }
+`;
+
+const Tooltip: FC<
+  {
+    tooltip: ReactNode;
+    type?: ToolTipIcon;
+    children?: ReactNode;
+    width?: string;
+  } & SpaceProps &
+    VerticalAlignProps &
+    DisplayProps
+> = ({
+  type = 'questionBlack',
+  tooltip,
+  children,
+  display = 'inline-flex',
+  verticalAlign = 'middle',
+  width = '1em',
+  ...props
+}) => {
+  return (
+    <Override verticalAlign={verticalAlign} display={display} {...props}>
+      <UITooltip tooltip={tooltip}>
+        {children ? children : <Icon type={type} width={width} fill="none" />}
+      </UITooltip>
+    </Override>
+  );
 };
-
-function Tooltip({ type = IconID.question, tooltip, children }: Props) {
-  const iconType = selectIconType(type);
-
-  return <UITooltip tooltip={tooltip}>{children ? children : <img src={iconType} />}</UITooltip>;
-}
 
 export default Tooltip;

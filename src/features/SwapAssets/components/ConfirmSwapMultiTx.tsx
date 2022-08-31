@@ -1,49 +1,39 @@
-import React from 'react';
 import path from 'ramda/src/path';
 
+import { Typography, VerticalStepper } from '@components';
 import { SwapFromToDiagram } from '@components/TransactionFlow/displays';
-import { VerticalStepper, Typography } from '@components';
 import { translateRaw } from '@translations';
-import { ITxStatus, TxParcel } from '@types';
+import { ITxMultiConfirmProps, ITxStatus } from '@types';
 
+import { stepsContent } from '../config';
 import { IAssetPair } from '../types';
-import step1SVG from '@assets/images/icn-send.svg';
-import step2SVG from '@assets/images/icn-receive.svg';
-
-interface Props {
-  assetPair: IAssetPair;
-  currentTxIdx: number;
-  transactions: TxParcel[];
-  onClick?(): void;
-}
 
 export default function ConfirmSwapMultiTx({
-  assetPair,
+  flowConfig,
   currentTxIdx,
   transactions,
-  onClick
-}: Props) {
-  const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
+  onComplete,
+  error
+}: ITxMultiConfirmProps) {
+  const { fromAsset, toAsset, fromAmount, toAmount } = flowConfig as IAssetPair;
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcasting = status.findIndex((s) => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
-    title: translateRaw('APPROVE_SWAP'),
-    icon: step1SVG,
+    ...stepsContent[0],
     content: translateRaw('SWAP_STEP1_TEXT', { $token: fromAsset.ticker }),
     buttonText: `${translateRaw('APPROVE_SWAP')}`,
     loading: status[0] === ITxStatus.BROADCASTED,
-    onClick
+    onClick: onComplete
   };
 
   const transferTx = {
-    title: translateRaw('COMPLETE_SWAP'),
-    icon: step2SVG,
+    ...stepsContent[1],
     content: translateRaw('SWAP_STEP2_TEXT'),
     buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
     loading: status[1] === ITxStatus.BROADCASTED,
-    onClick
+    onClick: onComplete
   };
 
   return (
@@ -62,6 +52,7 @@ export default function ConfirmSwapMultiTx({
       <VerticalStepper
         currentStep={broadcasting === -1 ? currentTxIdx : broadcasting}
         steps={[approveTx, transferTx]}
+        error={error !== undefined}
       />
     </div>
   );

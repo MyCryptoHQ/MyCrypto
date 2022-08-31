@@ -1,9 +1,13 @@
 import { GAS_PRICE_DEFAULT } from '@config';
-import { ITxObject, GasEstimates, Network, IHexStrWeb3Transaction } from '@types';
+import { isEIP1559Supported } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
+import { GasEstimates, ITxObject, Network } from '@types';
+import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
+
+import { estimateFees } from './eip1559';
 import { fetchGasEstimates } from './gas';
 
-export function getDefaultEstimates(network: Network | undefined) {
+export function getDefaultEstimates(network?: Network) {
   // Must yield time for testability
   const time = Date.now();
   if (!network) {
@@ -32,34 +36,63 @@ export function getDefaultEstimates(network: Network | undefined) {
   }
 }
 
-export async function fetchGasPriceEstimates(network: Network): Promise<GasEstimates> {
+export async function fetchGasPriceEstimates(network?: Network): Promise<GasEstimates> {
   // Don't try on non-estimating network
   if (!network || network.isCustom || !network.shouldEstimateGasPrice) {
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;
   }
-  // Don't try while offline
-  /*const isOffline: boolean = yield select(configMetaSelectors.getOffline);
-  if (isOffline) {
-    yield call(setDefaultEstimates, network);
-    return;
-  }*/
 
   // Try to fetch new estimates
-  try {
-    const estimates: GasEstimates = await fetchGasEstimates();
-    return estimates;
-  } catch (err) {
+  return fetchGasEstimates().catch((err) => {
     console.error(err);
-    const defaultEstimates: GasEstimates = getDefaultEstimates(network);
-    return defaultEstimates;
-  }
+    return getDefaultEstimates(network);
+  });
 }
 
-export const getGasEstimate = async (
-  network: Network,
-  tx: Partial<ITxObject> | IHexStrWeb3Transaction
-) => {
+export async function fetchEIP1559PriceEstimates(network: Network) {
   const provider = new ProviderHandler(network);
-  return await provider.estimateGas(tx);
+
+  return estimateFees(provider);
+}
+
+export type UniversalGasEstimationResult =
+  | {
+      gasPrice: string; // Gwei
+      maxFeePerGas: undefined;
+      maxPriorityFeePerGas: undefined;
+    }
+  | {
+      gasPrice: undefined;
+      maxFeePerGas: string; // Gwei
+      maxPriorityFeePerGas: string; // Gwei
+    };
+
+// Returns fast gasPrice or EIP1559 gas params in gwei
+export async function fetchUniversalGasPriceEstimate(network?: Network) {
+  if (network && isEIP1559Supported(network)) {
+    const { maxFeePerGas, maxPriorityFeePerGas, baseFee } = await fetchEIP1559PriceEstimates(
+      network
+    );
+    return {
+      baseFee,
+      estimate: {
+        maxFeePerGas: maxFeePerGas && bigNumGasPriceToViewableGwei(maxFeePerGas),
+        maxPriorityFeePerGas:
+          maxPriorityFeePerGas && bigNumGasPriceToViewableGwei(maxPriorityFeePerGas)
+      }
+    };
+  }
+
+  const { fast } = await fetchGasPriceEstimates(network);
+
+  return { estimate: { gasPrice: fast.toString() } };
+}
+
+export const getGasEstimate = async (network: Network, tx: Partial<ITxObject>) => {
+  const provider = new ProviderHandler(network);
+  return provider
+    .estimateGas(tx)
+    .then(bigify)
+    .then((n) => n.multipliedBy(1.2).integerValue(7).toString(10));
 };

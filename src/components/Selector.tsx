@@ -1,20 +1,22 @@
-import React from 'react';
+import { Children, ComponentClass, ComponentType, FC, KeyboardEvent, ReactElement } from 'react';
+
 import Select, {
-  IndicatorProps,
+  FocusEventHandler,
+  InputActionMeta,
   OptionProps,
-  ValueContainerProps,
+  OptionTypeBase,
   components as ReactSelectComponents,
-  Styles
+  SelectComponentsConfig,
+  Styles,
+  ValueContainerProps
 } from 'react-select';
-import { FocusEventHandler, InputActionMeta } from 'react-select/src/types';
 import styled from 'styled-components';
 
 import { COLORS, FONT_SIZE } from '@theme';
 
-import crossIcon from '@assets/images/icn-cross.svg';
-import { CenteredIconArrow } from './IconArrow';
+import Icon from './Icon';
 
-export interface SelectorProps<T> {
+interface SelectorProps<T extends OptionTypeBase> {
   options: T[];
   // We prefer controlled components so `value` is required prop. When it is `null`, React-Select will display the placeholder
   value: T | null | undefined;
@@ -23,28 +25,28 @@ export interface SelectorProps<T> {
   searchable?: boolean;
   clearable?: boolean;
   name?: string;
-  dropdownIcon?: JSX.Element;
-  optionComponent: React.ComponentType<OptionProps<T>>;
-  valueComponent?: React.ComponentClass<{ value: T }> | React.StatelessComponent<{ value: T }>;
+  optionComponent: ComponentType<OptionProps<T, false>>;
+  valueComponent?: ComponentClass<{ value: T }> | FC<{ value: T }>;
   inputId?: string;
   inputValue?: string;
   onCloseResetsInput?: boolean;
   onBlurResetsInput?: boolean;
   onBlur?: FocusEventHandler;
   optionDivider?: boolean;
+  isClearable?: boolean;
+  components?: SelectComponentsConfig<T, false>;
   getOptionLabel?(option: T): string;
   onChange?(option: T): void;
   onInputChange?(newValue: string, actionMeta: InputActionMeta): void;
-  onInputKeyDown?(e: React.KeyboardEvent<HTMLElement>): void;
+  onInputKeyDown?(e: KeyboardEvent<HTMLElement>): void;
 }
 
 // Fixes weird placement issues for react-select
 const Wrapper = styled('div')`
   cursor: pointer;
-`;
-
-const IconWrapper = styled('div')`
-  width: 30px;
+  &:hover {
+    cursor: default;
+  }
 `;
 
 const OptionWrapper = styled.div`
@@ -63,28 +65,12 @@ const OptionWrapper = styled.div`
   }
 `;
 
-const DropdownIndicator: (icon?: JSX.Element) => React.FC<IndicatorProps<any>> = (icon) => (
-  props
-) => {
-  const {
-    selectProps: { menuIsOpen }
-  } = props;
-  return (
-    <ReactSelectComponents.DropdownIndicator {...props}>
-      {icon ? <IconWrapper>{icon}</IconWrapper> : <CenteredIconArrow isFlipped={menuIsOpen} />}
-    </ReactSelectComponents.DropdownIndicator>
-  );
-};
+export const DropdownIndicatorWrapper = ReactSelectComponents.DropdownIndicator;
+export const ClearIndicatorWrapper = ReactSelectComponents.ClearIndicator;
 
-const ClearIndicator: React.FC<IndicatorProps<any>> = ({ clearValue }) => (
-  <IconWrapper onClick={clearValue}>
-    <img src={crossIcon} />
-  </IconWrapper>
-);
-
-const getValueContainer: <T = any>(
-  props: ValueContainerProps<T> & OptionProps<T>,
-  ValueComponent?: React.ComponentType<{ value: T }>
+const getValueContainer: <T = any, E extends boolean = false>(
+  props: ValueContainerProps<T, E> & OptionProps<T, E>,
+  ValueComponent?: ComponentType<{ value: T }>
 ) => any = (props, ValueComponent) => {
   const {
     hasValue,
@@ -101,7 +87,7 @@ const getValueContainer: <T = any>(
 
   return (
     <ReactSelectComponents.ValueContainer {...props}>
-      {React.Children.map(children, (child: JSX.Element) =>
+      {Children.map(children, (child: JSX.Element) =>
         child && [ReactSelectComponents.SingleValue].indexOf(child.type) === -1 ? child : null
       )}
       {!inputValue && <ValueComponent value={data} />}
@@ -110,15 +96,15 @@ const getValueContainer: <T = any>(
 };
 
 const getOption = (
-  { optionDivider = false, ...props }: OptionProps<any> & { optionDivider: boolean },
-  Component: React.ComponentType<OptionProps<any>>
+  { optionDivider = false, ...props }: OptionProps<any, false> & { optionDivider: boolean },
+  Component: ComponentType<OptionProps<any, false>>
 ) => (
   <OptionWrapper optionDivider={optionDivider}>
     <Component {...props} />
   </OptionWrapper>
 );
 
-const customStyles: Styles = {
+const customStyles: Styles<any, false> = {
   menu: (provided, state) => {
     return {
       ...provided,
@@ -131,7 +117,7 @@ const customStyles: Styles = {
   },
   menuList: (provided) => ({
     ...provided,
-    padding: 0
+    padding: '0px'
   }),
   control: (provided, state) => ({
     ...provided,
@@ -141,31 +127,58 @@ const customStyles: Styles = {
     '&:hover': {
       border: '0.125em solid rgba(0,122,153,0.65)'
     },
-    height: state.hasValue ? 'auto' : '54px',
+    height: state.hasValue && !state.selectProps.menuIsOpen ? 'auto' : '54px',
     fontSize: FONT_SIZE.BASE,
     backgroundColor: state.isDisabled ? COLORS.GREY_LIGHTEST : 'default',
-    paddingLeft: state.hasValue ? 0 : 5
+    paddingLeft:
+      (state.hasValue && !state.selectProps.menuIsOpen) || !state.selectProps.isSearchable ? 0 : 5
   }),
-  input: (provided) => ({
+  placeholder: (style) => ({ ...style, pointerEvents: 'none' }),
+  input: (provided, state) => ({
     ...provided,
-    display: 'inline-block'
+    display: 'inline-block',
+    // @ts-expect-error Type is wrong, this property is available
+    ...(state.selectProps.menuIsOpen
+      ? {
+          /* expand the Input Component div */
+          width: '100%',
+
+          /* expand the Input Component child div */
+          '> div': {
+            width: '100%'
+          },
+
+          /* expand the Input Component input */
+          input: {
+            width: '100% !important',
+            textAlign: 'left'
+          }
+        }
+      : {})
   }),
   // Allow the valueComponent to handle it's own padding when present.
+  // If input is present in the field, it takes up 6px.
   valueContainer: (styles, state) => ({
     ...styles,
-    ...(state && state.hasValue && { paddingLeft: 0 })
+    paddingLeft: state.selectProps.isSearchable ? '4px' : '10px',
+    'div:nth-child(2)': {
+      ...(state.selectProps.isSearchable && state.hasValue && state.selectProps.menuIsOpen
+        ? { display: 'none' }
+        : {})
+    }
   })
 };
 
-const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorProps<T>> = ({
+const Selector: <T extends OptionTypeBase>(
+  p: SelectorProps<T>
+) => ReactElement<SelectorProps<T>> = ({
   options,
   value,
   disabled = false,
   placeholder,
   searchable = true,
-  clearable = false,
+  isClearable = false,
   name,
-  dropdownIcon,
   optionComponent,
   valueComponent,
   inputId,
@@ -177,6 +190,7 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
   onInputChange,
   onInputKeyDown,
   optionDivider,
+  components,
   ...props
 }) => (
   <Wrapper data-testid="selector">
@@ -187,12 +201,12 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
       isDisabled={disabled}
       placeholder={placeholder}
       isSearchable={searchable}
-      isClearable={clearable}
+      isClearable={isClearable}
       name={name}
       // We use inputId for aria concerns, and to target the react-select component with getByLabelText
-      inputId={inputId || name}
+      inputId={inputId ?? name}
       blurInputOnSelect={onBlurResetsInput}
-      onMenuClose={() => onCloseResetsInput}
+      closeMenuOnSelect={onCloseResetsInput}
       onChange={onChange}
       onBlur={onBlur}
       onInputChange={onInputChange}
@@ -200,15 +214,23 @@ const Selector: <T = any>(p: SelectorProps<T>) => React.ReactElement<SelectorPro
       openMenuOnClick={true}
       styles={customStyles}
       components={{
-        DropdownIndicator: DropdownIndicator(dropdownIcon),
+        DropdownIndicator: (props) => {
+          const {
+            selectProps: { menuIsOpen }
+          } = props;
+          return (
+            <DropdownIndicatorWrapper {...props}>
+              <Icon type="expandable" isExpanded={menuIsOpen} height="1em" fill="linkAction" />
+            </DropdownIndicatorWrapper>
+          );
+        },
         Option: (oProps: any) => getOption({ ...oProps, optionDivider }, optionComponent),
-        ClearIndicator,
         ValueContainer: (oProps: any) => getValueContainer(oProps, valueComponent),
-        IndicatorSeparator: () => null
+        IndicatorSeparator: () => null,
+        ...components
       }}
       {...props}
     />
   </Wrapper>
 );
-
 export default Selector;

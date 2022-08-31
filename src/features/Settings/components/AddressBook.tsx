@@ -1,56 +1,38 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Icon, Identicon, Button } from '@mycrypto/ui';
-import isNumber from 'lodash/isNumber';
+import { useState } from 'react';
+
 import cloneDeep from 'lodash/cloneDeep';
+import isNumber from 'lodash/isNumber';
+import styled from 'styled-components';
 
 import {
+  Box,
   DashboardPanel,
-  RowDeleteOverlay,
-  Network,
-  EthAddress,
   EditableText,
+  EthAddress,
+  FixedSizeCollapsibleTable,
+  Icon,
+  Identicon,
+  LinkApp,
+  Network,
+  RowDeleteOverlay,
+  Text,
   Tooltip,
-  UndoDeleteOverlay,
-  FixedSizeCollapsibleTable
+  UndoDeleteOverlay
 } from '@components';
-import { Contact as IContact, TUuid, ExtendedContact } from '@types';
-import { COLORS, SPACING, BREAK_POINTS } from '@theme';
+import { useNetworks } from '@services';
+import { BREAK_POINTS, COLORS, SPACING } from '@theme';
 import { translateRaw } from '@translations';
+import { ExtendedContact, TUuid } from '@types';
+import { useScreenSize } from '@utils';
 
 interface Props {
   contacts: ExtendedContact[];
   contactRestore: { [name: string]: ExtendedContact | undefined };
   toggleFlipped(): void;
   deleteContact(uuid: string): void;
-  updateContact(uuid: string, addressBooksData: IContact): void;
+  updateContact(addressBooksData: ExtendedContact): void;
   restoreDeletedContact(id: TUuid): void;
 }
-
-const DeleteButton = styled(Button)`
-  align-items: center;
-  align-self: flex-end;
-  display: flex;
-  font-size: 0.7em;
-  justify-content: center;
-  width: 100%;
-`;
-
-const AddAccountButton = styled(Button)`
-  color: ${COLORS.BLUE_BRIGHT};
-  padding: ${SPACING.BASE};
-  opacity: 1;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
-
-const BottomRow = styled.div`
-  text-align: center;
-  background: ${COLORS.BLUE_GREY_LIGHTEST};
-`;
 
 const Label = styled.span`
   display: flex;
@@ -73,6 +55,47 @@ const SEditableText = styled(EditableText)`
   }
 `;
 
+type ISortTypes = 'label' | 'label-reverse' | 'address' | 'address-reverse';
+type IColumnValues = 'ADDRESSBOOK_LABEL' | 'ADDRESSBOOK_ADDRESS';
+
+export interface ISortingState {
+  sortState: {
+    ADDRESSBOOK_LABEL: 'label' | 'label-reverse';
+    ADDRESSBOOK_ADDRESS: 'address' | 'address-reverse';
+  };
+  activeSort: ISortTypes;
+}
+
+const initialSortingState: ISortingState = {
+  sortState: {
+    ADDRESSBOOK_LABEL: 'label',
+    ADDRESSBOOK_ADDRESS: 'address'
+  },
+  activeSort: 'label'
+};
+
+interface ITableFullContactType {
+  label: string;
+  address: string;
+}
+
+type TSortFunction = (a: ITableFullContactType, b: ITableFullContactType) => number;
+
+const getSortingFunction = (sortKey: ISortTypes): TSortFunction => {
+  switch (sortKey) {
+    case 'label':
+      return (a: ITableFullContactType, b: ITableFullContactType) => a.label.localeCompare(b.label);
+    case 'label-reverse':
+      return (a: ITableFullContactType, b: ITableFullContactType) => b.label.localeCompare(a.label);
+    case 'address':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        a.address.localeCompare(b.address);
+    case 'address-reverse':
+      return (a: ITableFullContactType, b: ITableFullContactType) =>
+        b.address.localeCompare(a.address);
+  }
+};
+
 export default function AddressBook({
   contacts,
   contactRestore,
@@ -81,6 +104,9 @@ export default function AddressBook({
   updateContact,
   restoreDeletedContact
 }: Props) {
+  const { isMobile } = useScreenSize();
+  const { getNetworkById } = useNetworks();
+  const [sortingState, setSortingState] = useState(initialSortingState);
   const [deletingIndex, setDeletingIndex] = useState<number>();
   const [undoDeletingIndexes, setUndoDeletingIndexes] = useState<[number, TUuid][]>([]);
   const overlayRows: [number[], [number, TUuid][]] = [
@@ -98,23 +124,79 @@ export default function AddressBook({
       });
     return accountsTemp.sort((a, b) => a.uuid.localeCompare(b.uuid));
   };
-  const displayAddressBook = getDisplayAddressBook();
+  const displayAddressBook = getDisplayAddressBook().sort(
+    getSortingFunction(sortingState.activeSort)
+  );
+
+  const updateSortingState = (id: IColumnValues) => {
+    // In case overlay active, disable changing sorting state
+    if (overlayRowsFlat.length) return;
+
+    const currentBtnState = sortingState.sortState[id];
+    if (currentBtnState.indexOf('-reverse') > -1) {
+      const newActiveSort = currentBtnState.split('-reverse')[0] as ISortTypes;
+      setSortingState({
+        sortState: {
+          ...sortingState.sortState,
+          [id]: newActiveSort
+        },
+        activeSort: newActiveSort
+      });
+    } else {
+      const newActiveSort = (currentBtnState + '-reverse') as ISortTypes;
+      setSortingState({
+        sortState: {
+          ...sortingState.sortState,
+          [id]: newActiveSort
+        },
+        activeSort: newActiveSort
+      });
+    }
+  };
+
+  const getColumnSortDirection = (id: IColumnValues): boolean =>
+    sortingState.sortState[id].indexOf('-reverse') > -1;
+
+  const convertColumnToClickable = (id: IColumnValues) =>
+    isMobile ? (
+      translateRaw(id)
+    ) : (
+      <Box variant="rowAlign" key={id} onClick={() => updateSortingState(id)}>
+        <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+          {translateRaw(id)}
+        </Text>
+        <Icon
+          ml="0.3ch"
+          type="sort"
+          isActive={getColumnSortDirection(id)}
+          size="1em"
+          color="linkAction"
+        />
+      </Box>
+    );
 
   const addressBookTable = {
     head: [
-      translateRaw('ADDRESSBOOK_FAVORITE'),
-      translateRaw('ADDRESSBOOK_LABEL'),
-      translateRaw('ADDRESSBOOK_ADDRESS'),
+      convertColumnToClickable('ADDRESSBOOK_LABEL'),
+      convertColumnToClickable('ADDRESSBOOK_ADDRESS'),
       translateRaw('ADDRESSBOOK_NETWORK'),
       translateRaw('ADDRESSBOOK_NOTES'),
-      translateRaw('ADDRESSBOOK_REMOVE')
+      isMobile ? (
+        translateRaw('ADDRESSBOOK_REMOVE')
+      ) : (
+        <Box variant="columnCenter" key={'ADDRESSBOOK_REMOVE'} width="100%">
+          <Text as="span" textTransform="uppercase" fontSize="14px" letterSpacing="0.0625em">
+            {translateRaw('ADDRESSBOOK_REMOVE')}
+          </Text>
+        </Box>
+      )
     ],
-    overlay: (rowIndex: number): JSX.Element => {
+    overlay: ({ indexKey }: { indexKey: number }) => {
       if (!overlayRows) return <></>;
 
-      if (overlayRows[0].length && overlayRows[0][0] === rowIndex) {
+      if (overlayRows[0].length && overlayRows[0][0] === indexKey) {
         // Row delete overlay
-        const { uuid, label } = displayAddressBook[rowIndex];
+        const { uuid, label } = displayAddressBook[indexKey];
         return (
           <RowDeleteOverlay
             prompt={translateRaw('ADDRESS_BOOK_REMOVE_OVERLAY_TEXT', {
@@ -122,15 +204,15 @@ export default function AddressBook({
             })}
             deleteAction={() => {
               setDeletingIndex(undefined);
-              setUndoDeletingIndexes((prev) => [...prev, [rowIndex, uuid]]);
+              setUndoDeletingIndexes((prev) => [...prev, [indexKey, uuid]]);
               deleteContact(uuid);
             }}
             cancelAction={() => setDeletingIndex(undefined)}
           />
         );
-      } else if (overlayRows[1].length && overlayRows[1].map((row) => row[0]).includes(rowIndex)) {
+      } else if (overlayRows[1].length && overlayRows[1].map((row) => row[0]).includes(indexKey)) {
         // Undo delete overlay
-        const { uuid, label, address } = displayAddressBook[rowIndex];
+        const { uuid, label, address } = displayAddressBook[indexKey];
 
         return (
           <UndoDeleteOverlay
@@ -140,7 +222,7 @@ export default function AddressBook({
             })}
             restoreAccount={() => {
               restoreDeletedContact(uuid);
-              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== rowIndex));
+              setUndoDeletingIndexes((prev) => prev.filter((i) => i[0] !== indexKey));
             }}
           />
         );
@@ -150,55 +232,74 @@ export default function AddressBook({
     },
     overlayRows: overlayRowsFlat,
     body: displayAddressBook.map(
-      ({ uuid, address, label, network, notes }: ExtendedContact, index) => [
-        <Icon key={0} icon="star" />,
-        <Label key={1}>
-          <SIdenticon address={address} />
-          <SEditableText
+      ({ uuid, address, label, network, notes }: ExtendedContact, index) => {
+        const networkData = getNetworkById(network);
+        const color = networkData && networkData.color ? networkData.color : COLORS.LIGHT_PURPLE;
+        return [
+          // Eslint requires a key because it identifies a jsx element in an array.
+          // CollapsibleTable uses an array for mobile display
+          // When displayed as a row, the primary row key is provided by AbstractTable
+          /* eslint-disable react/jsx-key */
+          <Label>
+            <SIdenticon address={address} />
+            <SEditableText
+              truncate={true}
+              value={label}
+              onChange={(value: string) =>
+                updateContact({ address, label: value, network, notes, uuid })
+              }
+            />
+          </Label>,
+          <EthAddress address={address} truncate={true} isCopyable={true} />,
+          <Network color={color}>{networkData.name || network}</Network>,
+          <EditableText
+            maxWidth="260px"
+            placeholder="(empty)"
             truncate={true}
-            value={label}
-            saveValue={(value) => updateContact(uuid, { address, label: value, network, notes })}
-          />
-        </Label>,
-        <EthAddress key={2} address={address} truncate={true} isCopyable={true} />,
-        <Network key={3} color="#a682ff">
-          {network}
-        </Network>,
-        <EditableText
-          key={4}
-          truncate={true}
-          value={notes}
-          saveValue={(value) => updateContact(uuid, { address, label, network, notes: value })}
-        />,
-        <DeleteButton key={5} onClick={() => setDeletingIndex(index)} icon="exit" />
-      ]
+            value={notes}
+            onChange={(value) => updateContact({ address, label, network, notes: value, uuid })}
+          />,
+          <>
+            {isMobile ? (
+              <Box key={index}>
+                <LinkApp href="#" onClick={() => setDeletingIndex(index)}>
+                  {translateRaw('ADDRESSBOOK_REMOVE')}
+                </LinkApp>
+              </Box>
+            ) : (
+              <Box variant="rowCenter" key={index}>
+                <Icon type="delete" size="0.8em" onClick={() => setDeletingIndex(index)} />
+              </Box>
+            )}
+          </>
+          /* eslint-enable react/jsx-key */
+        ];
+      }
     ),
     config: {
-      primaryColumn: translateRaw('ADDRESSBOOK_LABEL'),
-      sortableColumn: overlayRowsFlat.length ? '' : translateRaw('ADDRESSBOOK_LABEL'),
-      sortFunction: () => (a: any, b: any) => {
-        const aLabel = a.props.label;
-        const bLabel = b.props.label;
-        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
-      },
-      hiddenHeadings: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')],
-      iconColumns: [translateRaw('ADDRESSBOOK_FAVORITE'), translateRaw('ADDRESSBOOK_REMOVE')]
+      primaryColumn: translateRaw('ADDRESSBOOK_LABEL')
     }
   };
   return (
     <DashboardPanel
       heading={
-        <>
-          {translateRaw('ADDRESSBOOK')} <Tooltip tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
-        </>
+        <Box variant="rowAlign">
+          {translateRaw('ADDRESSBOOK')}{' '}
+          <Tooltip ml="0.5ch" width="16px" tooltip={translateRaw('ADDRESS_BOOK_TOOLTIP')} />
+        </Box>
+      }
+      headingRight={
+        <LinkApp href={'#'} onClick={toggleFlipped}>
+          <Box variant="rowAlign">
+            <Icon type="add-bold" width="16px" />
+            <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+              {translateRaw('ADD')}
+            </Text>
+          </Box>
+        </LinkApp>
       }
     >
       <FixedSizeCollapsibleTable breakpoint={450} maxHeight={'450px'} {...addressBookTable} />
-      <BottomRow>
-        <AddAccountButton onClick={toggleFlipped} basic={true}>
-          {`+ ${translateRaw('ADDRESS_BOOK_TABLE_ADD_ADDRESS')}`}
-        </AddAccountButton>
-      </BottomRow>
     </DashboardPanel>
   );
 }

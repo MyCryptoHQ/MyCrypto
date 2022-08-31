@@ -1,21 +1,23 @@
-import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { AccountList, Desktop, Mobile } from '@components';
+import { AccountList, ActionPanel, Desktop, Mobile } from '@components';
 import BannerAd from '@components/BannerAd/BannerAd';
-import { AccountContext, StoreContext } from '@services/Store';
-import { translateRaw } from '@translations';
 import { useFeatureFlags } from '@services';
+import { useAccounts } from '@services/Store';
+import { getIsMyCryptoMember, selectCurrentAccounts, useSelector } from '@store';
+import { translateRaw } from '@translations';
+import { useScreenSize } from '@utils';
 
-import { NotificationsPanel } from '../NotificationsPanel';
 import { DashboardZapCTA } from '../DeFiZap';
+import { NotificationsPanel } from '../NotificationsPanel';
 import {
   ActionTile,
-  TokenPanel,
-  WalletBreakdown,
+  DashboardGas,
+  MembershipPanel,
   RecentTransactionList,
-  MembershipPanel
+  TokenPanel,
+  WalletBreakdown
 } from './components';
 import { actions } from './constants';
 import { filterDashboardActions } from './helpers';
@@ -32,10 +34,12 @@ const DashboardWrapper = styled.div`
 `;
 
 export default function Dashboard() {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-  const { isMyCryptoMember, currentAccounts, assets } = useContext(StoreContext);
-  const { accounts } = useContext(AccountContext);
-  const relevantActions = filterDashboardActions(actions, assets());
+  const { featureFlags } = useFeatureFlags();
+  const currentAccounts = useSelector(selectCurrentAccounts);
+  const isMyCryptoMember = useSelector(getIsMyCryptoMember);
+  const { accounts } = useAccounts();
+  const { isMobile } = useScreenSize();
+  const relevantActions = filterDashboardActions(actions, isMobile);
 
   return (
     <DashboardWrapper>
@@ -55,13 +59,16 @@ export default function Dashboard() {
           <div className="Dashboard-mobile-walletBreakdown">
             <WalletBreakdown />
           </div>
-          {IS_ACTIVE_FEATURE.MYC_MEMBERSHIP && (
+          {featureFlags.MYC_MEMBERSHIP && isMyCryptoMember && (
             <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
               <MembershipPanel />
             </div>
           )}
           <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
             <TokenPanel />
+          </div>
+          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+            <ActionPanel />
           </div>
         </div>
         <div className="Dashboard-mobile-section">
@@ -72,7 +79,7 @@ export default function Dashboard() {
             dashboard={true}
           />
         </div>
-        {IS_ACTIVE_FEATURE.DEFIZAP && (
+        {featureFlags.DEFIZAP && (
           <div className="Dashboard-mobile-section">
             <DashboardZapCTA className="Dashboard-mobile-modifiedPanel" />
           </div>
@@ -90,16 +97,17 @@ export default function Dashboard() {
             <Heading as="h2" className="Dashboard-desktop-top-left-heading">
               {translateRaw('YOUR_DASHBOARD')}
             </Heading>
+            <DashboardGas />
+            {featureFlags.MYC_MEMBERSHIP && isMyCryptoMember && (
+              <div className="Dashboard-desktop-top-left-token">
+                <MembershipPanel />
+              </div>
+            )}
             <div className="Dashboard-desktop-top-left-actions">
               {relevantActions.map((action) => (
                 <ActionTile key={action.title} {...action} />
               ))}
             </div>
-            {IS_ACTIVE_FEATURE.MYC_MEMBERSHIP && (
-              <div className="Dashboard-desktop-top-left-token">
-                <MembershipPanel />
-              </div>
-            )}
             <div className="Dashboard-desktop-top-left-tokens">
               <TokenPanel />
             </div>
@@ -108,7 +116,7 @@ export default function Dashboard() {
             <div>
               <WalletBreakdown />
             </div>
-            {IS_ACTIVE_FEATURE.DEFIZAP && (
+            {featureFlags.DEFIZAP && (
               <div>
                 <DashboardZapCTA className="Dashboard-desktop-modifiedPanel" />
               </div>
@@ -120,6 +128,9 @@ export default function Dashboard() {
                 copyable={true}
                 dashboard={true}
               />
+            </div>
+            <div>
+              <ActionPanel />
             </div>
           </div>
         </div>

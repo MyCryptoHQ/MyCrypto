@@ -1,5 +1,5 @@
 class LocalStorageMock {
-  private store: object;
+  private store;
 
   constructor() {
     this.store = {};

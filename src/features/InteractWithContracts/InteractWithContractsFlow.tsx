@@ -1,19 +1,21 @@
-import React, { useState, useContext } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useState } from 'react';
+
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
-import { ROUTE_PATHS, DEFAULT_NETWORK } from '@config';
-import { useStateReducer } from '@utils';
-import { ITxReceipt, ISignedTx, Tab } from '@types';
-import { getNetworkById, StoreContext, useNetworks } from '@services/Store';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from '@config';
+import { getNetworkById, useNetworks } from '@services/Store';
+import { getDefaultAccount, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
+import { translateRaw } from '@translations';
+import { ISignedTx, ITxReceipt, Tab } from '@types';
+import { useStateReducer } from '@utils';
 
-import { interactWithContractsInitialState, InteractWithContractsFactory } from './stateFactory';
 import { Interact, InteractionReceipt } from './components';
-import { ABIItem, InteractWithContractState } from './types';
 import InteractionConfirm from './components/InteractionConfirm';
+import { InteractWithContractsFactory, interactWithContractsInitialState } from './stateFactory';
+import { ABIItem, InteractWithContractState } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -46,10 +48,10 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
+const InteractWithContractsFlow = () => {
   const [step, setStep] = useState(0);
-  const { defaultAccount } = useContext(StoreContext);
   const { networks } = useNetworks();
+  const defaultAccount = useSelector(getDefaultAccount());
   const initialState = {
     ...interactWithContractsInitialState,
     account: defaultAccount,
@@ -71,11 +73,14 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     handleTxSigned,
     handleSaveContractSubmit,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     handleDeleteContract
   } = useStateReducer(InteractWithContractsFactory, initialState);
 
   const { account }: InteractWithContractState = interactWithContractsState;
-  const { history, location } = props;
+  const history = useHistory();
+  const location = useLocation();
 
   const goToFirstStep = () => {
     setStep(0);
@@ -116,30 +121,7 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('NEW_HEADER_TEXT_14'),
       component: Interact,
-      props: (({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }) => ({
-        network,
-        contractAddress,
-        contract,
-        abi,
-        contracts,
-        showGeneratedForm,
-        account,
-        customContractName,
-        rawTransaction,
-        addressOrDomainInput,
-        resolvingDomain
-      }))(interactWithContractsState),
+      props: interactWithContractsState,
       actions: {
         handleNetworkSelected,
         handleContractSelected,
@@ -155,7 +137,9 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
           handleInteractionFormWriteSubmit(payload, goToNextStep),
         handleAccountSelected,
         handleGasSelectorChange,
-        handleDeleteContract
+        handleDeleteContract,
+        handleGasLimitChange,
+        handleNonceChange
       }
     },
     {
@@ -167,10 +151,10 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('INTERACT_SIGN_WRITE'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(interactWithContractsState),
       actions: {
         onSuccess: (payload: ITxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)
@@ -211,4 +195,4 @@ const InteractWithContractsFlow = (props: RouteComponentProps<{}>) => {
   );
 };
 
-export default withRouter(InteractWithContractsFlow);
+export default InteractWithContractsFlow;

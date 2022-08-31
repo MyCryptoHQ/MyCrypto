@@ -1,17 +1,14 @@
 {
   "rootDir": "../",
-  "verbose": true,
   "testRegex": "/*.*/?(.*).(spec|test).(jsx?|tsx?)$",
-  "moduleDirectories": ["node_modules", "src"],
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts", "worker.tsx"],
   "modulePathIgnorePatterns": ["<rootDir>/dist", "<rootDir>/src/types", "<rootDir>/src/assets"],
   "moduleNameMapper": {
-    "shared/(.*)": "<rootDir>/shared/$1",
     "test-utils": "<rootDir>/jest_config/test-utils",
     "fixtures": "<rootDir>/jest_config/__fixtures__",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
-    "\\.worker.(ts|tsx)": "<rootDir>/jest_config/__mocks__/workerMock.js",
+    "^@store": "<rootDir>src/services/Store/store",
     "^@(.+)$": ["<rootDir>/node_modules/$0", "<rootDir>/src/$1"]
   },
   "testPathIgnorePatterns": [
@@ -20,7 +17,6 @@
     "<rootDir>/__tests__",
     "/*\\.(stories)/"
   ],
-
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",
     "<rootDir>/jest_config/__mocks__/localStorage.ts",
@@ -30,15 +26,14 @@
   "automock": false,
   "collectCoverageFrom": [
     "**/src/**/*.{js,jsx,ts,tsx}",
-    "**/shared/**/*.{js,jsx,ts,tsx}",
-    "**/electron-app/**/*.{js,jsx,ts,tsx}",
     "**/node-scripts/**/*.{js,jsx,ts,tsx}",
     "!**/src/types/**",
-    "!**/shared/types/**",
     "!**/node_modules/**",
     "!**/vendor/**",
     "!**/spec/**",
-    "!**/__tests__/**"
+    "!**/__tests__/**",
+    "!**/*.stories.{js,jsx,ts,tsx}",
+    "!**/src/features/DeFiZap/**"
   ],
   "coverageThreshold": {
     "global": {

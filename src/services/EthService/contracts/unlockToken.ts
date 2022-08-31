@@ -1,4 +1,5 @@
 import { IUNLOCKLOCK } from '@types';
+
 import { default as Contract } from './contract';
 import { UnlockABI } from './unlockAbi';
 

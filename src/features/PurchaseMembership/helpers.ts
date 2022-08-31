@@ -1,57 +1,53 @@
-import { ethers } from 'ethers';
+import { AddressZero } from '@ethersproject/constants';
 
-import { ITxObject, StoreAccount, ITxConfig, ITxToAddress, ITxData } from '@types';
-import {
-  inputValueToHex,
-  inputGasPriceToHex,
-  toWei,
-  hexToString,
-  hexWeiToString
-} from '@services/EthService';
-import { DEFAULT_NETWORK_CHAINID, DEFAULT_ASSET_DECIMAL } from '@config';
-import { UnlockToken, ERC20 } from '@services/EthService/contracts';
+import { DEFAULT_ASSET_DECIMAL, donationAddressMap } from '@config';
+import { formatApproveTx, makeTxFromForm } from '@helpers';
 import { getAssetByUUID } from '@services';
+import { UnlockToken } from '@services/EthService/contracts';
+import { ITxConfig, ITxData, ITxObject, ITxToAddress, StoreAccount, TAddress } from '@types';
+import { toWei } from '@utils';
 
+import { isERC20Asset } from '../SendAssets';
+import { IMembershipConfig, IMembershipId, MEMBERSHIP_CONFIG } from './config';
 import { MembershipSimpleTxFormFull } from './types';
-import { isERC20Tx } from '../SendAssets';
-import { IMembershipConfig } from './config';
 
-export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
-  const data = ERC20.approve.encodeInput({
-    _spender: payload.membershipSelected.contractAddress,
-    _value: toWei(payload.membershipSelected.price, DEFAULT_ASSET_DECIMAL)
-  });
-
-  return {
-    // @ts-ignore Contract Address should be set if asset is ERC20
-    to: payload.asset.contractAddress,
-    from: payload.account.address,
-    data: data as ITxData,
-    chainId: DEFAULT_NETWORK_CHAINID,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    value: inputValueToHex('0')
-  };
+export const getExpiryDate = (selectedMembership: IMembershipId): Date => {
+  const today = Date.now();
+  return new Date(today + 86400000 * MEMBERSHIP_CONFIG[selectedMembership].durationInDays);
 };
+
+export const createApproveTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> =>
+  formatApproveTx({
+    contractAddress: payload.asset.contractAddress as ITxToAddress,
+    baseTokenAmount: toWei(
+      payload.membershipSelected.price,
+      payload.asset.decimal ?? DEFAULT_ASSET_DECIMAL
+    ),
+    spenderAddress: payload.membershipSelected.contractAddress as TAddress,
+    form: payload
+  });
 
 export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<ITxObject> => {
   const membershipSelected = payload.membershipSelected;
 
-  const weiPrice = toWei(membershipSelected.price, DEFAULT_ASSET_DECIMAL);
+  const weiPrice = toWei(membershipSelected.price, payload.asset.decimal ?? DEFAULT_ASSET_DECIMAL);
+  // Referrals are disabled for now as per Unlock advice - usually we only want referrals enabled on cheaper networks since the referral logic adds to the gas cost
+  const useReferral = false;
   const data = UnlockToken.purchase.encodeInput({
     _value: weiPrice,
     _recipient: payload.account.address,
-    _referrer: ethers.constants.AddressZero,
+    _referrer: useReferral ? donationAddressMap.ETH : AddressZero,
     _data: []
-  });
+  }) as ITxData;
 
-  return {
-    from: payload.account.address,
-    to: membershipSelected.contractAddress as ITxToAddress,
-    value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
-    data: data as ITxData,
-    gasPrice: inputGasPriceToHex(payload.gasPrice),
-    chainId: DEFAULT_NETWORK_CHAINID
-  };
+  const value = isERC20Asset(payload.asset) ? '0' : payload.amount;
+
+  const { gasLimit, nonce, ...tx } = makeTxFromForm(
+    { ...payload, address: membershipSelected.contractAddress as ITxToAddress },
+    value,
+    data
+  );
+  return tx;
 };
 
 export const makePurchaseMembershipTxConfig = (
@@ -59,7 +55,7 @@ export const makePurchaseMembershipTxConfig = (
   account: StoreAccount,
   membershipSelected: IMembershipConfig
 ): ITxConfig => {
-  const { gasPrice, gasLimit, nonce, data, to, value } = rawTransaction;
+  const { to } = rawTransaction;
   const { address, network } = account;
   const baseAsset = getAssetByUUID(account.assets)(network.baseAsset)!;
   const asset = getAssetByUUID(account.assets)(membershipSelected.assetUUID)!;
@@ -69,14 +65,9 @@ export const makePurchaseMembershipTxConfig = (
     amount: membershipSelected.price,
     receiverAddress: to,
     senderAccount: account,
-    network,
+    networkId: network.id,
     asset,
     baseAsset,
-    gasPrice: hexToString(gasPrice),
-    gasLimit: hexToString(gasLimit),
-    value: hexWeiToString(value),
-    nonce: hexToString(nonce),
-    data,
     rawTransaction
   };
 

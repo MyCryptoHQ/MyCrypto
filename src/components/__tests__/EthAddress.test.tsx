@@ -1,16 +1,17 @@
-import React from 'react';
-import { simpleRender, fireEvent } from 'test-utils';
+import { ComponentProps } from 'react';
 
-import { truncate } from '@utils';
+import { fireEvent, simpleRender } from 'test-utils';
+
+import { noOp, truncate } from '@utils';
 
 import EthAddress from '../EthAddress';
 
-const defaultProps: React.ComponentProps<typeof EthAddress> = {
+const defaultProps: ComponentProps<typeof EthAddress> = {
   address: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
   truncate: true
 };
 
-function getComponent(props: React.ComponentProps<typeof EthAddress>) {
+function getComponent(props: ComponentProps<typeof EthAddress>) {
   return simpleRender(<EthAddress {...props} />);
 }
 
@@ -30,8 +31,12 @@ describe('EthAddress', () => {
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
 
-    // @ts-ignore
-    navigator.clipboard = { writeText: jest.fn() };
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: noOp
+      }
+    });
+    jest.spyOn(navigator.clipboard, 'writeText');
 
     fireEvent.click(element);
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(defaultProps.address);
@@ -42,8 +47,12 @@ describe('EthAddress', () => {
     const element = getByText(truncate(defaultProps.address));
     expect(element).toBeDefined();
 
-    // @ts-ignore
-    navigator.clipboard = { writeText: jest.fn() };
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: noOp
+      }
+    });
+    jest.spyOn(navigator.clipboard, 'writeText');
 
     fireEvent.click(element);
     expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(0);

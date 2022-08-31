@@ -1,6 +1,6 @@
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import { Asset, ExtendedAsset, Network, StoreAsset, TAddress, TTicker } from '@types';
 import { generateAssetUUID, isSameAddress } from '@utils';
-import { DEFAULT_ASSET_DECIMAL } from '@config';
 
 export const getAssetByTicker = (assets: Asset[]) => (ticker: TTicker): Asset | undefined => {
   return assets.find((asset) => asset.ticker.toLowerCase() === ticker.toLowerCase());

@@ -1,20 +1,31 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Icon } from '@mycrypto/ui';
-import * as Yup from 'yup';
+import { Field, FieldProps, Form, Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import { object } from 'yup';
 
-import translate, { translateRaw } from '@translations';
-import { SPACING, COLORS, FONT_SIZE } from '@theme';
-import { IAccount, StoreAccount, Asset, TURL } from '@types';
-import { ETHUUID, MOONPAY_ASSET_UUIDS, openLink } from '@utils';
-import { ROUTE_PATHS, MOONPAY_API_QUERYSTRING, BUY_MYCRYPTO_WEBSITE } from '@config';
-import { AccountSelector, AssetSelector, InlineMessage, ContentPanel } from '@components';
-import { isAccountInNetwork } from '@services/Store/Account/helpers';
+import {
+  AccountSelector,
+  AssetSelector,
+  BusyBottom,
+  ContentPanel,
+  InlineMessage
+} from '@components';
+import {
+  BUY_MYCRYPTO_WEBSITE,
+  ETHUUID,
+  MOONPAY_API_QUERYSTRING,
+  MOONPAY_ASSET_UUIDS,
+  ROUTE_PATHS
+} from '@config';
 import { MoonpaySignerService } from '@services/ApiService/MoonpaySigner';
-import { StoreContext } from '@services/Store/StoreProvider';
+import { isAccountInNetwork } from '@services/Store/Account/helpers';
 import { getAssetByUUID, useAssets } from '@services/Store/Asset';
+import { getDefaultAccount, getStoreAccounts, useSelector } from '@store';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { Asset, BusyBottomConfig, IAccount, StoreAccount, TURL } from '@types';
+import { openLink } from '@utils';
 
 const FormFieldItem = styled.fieldset`
   margin-bottom: ${SPACING.LG};
@@ -66,18 +77,19 @@ enum SubmissionType {
 
 export const BuyAssetsForm = () => {
   const history = useHistory();
-  const { accounts, defaultAccount } = useContext(StoreContext);
+  const accounts = useSelector(getStoreAccounts);
   const { assets } = useAssets();
   const ethAsset = getAssetByUUID(assets)(ETHUUID) as Asset;
+  const defaultAccount = useSelector(getDefaultAccount(true));
 
   const initialFormikValues: IBuyFormState = {
-    account: defaultAccount,
+    account: defaultAccount!,
     asset: ethAsset
   };
 
-  const BuyFormSchema = Yup.object().shape({
-    account: Yup.object().required(translateRaw('REQUIRED')),
-    asset: Yup.object().required(translateRaw('REQUIRED'))
+  const BuyFormSchema = object().shape({
+    account: object().required(translateRaw('REQUIRED')),
+    asset: object().required(translateRaw('REQUIRED'))
   });
 
   const filteredAssets = assets.filter(({ uuid }) => MOONPAY_ASSET_UUIDS.includes(uuid));
@@ -185,6 +197,7 @@ export const BuyAssetsForm = () => {
           );
         }}
       </Formik>
+      <BusyBottom type={BusyBottomConfig.SUPPORT} />
     </ContentPanel>
   );
 };

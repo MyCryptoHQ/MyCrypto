@@ -1,24 +1,32 @@
-import React from 'react';
-import { simpleRender, fireEvent } from 'test-utils';
-import { MemoryRouter as Router } from 'react-router-dom';
+import { ComponentProps } from 'react';
 
-import { fSettings, fTxConfig, fAccount, fTxReceipt } from '@fixtures';
-import { devContacts } from '@database/seed';
-import { ExtendedContact, ITxType, ITxStatus } from '@types';
-import { truncate, noOp } from '@utils';
-import { translateRaw } from '@translations';
-import { ZAPS_CONFIG } from '@features/DeFiZap/config';
-import { MEMBERSHIP_CONFIG } from '@features/PurchaseMembership/config';
+import { formatUnits } from '@ethersproject/units';
+import { fireEvent, mockAppState, simpleRender } from 'test-utils';
+
 import { Fiats } from '@config';
-import { DataContext } from '@services';
+import {
+  fAccount,
+  fAccounts,
+  fContacts,
+  fNetwork,
+  fSettings,
+  fTxConfig,
+  fTxConfigDeploy,
+  fTxConfigEIP1559,
+  fTxReceipt,
+  fTxReceiptEIP1559
+} from '@fixtures';
+import { translateRaw } from '@translations';
+import { ExtendedContact, ILegacyTxObject, ITxStatus, ITxType2Object } from '@types';
+import { bigify, noOp, truncate } from '@utils';
 
-import { TxReceiptUI } from '../TxReceipt';
 import { constructSenderFromTxConfig } from '../helpers';
+import TxReceipt, { TxReceiptUI } from '../TxReceipt';
 
-const senderContact = Object.values(devContacts)[0] as ExtendedContact;
-const recipientContact = Object.values(devContacts)[1] as ExtendedContact;
+const senderContact = Object.values(fContacts)[0] as ExtendedContact;
+const recipientContact = Object.values(fContacts)[1] as ExtendedContact;
 
-const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
+const defaultProps: ComponentProps<typeof TxReceiptUI> = {
   settings: fSettings,
   txConfig: fTxConfig,
   assetRate: 250,
@@ -29,20 +37,15 @@ const defaultProps: React.ComponentProps<typeof TxReceiptUI> = {
   timestamp: 1583266291,
   displayTxReceipt: fTxReceipt,
   resetFlow: noOp,
+  handleTxCancelRedirect: noOp,
+  handleTxSpeedUpRedirect: noOp,
   baseAssetRate: 250,
-  fiat: Fiats.USD
+  fiat: Fiats.USD,
+  network: fNetwork
 };
 
-function getComponent(props: React.ComponentProps<typeof TxReceiptUI>) {
-  return simpleRender(
-    <Router>
-      <DataContext.Provider
-        value={{ addressBook: [], contracts: [], createActions: jest.fn() } as any}
-      >
-        <TxReceiptUI {...props} />
-      </DataContext.Provider>
-    </Router>
-  );
+function getComponent(props: ComponentProps<typeof TxReceiptUI>) {
+  return simpleRender(<TxReceiptUI {...props} />);
 }
 
 describe('TxReceipt', () => {
@@ -59,56 +62,65 @@ describe('TxReceipt', () => {
   });
 
   test('it displays the correct basic details', async () => {
-    const { getByText } = getComponent(defaultProps);
+    const { getByText, getByTestId } = getComponent(defaultProps);
     expect(getByText(truncate(defaultProps.displayTxReceipt!.hash))).toBeDefined();
-    expect(getByText(defaultProps.txStatus, { exact: false })).toBeDefined();
+    expect(getByTestId(defaultProps.txStatus)).toBeDefined();
   });
 
   test('it displays the correct advanced details', async () => {
     const { getByText, container } = getComponent(defaultProps);
     const btn = container.querySelector('.TransactionDetails > div > div > button');
     fireEvent.click(btn!);
-    expect(getByText(defaultProps.txConfig.gasLimit)).toBeDefined();
-    expect(getByText(defaultProps.txConfig.nonce)).toBeDefined();
-    expect(getByText(defaultProps.txConfig.network.name)).toBeDefined();
+    expect(
+      getByText(bigify(defaultProps.txConfig.rawTransaction.gasLimit).toString())
+    ).toBeDefined();
+    expect(getByText(bigify(defaultProps.txConfig.rawTransaction.nonce).toString())).toBeDefined();
+    expect(getByText(defaultProps.txConfig.networkId)).toBeDefined();
+    const formattedGasPrice = `${formatUnits(
+      (defaultProps.txConfig.rawTransaction as ILegacyTxObject).gasPrice,
+      9
+    )} gwei`;
+    expect(getByText(formattedGasPrice, { exact: false })).toBeDefined();
     expect(getByText(JSON.stringify(defaultProps.txConfig.rawTransaction))).toBeDefined();
+  });
+
+  test('it displays the EIP 1559 gas params', async () => {
+    const { getByText, container } = getComponent({ ...defaultProps, txConfig: fTxConfigEIP1559 });
+    const btn = container.querySelector('.TransactionDetails > div > div > button');
+    fireEvent.click(btn!);
+    expect(getByText(bigify(fTxConfigEIP1559.rawTransaction.gasLimit).toString())).toBeDefined();
+    expect(getByText(bigify(fTxConfigEIP1559.rawTransaction.nonce).toString())).toBeDefined();
+    expect(getByText(fTxConfigEIP1559.networkId)).toBeDefined();
+    const formattedMaxFee = `${formatUnits(
+      (fTxConfigEIP1559.rawTransaction as ITxType2Object).maxFeePerGas,
+      9
+    )} gwei`;
+    const formattedPriorityFee = `${formatUnits(
+      (fTxConfigEIP1559.rawTransaction as ITxType2Object).maxPriorityFeePerGas,
+      9
+    )} gwei`;
+    expect(getByText(formattedMaxFee, { exact: false })).toBeDefined();
+    expect(getByText(formattedPriorityFee, { exact: false })).toBeDefined();
+    expect(getByText(JSON.stringify(fTxConfigEIP1559.rawTransaction))).toBeDefined();
   });
 
   test('it displays the correct send value', async () => {
     const { getByText } = getComponent(defaultProps);
-    expect(getByText(parseFloat(fTxConfig.amount).toFixed(6), { exact: false })).toBeDefined();
+    expect(getByText(bigify(fTxConfig.amount).toFixed(5), { exact: false })).toBeDefined();
+  });
+
+  test('it displays contract deployment info', async () => {
+    const { getByText } = getComponent({ ...defaultProps, txConfig: fTxConfigDeploy });
+    expect(getByText('0x9f2817015caF6607C1198fB943A8241652EE8906')).toBeDefined();
   });
 
   test('it displays pending state', async () => {
-    const { getAllByText } = getComponent({
+    const { getAllByTestId } = getComponent({
       ...defaultProps,
       txStatus: ITxStatus.PENDING,
       displayTxReceipt: undefined
     });
-    expect(getAllByText(translateRaw('PENDING'))).toBeDefined();
-  });
-
-  test('it displays DeFiZap info', async () => {
-    const zap = ZAPS_CONFIG.compounddai;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      zapSelected: zap,
-      txType: ITxType.DEFIZAP
-    });
-    expect(getByText(zap.title)).toBeDefined();
-    expect(getByText(zap.contractAddress)).toBeDefined();
-    expect(getByText(zap.platformsUsed[0], { exact: false })).toBeDefined();
-  });
-
-  test('it displays membership info', async () => {
-    const membership = MEMBERSHIP_CONFIG.lifetime;
-    const { getByText } = getComponent({
-      ...defaultProps,
-      membershipSelected: membership,
-      txType: ITxType.PURCHASE_MEMBERSHIP
-    });
-    expect(getByText(translateRaw('NEW_MEMBER'))).toBeDefined();
-    expect(getByText(membership.contractAddress)).toBeDefined();
+    expect(getAllByTestId('PENDING')).toBeDefined();
   });
 
   test('it displays PTX info', async () => {
@@ -119,5 +131,22 @@ describe('TxReceipt', () => {
     });
     expect(getByText('PTXBUTTON')).toBeDefined();
     expect(getByText(translateRaw('PROTECTED_TX_CANCEL'))).toBeDefined();
+  });
+
+  test('it displays the new pending state', async () => {
+    const { getByText } = simpleRender(
+      <TxReceipt
+        {...defaultProps}
+        onComplete={jest.fn()}
+        txConfig={fTxConfigEIP1559}
+        txReceipt={fTxReceiptEIP1559}
+      />,
+      {
+        initialState: mockAppState({
+          accounts: [{ ...fAccounts[0], transactions: [fTxReceiptEIP1559] }]
+        })
+      }
+    );
+    expect(getByText(translateRaw('TRANSACTION_PENDING_DESCRIPTION'))).toBeDefined();
   });
 });

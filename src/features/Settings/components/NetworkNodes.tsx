@@ -1,13 +1,11 @@
-import React, { FC } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { FC } from 'react';
 
-import { DashboardPanel, CollapsibleTable, Network } from '@components';
-import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
-import { translateRaw } from '@translations';
-import { COLORS, SPACING } from '@theme';
-import { useFeatureFlags } from '@services';
+import { Box, CollapsibleTable, DashboardPanel, Icon, LinkApp, Network, Text } from '@components';
 import NetworkNodeDropdown from '@components/NetworkNodeDropdown';
+import { useFeatureFlags } from '@services';
+import { COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { CustomNodeConfig, Network as INetwork, NetworkId } from '@types';
 import useScreenSize from '@utils/useScreenSize';
 
 interface Props {
@@ -16,24 +14,8 @@ interface Props {
   toggleNetworkCreation(): void;
 }
 
-const AddNetworkButton = styled(Button)`
-  color: ${COLORS.BLUE_BRIGHT};
-  padding: ${SPACING.BASE};
-  opacity: 1;
-  &:hover {
-    transition: 200ms ease all;
-    transform: scale(1.02);
-    opacity: 0.7;
-  }
-`;
-
-const BottomRow = styled.div`
-  text-align: center;
-  background: ${COLORS.BLUE_GREY_LIGHTEST};
-`;
-
 const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreation }) => {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+  const { featureFlags } = useFeatureFlags();
   const { isXsScreen } = useScreenSize();
 
   const networkNodesTable = {
@@ -41,8 +23,8 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
       translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_HEADER'),
       translateRaw('CUSTOM_NODE_SETTINGS_TABLE_NETWORK_NODE')
     ],
-    body: networks.map(({ id, name, color }: INetwork, index) => [
-      <Network key={index} color={color || COLORS.LIGHT_PURPLE}>
+    body: networks.map(({ id, name, color = COLORS.LIGHT_PURPLE }: INetwork, index) => [
+      <Network key={index} color={color}>
         {name}
       </Network>,
       <NetworkNodeDropdown
@@ -62,15 +44,22 @@ const NetworkNodes: FC<Props> = ({ networks, toggleFlipped, toggleNetworkCreatio
     }
   };
   return (
-    <DashboardPanel heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}>
+    <DashboardPanel
+      heading={isXsScreen ? <>{translateRaw('NETWORK_AND_NODES')}</> : null}
+      headingRight={
+        featureFlags.CUSTOM_NETWORKS ? (
+          <LinkApp href="#" onClick={toggleNetworkCreation}>
+            <Box variant="rowAlign">
+              <Icon type="add-bold" width="16px" />
+              <Text ml={SPACING.XS} mb={0} color="BLUE_BRIGHT">
+                {translateRaw('ADD_NETWORK')}
+              </Text>
+            </Box>
+          </LinkApp>
+        ) : undefined
+      }
+    >
       <CollapsibleTable breakpoint={450} {...networkNodesTable} />
-      {IS_ACTIVE_FEATURE.CUSTOM_NETWORKS && (
-        <BottomRow>
-          <AddNetworkButton onClick={toggleNetworkCreation} basic={true}>
-            {`+ ${translateRaw('ADD_NETWORK')}`}
-          </AddNetworkButton>
-        </BottomRow>
-      )}
     </DashboardPanel>
   );
 };

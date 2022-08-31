@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { FC } from 'react';
 
-import translate from '@translations';
-import { ROUTE_PATHS } from '@config';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import cryingWallet from '@assets/images/icn-sad-wallet.svg';
+import { LinkApp } from '@components';
+import { ROUTE_PATHS } from '@config';
+import translate from '@translations';
 
 const PageNotFoundContainer = styled.div`
   display: flex;
@@ -90,16 +90,16 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const PageNotFound: React.FC = () => (
+const PageNotFound: FC = () => (
   <PageNotFoundContainer>
     <PageNotFoundContent>
       <ImgIcon src={cryingWallet} />
       <Header>{translate('404_HEADER')}</Header>
       <Description>{translate('404_DESCRIPTION')}</Description>
       <ButtonGroup>
-        <Link to={ROUTE_PATHS.ROOT.path}>
+        <LinkApp href={ROUTE_PATHS.ROOT.path}>
           <PrimaryButton>{translate('404_BUTTON')}</PrimaryButton>
-        </Link>
+        </LinkApp>
       </ButtonGroup>
     </PageNotFoundContent>
   </PageNotFoundContainer>

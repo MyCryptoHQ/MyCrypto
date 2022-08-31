@@ -1,4 +1,5 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, Fragment, ReactNode } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 
@@ -72,23 +73,32 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
    *  translation key with the variable's value.
    */
   if (variables) {
-    let str = translatedString.replace(/\$/g, '__');
+    try {
+      let str = translatedString.replace(/\$/g, '__');
 
-    Object.keys(variables).forEach((variable) => {
-      const singleWordVariable = variable.replace(/\$/g, '__');
-      const re = new RegExp(`\\b${singleWordVariable}\\b`, 'g');
+      Object.keys(variables).forEach((variable) => {
+        const singleWordVariable = variable.replace(/\$/g, '__');
+        const re = new RegExp(`\\b${singleWordVariable}\\b`, 'g');
 
-      str = str.replace(re, variables[variable]);
-    });
+        // Needs to escape '$' because it is a special replacement operator
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
+        const escaped = variables[variable].replace(/\$/g, '$$$$');
 
-    return str;
+        str = str.replace(re, escaped);
+      });
+
+      return str;
+    } catch (err) {
+      console.error(err);
+      return key;
+    }
   }
   return translatedString;
 }
 
 interface Props {
   id: string;
-  variables?: { [name: string]: () => string | React.ReactNode };
+  variables?: { [name: string]: () => string | ReactNode };
 }
 
 export const Trans: FC<Props> = ({ id, variables }) => {
@@ -118,7 +128,7 @@ export const Trans: FC<Props> = ({ id, variables }) => {
       }
     });
 
-    const nextTagMatch = '(?<=<)T\\d+?(?=/>)';
+    const nextTagMatch = new RegExp('<T\\d+/>');
 
     /**
      * Replaces all <T{id}> with actual components from variables, and creates a components list
@@ -130,31 +140,28 @@ export const Trans: FC<Props> = ({ id, variables }) => {
         return components;
       }
 
-      const nextMatch = rest.match(new RegExp(nextTagMatch));
+      const nextMatch = rest.match(nextTagMatch);
       if (nextMatch && nextMatch.length) {
-        const resolvedComponentIndex = nextMatch[0].replace('T', '');
+        const resolvedComponentIndex = nextMatch[0].replace('<T', '').replace('/>', '');
         const resolvedComponentIndexNumber = parseInt(resolvedComponentIndex, 10);
 
         const matchSplit = [
-          rest.substring(0, nextMatch.index! - 1),
-          rest.substring(nextMatch.index! + 3 + resolvedComponentIndex.length)
+          rest.substring(0, nextMatch.index!),
+          rest.substring(nextMatch.index! + 4 + resolvedComponentIndex.length)
         ];
 
         return resolveComponents(matchSplit[1], [
           ...components,
-          <React.Fragment key={uniqueId()}>{matchSplit[0]}</React.Fragment>,
-          <React.Fragment key={uniqueId()}>
+          <Fragment key={uniqueId()}>{matchSplit[0]}</Fragment>,
+          <Fragment key={uniqueId()}>
             {isFunction(variablesComponents[resolvedComponentIndexNumber])
               ? (variablesComponents[resolvedComponentIndexNumber] as () => any)()
               : variablesComponents[resolvedComponentIndexNumber]}
-          </React.Fragment>
+          </Fragment>
         ]);
       }
 
-      return resolveComponents('', [
-        ...components,
-        <React.Fragment key={uniqueId()}>{rest}</React.Fragment>
-      ]);
+      return resolveComponents('', [...components, <Fragment key={uniqueId()}>{rest}</Fragment>]);
     };
 
     return <>{resolveComponents(tString)}</>;

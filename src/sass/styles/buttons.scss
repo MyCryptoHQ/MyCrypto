@@ -7,7 +7,15 @@
 /* Mixins */
 /**********/
 
-@mixin button-variant($color, $background, $border, $background-hover, $border-hover, $background-active, $border-active) {
+@mixin button-variant(
+  $color,
+  $background,
+  $border,
+  $background-hover,
+  $border-hover,
+  $background-active,
+  $border-active
+) {
   color: $color;
   background-color: $background;
   border-color: $border;
@@ -41,7 +49,13 @@
   }
 }
 
-@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius) {
+@mixin button-size(
+  $padding-vertical,
+  $padding-horizontal,
+  $font-size,
+  $line-height,
+  $border-radius
+) {
   padding: $padding-vertical $padding-horizontal;
   font-size: $font-size;
   line-height: $line-height;
@@ -63,7 +77,6 @@
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  @include user-select(none);
   @include button-size(
     $padding-base-vertical,
     $padding-large-horizontal,
@@ -74,19 +87,9 @@
   transform: translateZ(0);
   transition: $transition;
 
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      @include tab-focus;
-    }
-  }
-
   &:hover,
   &:focus,
   &.focus {
-    color: $btn-default-color;
     text-decoration: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
@@ -95,7 +98,7 @@
   &.active {
     outline: 0;
     background-image: none;
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   }
 
   &.disabled,
@@ -123,7 +126,6 @@
     }
   }
 }
-
 
 /****************/
 /* Button Sizes */
@@ -161,15 +163,8 @@
 }
 // This is a "smaller" small, to accomodate overrides done in v3.
 .btn-smr {
-  @include button-size(
-    0.4rem,
-    1rem,
-    14px,
-    $line-height-base,
-    $btn-border-radius
-  );
+  @include button-size(0.4rem, 1rem, 14px, $line-height-base, $btn-border-radius);
 }
-
 
 /*****************/
 /* Button Colors */
@@ -183,7 +178,7 @@
     color(control-bg),
     color(control-border),
     color(control-bg),
-    color(control-border),
+    color(control-border)
   );
 }
 
@@ -195,7 +190,7 @@
     color(brand-primary-dark),
     color(brand-primary-dark),
     color(brand-primary-darker),
-    color(brand-primary-darker),
+    color(brand-primary-darker)
   );
 }
 
@@ -207,7 +202,7 @@
     color(brand-success-dark),
     color(brand-success-dark),
     color(brand-success-darker),
-    color(brand-success-darker),
+    color(brand-success-darker)
   );
 }
 
@@ -219,7 +214,7 @@
     color(brand-info-dark),
     color(brand-info-dark),
     color(brand-info-darker),
-    color(brand-info-darker),
+    color(brand-info-darker)
   );
 }
 
@@ -231,7 +226,7 @@
     color(brand-warning-dark),
     color(brand-warning-dark),
     color(brand-warning-darker),
-    color(brand-warning-darker),
+    color(brand-warning-darker)
   );
 }
 
@@ -243,7 +238,7 @@
     color(brand-danger-dark),
     color(brand-danger-dark),
     color(brand-danger-darker),
-    color(brand-danger-darker),
+    color(brand-danger-darker)
   );
 }
 
@@ -255,7 +250,7 @@
     color(white-clearer),
     color(white-clearer),
     color(white-clearest),
-    color(white-clearest),
+    color(white-clearest)
   );
 }
 

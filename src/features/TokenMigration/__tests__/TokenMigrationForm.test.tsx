@@ -1,20 +1,23 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router';
-import { simpleRender } from 'test-utils';
+import { APP_STATE, mockAppState, simpleRender } from 'test-utils';
 
+import { fAccount, fAccounts, fAssets, fNetwork } from '@fixtures';
 import { translateRaw } from '@translations';
-import {
-  TokenMigrationProps,
-  default as TokenMigrationForm
-} from '@features/TokenMigration/components/TokenMigrationForm';
-import { FeatureFlagContext } from '@services';
-import { StoreContext, SettingsContext, DataContext } from '@services/Store';
-import { fSettings, fAssets, fNetwork, fAccount } from '@fixtures';
-import { IS_ACTIVE_FEATURE } from '@config';
-import { noOp } from '@utils';
+import { MigrationType } from '@types';
+
+import TokenMigrationForm, { TokenMigrationProps } from '../components/TokenMigrationForm';
+
+jest.mock('@vendor', () => {
+  return {
+    ...jest.requireActual('@vendor'),
+    FallbackProvider: jest.fn().mockImplementation(() => ({
+      getTransactionCount: () => 10
+    }))
+  };
+});
 
 const defaultProps: TokenMigrationProps = {
   isSubmitting: false,
+  migration: MigrationType.REP,
   asset: fAssets[0],
   network: fNetwork,
   address: '',
@@ -23,50 +26,21 @@ const defaultProps: TokenMigrationProps = {
   gasPrice: '',
   nonce: '',
   account: fAccount,
+  changeMigration: jest.fn(),
   onComplete: jest.fn(),
-  handleUserInputFormSubmit: jest.fn()
+  handleUserInputFormSubmit: jest.fn(),
+  maxFeePerGas: '20',
+  maxPriorityFeePerGas: '1'
 };
 
 function getComponent(props: TokenMigrationProps) {
-  return simpleRender(
-    <MemoryRouter initialEntries={undefined}>
-      <DataContext.Provider
-        value={
-          ({
-            assets: [{ uuid: fNetwork.baseAsset }],
-            networks: [fNetwork],
-            createActions: jest.fn()
-          } as unknown) as any
-        }
-      >
-        <FeatureFlagContext.Provider
-          value={{ IS_ACTIVE_FEATURE, setFeatureFlag: noOp, resetFeatureFlags: noOp }}
-        >
-          <SettingsContext.Provider
-            value={
-              ({
-                settings: fSettings
-              } as unknown) as any
-            }
-          >
-            <StoreContext.Provider
-              value={
-                ({
-                  userAssets: [],
-                  accounts: [],
-                  defaultAccount: { assets: [] },
-                  getAccount: jest.fn(),
-                  networks: [{ nodes: [] }]
-                } as unknown) as any
-              }
-            >
-              <TokenMigrationForm {...((props as unknown) as any)} />
-            </StoreContext.Provider>
-          </SettingsContext.Provider>
-        </FeatureFlagContext.Provider>
-      </DataContext.Provider>
-    </MemoryRouter>
-  );
+  return simpleRender(<TokenMigrationForm {...((props as unknown) as any)} />, {
+    initialState: mockAppState({
+      accounts: fAccounts,
+      assets: fAssets,
+      networks: APP_STATE.networks
+    })
+  });
 }
 
 /* Test components */

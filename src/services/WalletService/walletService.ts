@@ -1,74 +1,69 @@
-import { TAddress, WalletId, WalletService, Network } from '@types';
-import {
-  // EncryptedPrivateKeyWallet,
-  // PresaleWallet,
-  // MewV1Wallet,
-  // PrivKeyWallet,
-  // UtcWallet,
-  // Web3Wallet,
-  AddressOnlyWallet
-  // getUtcWallet,
-  // getPrivKeyWallet
-  // getKeystoreWallet
-} from './non-deterministic';
-import {
-  LedgerWallet,
-  TrezorWallet,
-  // HardwareWallet
-  ChainCodeResponse
-} from './deterministic';
-import { unlockKeystore, KeystoreUnlockParams } from './keystore';
-import { unlockMnemonic, MnemonicUnlockParams } from './mnemonic';
-import { unlockPrivateKey, PrivateKeyUnlockParams } from './privatekey';
-import { unlockWeb3 } from './web3';
-import { WalletConnectWallet, IUseWalletConnect } from './walletconnect';
+import { GridPlusWallet, LedgerWallet, TrezorWallet } from '@mycrypto/wallets';
 
-export const WalletFactory = (walletId: WalletId): WalletService | any => {
-  switch (walletId) {
-    case WalletId.WEB3:
-    case WalletId.TRUST:
-      return {
-        init: (networks: Network[], onSuccess: (args: any) => any) => {
-          return unlockWeb3(onSuccess)(networks);
-        }
-      };
+import {
+  HardwareWalletInitArgs,
+  ViewOnlyWalletInitArgs,
+  WalletConnectWalletInitArgs,
+  WalletId,
+  Web3WalletInitArgs
+} from '@types';
+
+import { AddressOnlyWallet } from './non-deterministic';
+import { WalletConnectWallet } from './walletconnect';
+import { unlockWeb3 } from './web3';
+
+const trezorManifest = {
+  email: 'support@mycrypto.com',
+  appUrl: 'https://app.mycrypto.com'
+};
+
+const web3 = {
+  init: ({ networks }: Web3WalletInitArgs) => unlockWeb3(networks)
+};
+
+const ledger = {
+  init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+    getWallet(WalletId.LEDGER_NANO_S_NEW, params)!.getWallet(dPath, index, address)
+};
+
+const trezor = {
+  init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+    getWallet(WalletId.TREZOR_NEW, params)!.getWallet(dPath, index, address)
+};
+
+export const WalletFactory = {
+  [WalletId.WEB3]: web3,
+  [WalletId.METAMASK]: web3,
+  [WalletId.STATUS]: web3,
+  [WalletId.FRAME]: web3,
+  [WalletId.COINBASE]: web3,
+  [WalletId.TRUST]: web3,
+  [WalletId.LEDGER_NANO_S_NEW]: ledger,
+  [WalletId.LEDGER_NANO_S]: ledger,
+  [WalletId.TREZOR_NEW]: trezor,
+  [WalletId.TREZOR]: trezor,
+  [WalletId.GRIDPLUS]: {
+    init: ({ address, dPath, index, params }: HardwareWalletInitArgs) =>
+      getWallet(WalletId.GRIDPLUS, params)!.getWallet(dPath, index, address)
+  },
+  [WalletId.VIEW_ONLY]: {
+    init: ({ address }: ViewOnlyWalletInitArgs) => new AddressOnlyWallet(address)
+  },
+  [WalletId.WALLETCONNECT]: {
+    init: ({ address, signMessageHandler, killHandler }: WalletConnectWalletInitArgs) =>
+      new WalletConnectWallet(address, signMessageHandler, killHandler)
+  }
+};
+
+export const getWallet = (wallet: WalletId, params?: any) => {
+  switch (wallet) {
     case WalletId.LEDGER_NANO_S_NEW:
     case WalletId.LEDGER_NANO_S:
-      return {
-        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
-          LedgerWallet.getChainCode(dPath),
-        init: (address: TAddress, dPath: string, index: number) =>
-          new LedgerWallet(address, dPath, index)
-      };
+      return new LedgerWallet();
+    case WalletId.TREZOR_NEW:
     case WalletId.TREZOR:
-      return {
-        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
-          TrezorWallet.getChainCode(dPath),
-        init: (address: TAddress, dPath: string, index: number) =>
-          new TrezorWallet(address, dPath, index)
-      };
-    case WalletId.KEYSTORE_FILE:
-      return {
-        init: ({ file, password }: KeystoreUnlockParams) => unlockKeystore({ file, password })
-      };
-    case WalletId.PRIVATE_KEY:
-      return {
-        init: ({ key, password }: PrivateKeyUnlockParams) => unlockPrivateKey({ key, password })
-      };
-    case WalletId.MNEMONIC_PHRASE:
-      return {
-        init: ({ ...params }: MnemonicUnlockParams) => unlockMnemonic(params)
-      };
-    case WalletId.VIEW_ONLY:
-      return {
-        init: (address: TAddress) => new AddressOnlyWallet(address)
-      };
-    case WalletId.WALLETCONNECT:
-      return {
-        init: (address: TAddress, signMessageHandler: IUseWalletConnect['signMessage']) =>
-          new WalletConnectWallet(address, signMessageHandler)
-      };
-    default:
-      throw new Error('[WalletService]: Unknown WalletId');
+      return new TrezorWallet(trezorManifest);
+    case WalletId.GRIDPLUS:
+      return new GridPlusWallet({ name: 'MyCrypto', ...(params ?? {}) });
   }
 };

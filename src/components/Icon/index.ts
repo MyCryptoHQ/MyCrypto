@@ -1,1 +1,1 @@
-export { default } from './Icon';
+export { default, TIcon, getSVGIcon } from './Icon';

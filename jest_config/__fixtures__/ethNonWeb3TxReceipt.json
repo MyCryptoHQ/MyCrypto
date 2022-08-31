@@ -6,7 +6,6 @@
     "decimal": 18,
     "networkId": "Ropsten",
     "type": "base",
-    "mappings": {},
     "isCustom": false,
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
     "balance": {
@@ -20,15 +19,14 @@
     "decimal": 18,
     "networkId": "Ropsten",
     "type": "base",
-    "mappings": {},
     "isCustom": false,
     "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7"
   },
   "hash": "0x33d9b1b88cc48ca6da01310ab3acc86ae4cc2527bb3fc8662fd308cd63f303b1",
-  "from": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
-  "receiverAddress": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
+  "from": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
+  "receiverAddress": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
   "amount": "0.01",
-  "to": "0xb2bb2b958AFa2e96dab3f3Ce7162b87daEa39017",
+  "to": "0xB2BB2b958aFA2e96dAb3F3Ce7162B87dAea39017",
   "nonce": "6",
   "gasLimit": {
     "_hex": "0x5208"

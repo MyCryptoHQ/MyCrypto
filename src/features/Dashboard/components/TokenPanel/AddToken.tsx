@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-import { generateAssetUUID } from '@utils';
-import { InputField, NetworkSelectDropdown, DashboardPanel } from '@components';
-import { translateRaw } from '@translations';
-import { useAssets, useNetworks } from '@services/Store';
-import { ExtendedAsset, NetworkId, TTicker } from '@types';
-import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from '@config';
-import { isValidAddress } from '@services';
+import styled from 'styled-components';
+
+import { Button, DashboardPanel, InputField, NetworkSelector } from '@components';
 import Icon from '@components/Icon';
+import { DEFAULT_ASSET_DECIMAL, DEFAULT_NETWORK } from '@config';
+import { CustomAssetService, isValidAddress, ProviderHandler } from '@services';
+import { useAssets, useNetworks } from '@services/Store';
+import { translateRaw } from '@translations';
+import { ExtendedAsset, NetworkId, TAddress, TTicker } from '@types';
+import { generateAssetUUID } from '@utils';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;
@@ -35,7 +35,7 @@ const BackIcon = styled(Icon)`
 interface Props {
   setShowDetailsView(setShowDetailsView: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
-  scanTokens(asset?: ExtendedAsset): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): void;
 }
 
 export function AddToken(props: Props) {
@@ -46,9 +46,13 @@ export function AddToken(props: Props) {
   const [addressError, setAddressError] = useState('');
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
+  const [isFetching, setFetching] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { createAssetWithID } = useAssets();
+  const { createAsset } = useAssets();
   const { getNetworkById } = useNetworks();
+
+  const network = getNetworkById(networkId);
 
   const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 
@@ -58,8 +62,6 @@ export function AddToken(props: Props) {
     setDecimalsError('');
 
     let isValid = true;
-
-    const network = getNetworkById(networkId);
 
     if (ticker.length === 0) {
       setSymbolError(translateRaw('ADD_TOKEN_NO_SYMBOL'));
@@ -77,12 +79,19 @@ export function AddToken(props: Props) {
     return isValid;
   };
 
-  const handleAddTokenClick = () => {
+  const handleAddTokenClick = async () => {
     if (!validateForm()) {
       return;
     }
 
-    const uuid = generateAssetUUID(networkId, address);
+    setIsSubmitting(true);
+
+    const { coinGeckoId } = await CustomAssetService.instance.fetchCoingeckoID(
+      address as TAddress,
+      networkId
+    );
+    const uuid = generateAssetUUID(network.chainId, address);
+
     const newAsset: ExtendedAsset = {
       name: ticker,
       networkId,
@@ -91,17 +100,53 @@ export function AddToken(props: Props) {
       contractAddress: address,
       decimal: parseInt(decimals, 10),
       uuid,
-      isCustom: true
+      isCustom: true,
+      mappings: {
+        coinGeckoId
+      }
     };
 
-    createAssetWithID(newAsset, uuid);
+    createAsset(newAsset);
     scanTokens(newAsset);
     setShowAddToken(false);
+    setIsSubmitting(false);
   };
 
   const handleCancelClick = () => {
     setShowAddToken(false);
   };
+
+  const handleChangeAddress = (event: ChangeEvent<HTMLInputElement>) =>
+    setAddress(event.target.value);
+
+  const handleChangeTicker = (event: ChangeEvent<HTMLInputElement>) =>
+    setTicker(event.target.value);
+
+  const handleChangeDecimals = (event: ChangeEvent<HTMLInputElement>) =>
+    setDecimals(event.target.value);
+
+  useEffect(() => {
+    if (isValidAddress(address, network.chainId)) {
+      setFetching(true);
+
+      const provider = new ProviderHandler(network);
+      provider
+        .getTokenInformation(address as TAddress)
+        .then((tokenInformation) => {
+          if (tokenInformation) {
+            const { symbol, decimals: fetchedDecimals } = tokenInformation;
+            setTicker(symbol ?? ticker);
+            setDecimals(fetchedDecimals?.toString() ?? decimals);
+          }
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          setFetching(false);
+        });
+    }
+  }, [network, address]);
 
   return (
     <DashboardPanel
@@ -120,35 +165,43 @@ export function AddToken(props: Props) {
       padChildren={true}
     >
       <NetworkSelectorWrapper>
-        <NetworkSelectDropdown network={networkId} onChange={setNetworkId} />
+        <NetworkSelector network={networkId} onChange={setNetworkId} />
       </NetworkSelectorWrapper>
       <InputField
-        label={translateRaw('SYMBOL')}
-        placeholder={'ETH'}
-        onChange={(e) => setTicker(e.target.value)}
-        value={ticker}
-        inputError={symbolError}
-      />
-      <InputField
+        name="custom-token-address"
         label={translateRaw('ADDRESS')}
         placeholder={translateRaw('ADD_TOKEN_ADDRESS_PLACEHOLDER')}
-        onChange={(e) => setAddress(e.target.value)}
+        onChange={handleChangeAddress}
         value={address}
         inputError={addressError}
+        disabled={isFetching || isSubmitting}
       />
       <InputField
+        name="custom-token-symbol"
+        label={translateRaw('SYMBOL')}
+        placeholder={'ETH'}
+        onChange={handleChangeTicker}
+        value={ticker}
+        inputError={symbolError}
+        disabled={isFetching || isSubmitting}
+      />
+      <InputField
+        name="custom-token-decimals"
         label={translateRaw('TOKEN_DEC')}
         placeholder={`${DEFAULT_ASSET_DECIMAL}`}
-        onChange={(e) => setDecimals(e.target.value)}
+        onChange={handleChangeDecimals}
         value={decimals}
         inputError={decimalsError}
         type="number"
+        disabled={isFetching || isSubmitting}
       />
       <ActionsWrapper>
-        <Button onClick={handleCancelClick} secondary={true}>
-          {translateRaw('ACTION_2')}
+        <Button onClick={handleCancelClick} disabled={isFetching || isSubmitting}>
+          {translateRaw('CANCEL_ACTION')}
         </Button>
-        <Button onClick={handleAddTokenClick}>{translateRaw('ADD_TOKEN')}</Button>
+        <Button onClick={handleAddTokenClick} loading={isFetching || isSubmitting}>
+          {translateRaw('ADD_TOKEN')}
+        </Button>
       </ActionsWrapper>
     </DashboardPanel>
   );

@@ -1,19 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Typography as UITypography } from '@mycrypto/ui';
+import { ComponentType, CSSProperties, FC, MouseEvent, ReactElement } from 'react';
 
-import { useScreenSize } from '@utils';
+import { Typography as UITypography } from '@mycrypto/ui';
+import styled from 'styled-components';
+
 import { BREAK_POINTS } from '@theme';
+import { useScreenSize } from '@utils';
 
 export interface Props {
-  as?: string;
-  value?: string | React.ReactElement;
+  as?: keyof JSX.IntrinsicElements | ComponentType<any>;
+  value?: string | ReactElement;
   bold?: boolean;
   fontSize?: string;
   truncate?: boolean;
   inheritFontWeight?: boolean;
-  style?: React.CSSProperties;
-  onClick?(e: React.MouseEvent): void;
+  style?: CSSProperties;
+  onClick?(e: MouseEvent): void;
 }
 
 interface SProps {
@@ -71,7 +72,7 @@ const STypography = styled(UITypography)`
   }}
 `;
 
-const Typography: React.FC<Props> = ({
+const Typography: FC<Props> = ({
   as = 'span',
   fontSize = '1rem',
   value,
@@ -85,10 +86,7 @@ const Typography: React.FC<Props> = ({
   const maxCharLen = isMobile ? 58 : 75;
 
   return (
-    // ForwardedAs is not respected so use SC as
-    // https://styled-components.com/docs/api#forwardedas-prop
     <STypography
-      // @ts-ignore
       as={as}
       $bold={bold}
       $fontSize={fontSize}

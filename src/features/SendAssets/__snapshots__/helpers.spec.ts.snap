@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`processFormDataToTx correctly process advanced erc20 form data to erc20 tx 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0xa9059cbb000000000000000000000000fe5443fac29fa621cfc33d41d1927fd0f5e0bb7c000000000000000000000000000000000000000000000000002386f26fc10000",
+  "gasLimit": "0x88b8",
+  "gasPrice": "0x1010b87200",
+  "nonce": "0x1",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+  "value": "0x0",
+}
+`;
+
+exports[`processFormDataToTx correctly process advanced eth form data to eth tx 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "gasLimit": "0x5208",
+  "gasPrice": "0x1010b87200",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "value": "0x2386f26fc10000",
+}
+`;
+
+exports[`processFormDataToTx correctly process erc20 form data to erc20 tx 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0xa9059cbb000000000000000000000000fe5443fac29fa621cfc33d41d1927fd0f5e0bb7c000000000000000000000000000000000000000000000000002386f26fc10000",
+  "gasLimit": "0x88b8",
+  "gasPrice": "0xf224d4a00",
+  "nonce": "0x1",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+  "value": "0x0",
+}
+`;
+
+exports[`processFormDataToTx correctly process eth form data to eth tx 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "gasLimit": "0x5208",
+  "gasPrice": "0xf224d4a00",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "value": "0x2386f26fc10000",
+}
+`;
+
+exports[`processFormDataToTx correctly process eth form data to eth tx for EIP 1559 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "gasLimit": "0x5208",
+  "maxFeePerGas": "0x4a817c800",
+  "maxPriorityFeePerGas": "0x3b9aca00",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "type": 2,
+  "value": "0x2386f26fc10000",
+}
+`;
+
+exports[`processFormForEstimateGas correctly process advanced erc20 form data for gas limit estimate 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0xa9059cbb000000000000000000000000fe5443fac29fa621cfc33d41d1927fd0f5e0bb7c000000000000000000000000000000000000000000000000002386f26fc10000",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "gasPrice": "0x1010b87200",
+  "nonce": "0x1",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+  "value": "0x0",
+}
+`;
+
+exports[`processFormForEstimateGas correctly process advanced eth form data for gas limit estimate 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "gasPrice": "0x1010b87200",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "value": "0x2386f26fc10000",
+}
+`;
+
+exports[`processFormForEstimateGas correctly process erc20 form data for gas limit estimate 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0xa9059cbb000000000000000000000000fe5443fac29fa621cfc33d41d1927fd0f5e0bb7c000000000000000000000000000000000000000000000000002386f26fc10000",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "gasPrice": "0xf224d4a00",
+  "nonce": "0x1",
+  "to": "0xad6d458402f60fd3bd25163575031acdce07538d",
+  "value": "0x0",
+}
+`;
+
+exports[`processFormForEstimateGas correctly process eth form data for gas limit estimate 1`] = `
+Object {
+  "chainId": 3,
+  "data": "0x",
+  "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "gasPrice": "0xf224d4a00",
+  "nonce": "0x1",
+  "to": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
+  "value": "0x2386f26fc10000",
+}
+`;

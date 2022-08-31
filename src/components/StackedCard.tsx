@@ -1,21 +1,22 @@
-import React, { ReactNode } from 'react';
-import styled, { css } from 'styled-components';
+import { ReactNode } from 'react';
+
 import { scale } from '@mycrypto/ui';
+import styled, { css } from 'styled-components';
+
+import { isEmpty } from '@vendor';
 
 import Typography from './Typography';
 
 type StackedCardEntry = string | ReactNode;
 
-export interface StackedCardData {
+export interface Props {
   heading: ReactNode;
   entries: StackedCardEntry[][];
   icons?: ReactNode[];
 }
 
-type Props = StackedCardData;
-
 const StackedCardContainer = styled.section`
-  padding: 0.9375em;
+  padding: 16px;
   border-bottom: 0.0625em solid #dde3ee;
 `;
 
@@ -25,7 +26,9 @@ const StackedCardHead = styled.section`
   justify-content: space-between;
 `;
 
-const StackedCardHeading = styled(Typography)`
+const StackedCardHeading = styled(Typography).attrs({
+  as: 'header'
+})`
   display: flex;
   align-items: center;
   margin: 0;
@@ -33,10 +36,6 @@ const StackedCardHeading = styled(Typography)`
   line-height: 1.31;
   font-size: ${scale(1)};
 `;
-
-StackedCardHeading.defaultProps = {
-  as: 'header'
-};
 
 // Arbitrary positioning of icons to respect AddressBook and AccountList designs
 const StackedCardIcons = styled.div`
@@ -64,14 +63,10 @@ const StackedCardIcons = styled.div`
     `}
 `;
 
-// Arbitrary left margin to allow AccountList rows to align to
-// the Identicon + label display.
-// @todo: remove arbitrary style.
 const StackedCardBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.5625em;
-  margin-left: calc(14px + 2em);
 `;
 
 const StackedCardEntry = styled.dl`
@@ -80,8 +75,10 @@ const StackedCardEntry = styled.dl`
   align-items: center;
 `;
 
-const StackedCardLabel = styled(Typography)`
-  flex: 0.7;
+const StackedCardLabel = styled(Typography).attrs({
+  as: 'dt'
+})`
+  flex: 0.5;
   margin: 0;
   color: ${(props) => props.theme.cardText};
   letter-spacing: 0.106875em;
@@ -91,18 +88,12 @@ const StackedCardLabel = styled(Typography)`
   line-height: 1em;
 `;
 
-StackedCardLabel.defaultProps = {
-  as: 'dt'
-};
-
-const StackedCardValue = styled(Typography)`
+const StackedCardValue = styled(Typography).attrs({
+  as: 'dd'
+})`
   flex: 1;
   margin: 0;
 `;
-
-StackedCardValue.defaultProps = {
-  as: 'dd'
-};
 
 export const StackedCard = ({ heading, icons = [], entries, ...rest }: Props) => {
   return (
@@ -114,7 +105,7 @@ export const StackedCard = ({ heading, icons = [], entries, ...rest }: Props) =>
       <StackedCardBody>
         {entries.map(([label, value], index) => (
           <StackedCardEntry key={index}>
-            <StackedCardLabel>{label}</StackedCardLabel>
+            {!isEmpty(label) && <StackedCardLabel>{label}</StackedCardLabel>}
             <StackedCardValue>{value}</StackedCardValue>
           </StackedCardEntry>
         ))}

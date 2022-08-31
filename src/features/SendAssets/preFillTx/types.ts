@@ -1,11 +1,12 @@
 import {
+  ITxData,
+  ITxFromAddress,
   ITxGasLimit,
   ITxGasPrice,
   ITxNonce,
-  ITxValue,
   ITxToAddress,
-  ITxFromAddress,
-  ITxData
+  ITxValue,
+  TxQueryTypes
 } from '@types';
 
 export type TxParam =
@@ -14,12 +15,15 @@ export type TxParam =
   | 'value'
   | 'gasLimit'
   | 'gasPrice'
+  | 'maxFeePerGas'
+  | 'maxPriorityFeePerGas'
   | 'from'
   | 'chainId'
   | 'nonce'
   | 'type';
 
 export type TTxQueryParam =
+  | TxQueryTypes
   | string
   | ITxValue
   | ITxNonce
@@ -27,4 +31,5 @@ export type TTxQueryParam =
   | ITxGasPrice
   | ITxToAddress
   | ITxFromAddress
-  | ITxData;
+  | ITxData
+  | number;

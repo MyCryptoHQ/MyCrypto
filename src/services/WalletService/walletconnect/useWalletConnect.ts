@@ -1,26 +1,26 @@
-import { useState, useReducer, useEffect } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
-import { TAddress, ITxObject, ITxHash } from '@types';
-import { useUnmount } from '@vendor';
+import { ITxHash, ITxObject, TAddress } from '@types';
 import { isSameAddress } from '@utils';
+import { useUnmount } from '@vendor';
 
-import { default as WalletConnectService } from './WalletConnectService';
 import { initialState, WcReducer } from './reducer';
-import { IWalletConnectService, IUseWalletConnect } from './types';
+import { IUseWalletConnect, IWalletConnectService } from './types';
+import { default as WalletConnectService } from './WalletConnectService';
 
 const isExpectedAddress = (received: TAddress, target: TAddress): boolean =>
   isSameAddress(received, target);
 const isExpectedNetwork = (received: number, target: number): boolean => received === target;
 
-export function useWalletConnect(): IUseWalletConnect {
+export function useWalletConnect(autoKill?: boolean): IUseWalletConnect {
   const [state, dispatch] = useReducer(WcReducer, initialState);
   const [shouldConnect, setShouldConnect] = useState(true);
   const [service, setService] = useState<IWalletConnectService | undefined>(); // Keep a reference to the session in order to send
 
   // Ensure the service is killed when we leave the component.
-  useUnmount(() => service && service.kill());
+  useUnmount(() => autoKill && service && service.kill());
 
-  // Iniitialise walletconnect and get the uri.
+  // Initialise walletconnect and get the uri.
   useEffect(() => {
     if (!shouldConnect) return;
 
@@ -87,7 +87,7 @@ export function useWalletConnect(): IUseWalletConnect {
         reject(Error('[useWalletConnect]: network chainId does not match tx chainId'));
       } else {
         return service
-          .sendTx(tx)
+          .sendTx({ ...tx, type: tx.type !== undefined ? tx.type.toString() : undefined })
           .then((txHash: ITxHash) => {
             dispatch({ type: WcReducer.actionTypes.SIGN_SUCCESS });
             resolve(txHash);
@@ -103,7 +103,13 @@ export function useWalletConnect(): IUseWalletConnect {
     });
   };
 
-  const signMessage = async (msg: string, address: string): Promise<string> => {
+  const signMessage = async ({
+    msg,
+    address
+  }: {
+    msg: string;
+    address: TAddress;
+  }): Promise<string> => {
     dispatch({ type: WcReducer.actionTypes.SIGN_REQUEST });
     if (!state.detectedAddress || !state.detectedChainId || !service) {
       throw new Error(`[useWalletConnect]: cannot call signMessage before successful connection`);
@@ -124,10 +130,17 @@ export function useWalletConnect(): IUseWalletConnect {
 
   const requestConnection = () => setShouldConnect(true);
 
+  const kill = async () => {
+    if (service) {
+      return service.kill();
+    }
+  };
+
   return {
     state,
     requestSign,
     requestConnection,
-    signMessage
+    signMessage,
+    kill
   };
 }

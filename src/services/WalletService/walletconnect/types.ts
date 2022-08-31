@@ -30,5 +30,10 @@ export interface IUseWalletConnect {
   state: WalletConnectState;
   requestSign(tx: ITxObject & { from: TAddress }): Promise<string>;
   requestConnection(): void;
-  signMessage(msg: string, address: string): Promise<string>;
+  signMessage(props: ISignMsgProps): Promise<string>;
+  kill(): Promise<void>;
+}
+interface ISignMsgProps {
+  msg: string;
+  address: string;
 }

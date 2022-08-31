@@ -1,23 +1,23 @@
+import { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
-import React, { useState, useEffect } from 'react';
 
-import { InputField, Selector, Button, Spinner, InlineMessage, Typography } from '@components';
-import { StoreAccount, ITxConfig, Network } from '@types';
-import { COLORS, monospace } from '@theme';
-import { translateRaw } from '@translations';
+import { Button, InlineMessage, InputField, Selector, Spinner, Typography } from '@components';
+import { COLORS, monospace, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ISimpleTxForm, Network, StoreAccount } from '@types';
 
-import FunctionDropdownOption from './FunctionDropdownOption';
-import FunctionDropdownValue from './FunctionDropdownValue';
-import { ABIItem, ABIField } from '../types';
 import {
-  isReadOperation,
+  constructGasCallProps,
   generateFunctionFieldsDisplayNames,
   getFunctionsFromABI,
-  setFunctionOutputValues,
-  constructGasCallProps,
-  isPayable
+  isPayable,
+  isReadOperation,
+  setFunctionOutputValues
 } from '../helpers';
-import { FieldLabel, BooleanOutputField, BooleanSelector } from './fields';
+import { ABIField, ABIItem } from '../types';
+import { BooleanOutputField, BooleanSelector, FieldLabel } from './fields';
+import FunctionDropdownItem from './FunctionDropdownItem';
 import WriteForm from './WriteForm';
 
 const { GREY_LIGHTER, WHITE } = COLORS;
@@ -79,7 +79,6 @@ const HorizontalLine = styled.div`
 
 const ActionButton = styled(Button)`
   margin-top: 18px;
-  width: fit-content;
 `;
 
 const WriteFormWrapper = styled.div`
@@ -87,17 +86,31 @@ const WriteFormWrapper = styled.div`
   flex-direction: column;
   width: 100%;
 `;
+
+const ErrorMessage = styled(InlineMessage)`
+  padding-top: ${SPACING.XS};
+`;
+
 interface Props {
   abi: ABIItem[];
   account: StoreAccount;
   network: Network;
-  rawTransaction: ITxConfig;
+  nonce: string;
+  gasLimit: string;
+  gasPrice: string;
+  maxFeePerGas: string;
+  maxPriorityFeePerGas: string;
+
   contractAddress: string;
   interactionDataFromURL: { functionName?: string; inputs: { name: string; value: string }[] };
-  handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<object>;
-  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<object>;
+  handleInteractionFormSubmit(submitedFunction: ABIItem): Promise<TObject>;
+  handleInteractionFormWriteSubmit(submitedFunction: ABIItem): Promise<TObject>;
   handleAccountSelected(account: StoreAccount | undefined): void;
-  handleGasSelectorChange(payload: ITxConfig): void;
+  handleGasSelectorChange(
+    payload: Partial<Pick<ISimpleTxForm, 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'>>
+  ): void;
+  handleGasLimitChange(payload: string): void;
+  handleNonceChange(payload: string): void;
 }
 
 export default function GeneratedInteractionForm({
@@ -105,16 +118,22 @@ export default function GeneratedInteractionForm({
   handleInteractionFormSubmit,
   account,
   network,
-  rawTransaction,
+  nonce,
+  gasLimit,
+  gasPrice,
+  maxFeePerGas,
+  maxPriorityFeePerGas,
   contractAddress,
   handleAccountSelected,
   handleInteractionFormWriteSubmit,
   handleGasSelectorChange,
+  handleNonceChange,
+  handleGasLimitChange,
   interactionDataFromURL
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFunction, setCurrentFunction] = useState<ABIItem | undefined>(undefined);
-  const [error, setError] = useState(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [gasCallProps, setGasCallProps] = useState({});
   const [isFormFilledFromURL, setIsFormFilledFromURL] = useState(false);
   const functions = getFunctionsFromABI(abi);
@@ -131,7 +150,6 @@ export default function GeneratedInteractionForm({
 
     const newFunction = generateFunctionFieldsDisplayNames(selectedFunction);
     setCurrentFunction(newFunction);
-    handleAccountSelected(undefined);
     setError(undefined);
 
     if (isReadOperation(newFunction) && newFunction.inputs.length === 0) {
@@ -160,7 +178,7 @@ export default function GeneratedInteractionForm({
       const functionWithOutputValues = setFunctionOutputValues(submitedFunction, outputValues);
       setCurrentFunction(functionWithOutputValues);
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     } finally {
       setIsLoading(false);
     }
@@ -174,13 +192,13 @@ export default function GeneratedInteractionForm({
       setIsLoading(true);
       await handleInteractionFormWriteSubmit(submitedFunction);
     } catch (e) {
-      setError(e.message);
+      setError(e.reason ? e.reason : e.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  let isRead: boolean = true;
+  let isRead = true;
   let inputs: ABIField[] = [];
   let outputs: ABIField[] = [];
 
@@ -221,8 +239,10 @@ export default function GeneratedInteractionForm({
           onChange={(selectedFunction) => {
             handleFunctionSelected(selectedFunction);
           }}
-          optionComponent={FunctionDropdownOption}
-          valueComponent={FunctionDropdownValue}
+          optionComponent={({ data, selectOption }) => (
+            <FunctionDropdownItem option={data} onSelect={selectOption} paddingLeft={SPACING.SM} />
+          )}
+          valueComponent={({ value }) => <FunctionDropdownItem option={value} />}
           searchable={true}
         />
       </DropdownWrapper>
@@ -245,6 +265,7 @@ export default function GeneratedInteractionForm({
                         />
                       ) : (
                         <InputField
+                          name={field.name}
                           label={
                             <FieldLabel fieldName={field.displayName!} fieldType={field.type} />
                           }
@@ -291,11 +312,13 @@ export default function GeneratedInteractionForm({
                 })}
               </div>
             )}
-            <SpinnerWrapper>{isLoading && <Spinner size="x2" />}</SpinnerWrapper>
-            {error && <InlineMessage>{error}</InlineMessage>}
             <ActionWrapper>
               {isRead && inputs.length > 0 && (
-                <ActionButton color={WHITE} onClick={() => submitFormRead(currentFunction)}>
+                <ActionButton
+                  color={WHITE}
+                  onClick={() => submitFormRead(currentFunction)}
+                  fullwidth={true}
+                >
                   {translateRaw('ACTION_16')}
                 </ActionButton>
               )}
@@ -323,13 +346,25 @@ export default function GeneratedInteractionForm({
                     handleAccountSelected={handleAccountSelected}
                     handleSubmit={submitFormWrite}
                     currentFunction={currentFunction}
-                    rawTransaction={rawTransaction}
                     handleGasSelectorChange={handleGasSelectorChange}
+                    handleGasLimitChange={handleGasLimitChange}
+                    handleNonceChange={handleNonceChange}
                     estimateGasCallProps={gasCallProps}
+                    nonce={nonce}
+                    gasLimit={gasLimit}
+                    gasPrice={gasPrice}
+                    maxFeePerGas={maxFeePerGas}
+                    maxPriorityFeePerGas={maxPriorityFeePerGas}
                   />
                 </WriteFormWrapper>
               )}
             </ActionWrapper>
+            <SpinnerWrapper>{isLoading && <Spinner size={2} />}</SpinnerWrapper>
+            {error && (
+              <ErrorMessage>
+                {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+              </ErrorMessage>
+            )}
           </>
         )}
       </FormFieldsWrapper>

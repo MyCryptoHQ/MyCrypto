@@ -1,25 +1,25 @@
+const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const PreloadWebpackPlugin = require('@lowb/preload-webpack-plugin');
-const SriPlugin = require('webpack-subresource-integrity');
+
+const { PRODUCTION, STAGING } = require('../environment');
 const common = require('./common');
 const config = require('./config');
-const { PRODUCTION, STAGING, ELECTRON } = require('../environment');
 
 const TargetEnv = process.env.TARGET_ENV || PRODUCTION;
 
 module.exports = merge.smart(common, {
   mode: 'production',
 
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   output: {
     path: path.join(config.path.output, 'web'),
     filename: '[name].[contenthash].js',
     globalObject: undefined,
-    publicPath: TargetEnv === STAGING || TargetEnv === ELECTRON ? './' : '/'
+    publicPath: TargetEnv === STAGING ? './' : '/'
   },
 
   module: {
@@ -31,32 +31,18 @@ module.exports = merge.smart(common, {
 
       {
         test: /\.scss$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              prependData: `$is-electron: ${TargetEnv === ELECTRON};`
-            }
-          }
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({
-      'TARGET_ENV': TargetEnv
-    }),
+    // The EnvironmentPlugin is shorthand for using the DefinePlugin on process.env keys.
+    // https://webpack.js.org/plugins/environment-plugin/
+    new webpack.EnvironmentPlugin(['TARGET_ENV', 'COMMIT_HASH']),
 
     new MiniCSSExtractPlugin({
       filename: `[name].[contenthash].css`
-    }),
-
-    new SriPlugin({
-      hashFuncNames: ['sha256', 'sha384'],
-      enabled: true
     }),
 
     new PreloadWebpackPlugin({

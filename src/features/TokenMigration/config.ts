@@ -1,20 +1,13 @@
-import { TAddress, TUuid } from '@types';
-import { REPV1UUID, REPV2UUID } from '@utils';
+import { MigrationType } from '@types';
 
-export interface ITokenMigrationConfig {
-  title: string;
-  toContractAddress: TAddress;
-  fromContractAddress: TAddress;
-  fromAssetUuid: TUuid;
-  toAssetUuid: TUuid;
-}
+import { migrationConfig } from './AaveTokenMigration';
+import { tokenMigrationConfig } from './AntTokenMigration';
+import { golemTokenMigrationConfig } from './GolemTokenMigration';
+import { repTokenMigrationConfig } from './RepTokenMigration';
 
-export const tokenMigrationConfig: ITokenMigrationConfig = {
-  title: 'REP Token Migration',
-  toContractAddress: '0x221657776846890989a759BA2973e427DfF5C9bB' as TAddress,
-  fromContractAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862' as TAddress,
-  fromAssetUuid: REPV1UUID,
-  toAssetUuid: REPV2UUID
+export const MIGRATION_CONFIGS = {
+  [MigrationType.REP]: repTokenMigrationConfig,
+  [MigrationType.ANT]: tokenMigrationConfig,
+  [MigrationType.GOLEM]: golemTokenMigrationConfig,
+  [MigrationType.AAVE]: migrationConfig
 };
-
-export const TOKEN_MIGRATION_GAS_LIMIT = 500000;

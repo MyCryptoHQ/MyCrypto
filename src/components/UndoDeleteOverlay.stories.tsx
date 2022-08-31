@@ -1,10 +1,9 @@
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { noOp } from '@utils';
 
+import { translateRaw } from '../translations/translateRaw';
 import { UndoDeleteOverlay } from './index';
-import { translateRaw } from '../translations';
 
 const address = '0xe25690fe5ee6a64996cdd8f2fff4bfa9b3a4585b';
 
@@ -15,7 +14,7 @@ const undoDeleteOverlayMobile = () => (
       restoreAccount={noOp}
       overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
-        $walletId: 'Metamask'
+        $walletId: 'MetaMask'
       })}
     />
   </div>
@@ -28,21 +27,21 @@ const undoDeleteOverlayDesktop = () => (
       restoreAccount={noOp}
       overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
-        $walletId: 'Metamask'
+        $walletId: 'MetaMask'
       })}
     />
   </div>
 );
 
-storiesOf('UndoDeleteOverlay', module)
-  .add('Mobile', (_) => undoDeleteOverlayMobile(), {
+storiesOf('Molecules/UndoDeleteOverlay', module)
+  .add('Mobile', () => undoDeleteOverlayMobile(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/MyCrypto-GAU-Master?node-id=4494%3A135'
     }
   })
-  .add('Desktop', (_) => undoDeleteOverlayDesktop(), {
+  .add('Desktop', () => undoDeleteOverlayDesktop(), {
     design: {
       type: 'figma',
       url:

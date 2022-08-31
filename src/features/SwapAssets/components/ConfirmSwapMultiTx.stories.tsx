@@ -1,11 +1,12 @@
-import React from 'react';
-
+import { DAIUUID, ETHUUID } from '@config';
+import { fAccount } from '@fixtures';
 import { ISwapAsset, TTicker, TUuid } from '@types';
-import { bigify, DAIUUID, ETHUUID } from '@utils';
-import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
-import { LAST_CHANGED_AMOUNT } from '../types';
+import { bigify } from '@utils';
 
-export default { title: 'ConfirmSwapMultiTx' };
+import { LAST_CHANGED_AMOUNT } from '../types';
+import ConfirmSwapMultiTx from './ConfirmSwapMultiTx';
+
+export default { title: 'Features/ConfirmSwapMultiTx', component: ConfirmSwapMultiTx };
 
 const DAI: ISwapAsset = {
   name: 'DAI Stablecoin v2.0',
@@ -26,9 +27,19 @@ const assetPair = {
 };
 
 export const daiToEth = () => (
-  <ConfirmSwapMultiTx currentTxIdx={0} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx
+    currentTxIdx={0}
+    flowConfig={assetPair}
+    transactions={[]}
+    account={fAccount}
+  />
 );
 
 export const daiToEthStep2 = () => (
-  <ConfirmSwapMultiTx currentTxIdx={1} assetPair={assetPair} transactions={[]} />
+  <ConfirmSwapMultiTx
+    currentTxIdx={1}
+    flowConfig={assetPair}
+    transactions={[]}
+    account={fAccount}
+  />
 );

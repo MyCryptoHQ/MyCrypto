@@ -1,24 +1,21 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
+import closeIcon from '@assets/images/icn-close.svg';
 import { fAccount } from '@fixtures';
 import { noOp } from '@utils';
 
 import {
-  WalletCreatedNotification,
-  WalletAddedNotification,
-  SaveDashboardNotification,
-  PrintPaperWalletNotification,
   GetHardwareWalletNotification,
-  WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification
+  OnboardingResponsibleNotification,
+  SaveDashboardNotification,
+  WalletAddedNotification,
+  WalletCreatedNotification,
+  WalletNotAddedNotification
 } from './components';
-import { MainPanel, CloseButton } from './NotificationsPanel';
+import { CloseButton, MainPanel } from './NotificationsPanel';
 
-// Legacy
-import closeIcon from '@assets/images/icn-close.svg';
-
-export default { title: 'Notifications' };
+export default { title: 'Molecules/Notifications', component: MainPanel };
 
 const NotificationPanel: FC = ({ children }) => (
   <div style={{ width: '100%', maxWidth: '1200px' }}>
@@ -46,12 +43,6 @@ export const walletAddedNotification = () => (
 export const saveDashboardNotification = () => (
   <NotificationPanel>
     <SaveDashboardNotification />
-  </NotificationPanel>
-);
-
-export const printPaperWalletNotification = () => (
-  <NotificationPanel>
-    <PrintPaperWalletNotification address={fAccount.address} privateKey="privateKey" />
   </NotificationPanel>
 );
 

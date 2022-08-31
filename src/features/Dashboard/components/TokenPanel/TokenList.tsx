@@ -1,15 +1,24 @@
-import React from 'react';
-import { Typography, Button } from '@mycrypto/ui';
+import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { convertToFiatFromAsset } from '@utils';
+import {
+  AssetIcon,
+  Body,
+  Box,
+  DashboardPanel,
+  Heading,
+  Icon,
+  LinkApp,
+  SkeletonLoader,
+  Text,
+  Tooltip
+} from '@components';
+import { ROUTE_PATHS } from '@config';
+import { getIsMyCryptoMember, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { Trans, translateRaw } from '@translations';
 import { StoreAsset } from '@types';
-import { AssetIcon, DashboardPanel, Spinner, Tooltip } from '@components';
-import { translateRaw } from '@translations';
-
-import { FONT_SIZE, SPACING } from '@theme';
-
-import moreIcon from '@assets/images/icn-more.svg';
+import { convertToFiatFromAsset } from '@utils';
 
 const TokenListWrapper = styled.div`
   min-height: 0;
@@ -49,25 +58,16 @@ const TokenValue = styled(Typography)`
   font-size: ${FONT_SIZE.BASE};
 `;
 
-const MoreIcon = styled.img`
+const MoreIcon = styled(Icon)`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Button)`
-  padding: 9px 16px;
-  font-size: ${FONT_SIZE.MD};
-  margin-left: 8px;
-`;
-
-const SpinnerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 0;
-`;
-
-const TokenDashboardPanel = styled(DashboardPanel)`
-  max-height: 500px;
+const TokenDashboardPanel = styled(DashboardPanel)<{ isMyCryptoMember: boolean }>`
+  max-height: 866px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    min-height: 430px;
+    height: ${(props) => (props.isMyCryptoMember ? '660px' : '866px')};
+  }
 `;
 
 interface TokenListProps {
@@ -77,7 +77,7 @@ interface TokenListProps {
   setShowDetailsView(show: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
   setCurrentToken(token: StoreAsset): void;
-  handleScanTokens(): Promise<void>;
+  handleScanTokens(): void;
 }
 
 export function TokenList(props: TokenListProps) {
@@ -91,52 +91,87 @@ export function TokenList(props: TokenListProps) {
     handleScanTokens
   } = props;
   const sortedTokens = tokens.sort((a, b) => a.name.localeCompare(b.name));
+  const isMyCryptoMember = useSelector(getIsMyCryptoMember);
   return (
     <TokenDashboardPanel
+      isMyCryptoMember={isMyCryptoMember}
       heading={
         <>
-          {translateRaw('TOKENS')} <Tooltip tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
+          {translateRaw('TOKENS')}{' '}
+          <Tooltip width="1rem" tooltip={translateRaw('DASHBOARD_TOKENS_TOOLTIP')} />
         </>
       }
       headingRight={
-        <div style={{ minWidth: '170px', textAlign: 'right' }}>
-          <StyledButton onClick={() => handleScanTokens()}>
-            {translateRaw('SCAN_TOKENS_SHORT')}
-          </StyledButton>
-          <StyledButton onClick={() => setShowAddToken(true)}>
-            + {translateRaw('ADD_TOKEN_SHORT')}
-          </StyledButton>
-        </div>
+        <Box variant="rowAlign">
+          <LinkApp href="#" variant="opacityLink" onClick={() => handleScanTokens()}>
+            <Box variant="rowAlign" mr={SPACING.BASE}>
+              <Icon type="refresh" width="1em" color="BLUE_BRIGHT" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('SCAN_TOKENS_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
+          <LinkApp href="#" variant="opacityLink" onClick={() => setShowAddToken(true)}>
+            <Box variant="rowAlign">
+              <Icon type="add-bold" width="1em" />
+              <Text ml={SPACING.XS} mb={0}>
+                {translateRaw('ADD_TOKEN_SHORT')}
+              </Text>
+            </Box>
+          </LinkApp>
+        </Box>
       }
       padChildren={false}
     >
       {isScanning ? (
-        <SpinnerWrapper>
-          <Spinner size="x3" />
-        </SpinnerWrapper>
+        <TokenListWrapper>
+          <SkeletonLoader type="token-list" />
+        </TokenListWrapper>
       ) : (
         <TokenListWrapper>
-          {sortedTokens.map((token) => (
-            <Token key={token.uuid}>
-              <Asset>
-                <AssetIcon uuid={token.uuid} size={'26px'} />
-                <AssetName>{token.name}</AssetName>
-              </Asset>
-              <TokenValueWrapper>
-                {showValue && (
-                  <TokenValue>${convertToFiatFromAsset(token, token.rate).toFixed(2)}</TokenValue>
-                )}
-                <MoreIcon
-                  src={moreIcon}
-                  alt="More"
-                  onClick={() => {
-                    setShowDetailsView(true);
-                    setCurrentToken(token);
+          {sortedTokens.length > 0 ? (
+            sortedTokens.map((token) => (
+              <Token key={token.uuid} data-testid={`token-${token.uuid}`}>
+                <Asset>
+                  <AssetIcon uuid={token.uuid} size={'26px'} />
+                  <AssetName>{token.name}</AssetName>
+                </Asset>
+                <TokenValueWrapper>
+                  {showValue && (
+                    <TokenValue>${convertToFiatFromAsset(token, token.rate)}</TokenValue>
+                  )}
+                  <MoreIcon
+                    color="BLUE_DARK_SLATE"
+                    type="more"
+                    height="24px"
+                    alt="More"
+                    onClick={() => {
+                      setShowDetailsView(true);
+                      setCurrentToken(token);
+                    }}
+                  />
+                </TokenValueWrapper>
+              </Token>
+            ))
+          ) : (
+            <>
+              <Heading color={COLORS.BLUE_GREY} textAlign="center" fontWeight="bold">
+                {translate('NO_TOKENS_HEADER')}
+              </Heading>
+              <Body color={COLORS.BLUE_GREY} textAlign="center">
+                <Trans
+                  id="NO_TOKENS_CONTENT"
+                  variables={{
+                    $link: () => (
+                      <LinkApp href={ROUTE_PATHS.SWAP.path}>
+                        {translateRaw('GET_SOME_HERE')}
+                      </LinkApp>
+                    )
                   }}
                 />
-              </TokenValueWrapper>
-            </Token>
-          ))}
+              </Body>
+            </>
+          )}
         </TokenListWrapper>
       )}
     </TokenDashboardPanel>

@@ -1,35 +1,29 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+import { ReactNode, useState } from 'react';
+
 import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import {
-  NetworkUtils,
-  SettingsContext,
-  StoreContext,
-  useAssets,
-  useNetworks,
-  useContacts
-} from '@services/Store';
-import { buildBalances, buildTotalFiatValue } from '@utils';
-import { AccountList, Mobile, Desktop } from '@components';
-import { NetworkId, CustomNodeConfig, Balance } from '@types';
-import { DEFAULT_NETWORK } from '@config';
-import { BREAK_POINTS } from '@theme';
-import translate from '@translations';
-import FlippablePanel from '@features/Settings/components/FlippablePanel';
-import { getFiat } from '@config/fiats';
-import { isExcludedAsset } from '@services/Store/helpers';
-import { useFeatureFlags, useRates } from '@services';
-
-import settingsIcon from '@assets/images/icn-settings.svg';
-import AddToAddressBook from './components/AddToAddressBook';
-import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
-import NetworkNodes from './components/NetworkNodes';
+import { AccountList, Desktop, Icon, Mobile } from '@components';
 import MobileNavBar from '@components/MobileNavBar';
+import { DEFAULT_NETWORK } from '@config';
+import { getFiat } from '@config/fiats';
+import FlippablePanel from '@features/Settings/components/FlippablePanel';
+import { buildBalances, buildTotalFiatValue } from '@helpers';
+import { useFeatureFlags, useRates } from '@services';
+import { NetworkUtils, useContacts, useNetworks, useSettings } from '@services/Store';
+import { isExcludedAsset } from '@services/Store/helpers';
+import { getStoreAccounts, selectCurrentAccounts, useSelector } from '@store';
+import { BREAK_POINTS, COLORS } from '@theme';
+import translate from '@translations';
+import { Balance, CustomNodeConfig, NetworkId } from '@types';
+
+import AddOrEditNetworkNode from './components/AddOrEditNetworkNode';
 import AddressBookPanel from './components/AddressBook';
+import AddToAddressBook from './components/AddToAddressBook';
+import DangerZone from './components/DangerZone';
 import ExcludedAssetsPanel from './components/ExcludedAssets';
 import GeneralSettings from './components/GeneralSettings';
-import DangerZone from './components/DangerZone';
+import NetworkNodes from './components/NetworkNodes';
 
 const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   display: flex;
@@ -37,12 +31,6 @@ const SettingsHeading = styled(Heading)<{ forwardedAs?: string }>`
   margin-bottom: 24px;
   font-weight: bold;
   margin-top: 0;
-`;
-
-const SettingsHeadingIcon = styled.img`
-  margin-right: 24px;
-  margin-top: 2px;
-  width: 30px;
 `;
 
 const StyledLayout = styled.div`
@@ -55,15 +43,16 @@ const StyledLayout = styled.div`
   }
 `;
 
-function rendedExcludedAssetsPanel() {
-  const { accounts, totals, currentAccounts } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
-  const { getAssetRate } = useRates();
+function RendedExcludedAssetsPanel() {
+  const accounts = useSelector(getStoreAccounts);
+  const { settings } = useSettings();
+  const { getAssetRate, getAssetChange } = useRates();
+  const currentAccounts = useSelector(selectCurrentAccounts);
   const balances: Balance[] = buildBalances(
-    totals,
     currentAccounts,
     settings,
     getAssetRate,
+    getAssetChange,
     isExcludedAsset
   );
 
@@ -82,20 +71,20 @@ function rendedExcludedAssetsPanel() {
   );
 }
 
-function renderAccountPanel() {
-  const { IS_ACTIVE_FEATURE } = useFeatureFlags();
-  const { accounts } = useContext(StoreContext);
+function RenderAccountPanel() {
+  const { isFeatureActive } = useFeatureFlags();
+  const accounts = useSelector(getStoreAccounts);
   return (
     <AccountList
       accounts={accounts}
       deletable={true}
       copyable={true}
-      privacyCheckboxEnabled={IS_ACTIVE_FEATURE.PRIVATE_TAGS}
+      privacyCheckboxEnabled={isFeatureActive('PRIVATE_TAGS')}
     />
   );
 }
 
-function renderAddressPanel() {
+function RenderAddressPanel() {
   const {
     createContact,
     contacts,
@@ -125,17 +114,8 @@ function renderAddressPanel() {
   );
 }
 
-function renderNetworkNodes() {
-  const {
-    addNetwork,
-    networks: allNetworks,
-    addNodeToNetwork,
-    isNodeNameAvailable,
-    getNetworkById,
-    updateNode,
-    deleteNode
-  } = useNetworks();
-  const { createAssetWithID } = useAssets();
+function RenderNetworkNodes() {
+  const { networks: allNetworks, getNetworkById } = useNetworks();
   const { contacts } = useContacts();
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
   const [editNode, setEditNode] = useState<CustomNodeConfig | undefined>(undefined);
@@ -155,13 +135,6 @@ function renderNetworkNodes() {
               networkId={networkId}
               editNode={editNode}
               onComplete={toggleFlipped}
-              addNodeToNetwork={addNodeToNetwork}
-              isNodeNameAvailable={isNodeNameAvailable}
-              getNetworkById={getNetworkById}
-              updateNode={updateNode}
-              deleteNode={deleteNode}
-              addNetwork={addNetwork}
-              addAsset={createAssetWithID}
               isAddingCustomNetwork={isAddingNetwork}
             />
           </>
@@ -177,6 +150,7 @@ function renderNetworkNodes() {
             }}
             toggleNetworkCreation={() => {
               setAddingNetwork(true);
+              setEditNode(undefined);
               toggleFlipped();
             }}
           />
@@ -186,28 +160,27 @@ function renderNetworkNodes() {
   );
 }
 
-function renderGeneralSettingsPanel() {
-  const { updateSettings, settings } = useContext(SettingsContext);
+function RenderGeneralSettingsPanel() {
   return (
     <>
-      <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />
+      <GeneralSettings />
       <DangerZone />
     </>
   );
 }
 
 interface TabOptions {
-  [key: string]: React.ReactNode;
+  [key: string]: ReactNode;
 }
 
 export default function Settings() {
   // In Mobile view we display a tab instead
   const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
-    ['accounts']: renderAccountPanel(),
-    ['addresses']: renderAddressPanel(),
-    ['general']: renderGeneralSettingsPanel(),
-    ['nodes']: renderNetworkNodes()
+    ['accounts']: RenderAccountPanel(),
+    ['addresses']: RenderAddressPanel(),
+    ['general']: RenderGeneralSettingsPanel(),
+    ['nodes']: RenderNetworkNodes()
   };
   const currentTab = tabOptions[tab];
 
@@ -242,14 +215,20 @@ export default function Settings() {
       </Mobile>
       <Desktop>
         <SettingsHeading as="h2">
-          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+          <Icon
+            style={{ marginRight: '24px', marginTop: '2px' }}
+            type="nav-settings"
+            width="30px"
+            color={COLORS.BLUE_BRIGHT}
+            alt="Settings"
+          />
           {translate('SETTINGS_HEADING')}
         </SettingsHeading>
-        {renderAccountPanel()}
-        {renderAddressPanel()}
-        {rendedExcludedAssetsPanel()}
-        {renderNetworkNodes()}
-        {renderGeneralSettingsPanel()}
+        {RenderAccountPanel()}
+        {RenderAddressPanel()}
+        {RendedExcludedAssetsPanel()}
+        {RenderNetworkNodes()}
+        {RenderGeneralSettingsPanel()}
       </Desktop>
     </StyledLayout>
   );

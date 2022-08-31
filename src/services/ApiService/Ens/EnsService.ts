@@ -1,14 +1,13 @@
 import ApolloClient from 'apollo-boost';
-import path from 'ramda/src/path';
-import map from 'ramda/src/map';
 import filter from 'ramda/src/filter';
-import isEmpty from 'ramda/src/isEmpty';
 import flatten from 'ramda/src/flatten';
+import isEmpty from 'ramda/src/isEmpty';
+import map from 'ramda/src/map';
+import path from 'ramda/src/path';
 
-import { StoreAccount } from '@types';
-import { translateRaw } from '@translations';
 import { isENSLabelHash } from '@services/EthService/validators';
-import { DomainNameRecord } from '@features/Ens/types';
+import { translateRaw } from '@translations';
+import { DomainNameRecord, StoreAccount } from '@types';
 
 import { ENS_GRAPH_ENDPOINT } from './constants';
 import { QUERY_GET_ENS_DOMAINS } from './queries';
@@ -23,13 +22,12 @@ interface DomainNameObject {
   };
 }
 interface DomainRegistration {
-  expiryDate: number;
+  expiryDate: string;
   domain: DomainNameObject;
 }
 
 interface OwnershipRecord {
   address: string;
-  label: string;
   registrations: DomainRegistration[];
 }
 
@@ -44,13 +42,7 @@ const fetchOwnershipRecords = (accounts: StoreAccount[]): Promise<DomainNameReco
     .then(flatten);
 };
 
-const fetchOwnershipRecord = ({
-  label,
-  address
-}: {
-  label: string;
-  address: string;
-}): Promise<OwnershipRecord> => {
+const fetchOwnershipRecord = ({ address }: { address: string }): Promise<OwnershipRecord> => {
   return service
     .query({
       query: QUERY_GET_ENS_DOMAINS,
@@ -59,24 +51,20 @@ const fetchOwnershipRecord = ({
     .then((res) => res.data)
     .then((data) => ({
       address,
-      label,
       registrations: recordRegistrations(data) as DomainRegistration[]
     }));
 };
 
 const processRecord = ({
   address,
-  label,
   registrations = []
 }: {
   address: string;
-  label: string;
   registrations: DomainRegistration[];
 }) => {
   return map(
     ({ expiryDate, domain: { name } }) => ({
       owner: address,
-      ownerLabel: label,
       domainName: name,
       readableDomainName: !isENSLabelHash(name) ? name : translateRaw('ENS_DOMAIN_UNKNOWN_NAME'),
       expiryDate

@@ -1,6 +1,8 @@
-import { WalletId } from './walletId';
-import { NetworkId } from './networkId';
+import { DerivationPath } from '@mycrypto/wallets';
+
 import { TAddress } from './address';
+import { NetworkId } from './networkId';
+import { WalletId } from './walletId';
 
 export interface FormData {
   network: NetworkId;
@@ -11,5 +13,6 @@ export interface FormData {
 
 export interface IAccountAdditionData {
   address: TAddress;
-  dPath: string;
+  path?: DerivationPath;
+  index?: number;
 }

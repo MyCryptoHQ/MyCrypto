@@ -1,38 +1,41 @@
-import React, { useContext, useState } from 'react';
-import Styled from 'styled-components';
-import BN from 'bn.js';
+import { useContext, useEffect, useState } from 'react';
 
-import { StoreContext, SettingsContext, useContacts } from '@services/Store';
-import { Amount, AssetIcon, Button, PoweredByText } from '@components';
-import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from '@services/EthService';
-import { convertToFiat } from '@utils';
-import translate, { translateRaw } from '@translations';
-import { ZapSelectedBanner } from '@features/DeFiZap';
-import { BREAK_POINTS, SPACING, COLORS, FONT_SIZE } from '@theme';
-import { useRates } from '@services';
-import MembershipSelectedBanner from '@features/PurchaseMembership/components/MembershipSelectedBanner';
-import { IStepComponentProps, ITxType, ExtendedContact, ISettings } from '@types';
+import styled from 'styled-components';
+
+import { Amount, Button, InlineMessage, PoweredByText } from '@components';
+import Icon from '@components/Icon';
+import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import { getFiat } from '@config/fiats';
-import { ProtectTxContext, IFeeAmount } from '@features/ProtectTransaction/ProtectTxProvider';
+import { IFeeAmount, ProtectTxContext } from '@features/ProtectTransaction/ProtectTxProvider';
+import { useRates } from '@services';
+import { useContacts, useNetworks, useSettings } from '@services/Store';
+import { getContractName, getStoreAccounts, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { ExtendedContact, ISettings, IStepComponentProps, ITxType, Network } from '@types';
+import {
+  bigify,
+  convertToFiat,
+  fromWei,
+  isType2Tx,
+  totalTxFeeToString,
+  totalTxFeeToWei,
+  Wei
+} from '@utils';
 
+import { FromToAccount } from './displays';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TxIntermediaryDisplay from './displays/TxIntermediaryDisplay';
-import { FromToAccount } from './displays';
-import { constructSenderFromTxConfig } from './helpers';
+import { constructSenderFromTxConfig, isContractInteraction } from './helpers';
 import { ISender } from './types';
-
-import feeIcon from '@assets/images/icn-fee.svg';
-import sendIcon from '@assets/images/icn-send.svg';
-import walletIcon from '@assets/images/icn-wallet.svg';
-import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const ConfirmTransactionWrapper = Styled.div`
+const ConfirmTransactionWrapper = styled.div`
   text-align: left;
 `;
 
-const RowWrapper = Styled.div<{ stack?: boolean }>`
+const RowWrapper = styled.div<{ stack?: boolean }>`
   display: flex;
   margin-bottom: 24px;
   flex-direction: ${(props) => (props.stack ? 'column' : 'row')};
@@ -42,69 +45,50 @@ const RowWrapper = Styled.div<{ stack?: boolean }>`
   }
 `;
 
-const ColumnWrapper = Styled.div<{ bold?: boolean }>`
+const ColumnWrapper = styled.div<{ bold?: boolean }>`
   font-size: 16px;
   flex: 1;
   font-weight: ${(props) => (props.bold ? 'bold' : 'normal')};
   @media (min-width: ${SCREEN_XS}) {
     margin-bottom: 0;
   }
-  @media (min-width: ${SCREEN_XS}) {
-    font-size: 18px;
-  }
-  img {
-    width: auto;
-    height: 25px;
-    margin-right: 10px;
-  }
-  svg {
-    width: auto;
-    height: 25px;
-    margin-right: 10px;
-    vertical-align: middle;
+`;
+
+const SIcon = styled(Icon)`
+  height: 25px;
+  margin-right: ${SPACING.SM};
+  vertical-align: middle;
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    display: none;
   }
 `;
 
-const SendButton = Styled(Button)`
+const SendButton = styled(Button)`
   > div {
     justify-content: center;
   }
 `;
 
-const AmountWrapper = Styled(ColumnWrapper)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
-  img {
-    display: none;
-    @media (min-width: ${SCREEN_XS}) {
-      margin-right: 10px;
-      display: block;
-    }
-  }
-`;
-
-const Divider = Styled.div`
+const Divider = styled.div`
   height: 1px;
   margin-bottom: 20px;
   background: #e3edff;
 `;
 
-const DeFiZapLogoContainer = Styled.div`
+const DeFiZapLogoContainer = styled.div`
   margin-top: ${SPACING.BASE};
 `;
-const DeFiDisclaimerWrapper = Styled.p`
+const DeFiDisclaimerWrapper = styled.p`
   color: ${COLORS.GREY};
   margin-bottom: ${SPACING.MD};
 `;
 
-const PTXWrapper = Styled.div`
+const PTXWrapper = styled.div`
   background-color: ${COLORS.GREY_LIGHTEST};
   padding: ${SPACING.SM};
 `;
 
-const PTXHeader = Styled.p`
+const PTXHeader = styled.p`
   text-align: center;
   color: ${COLORS.BLUE_GREY};
   text-transform: uppercase;
@@ -115,34 +99,35 @@ const PTXHeader = Styled.p`
 
 export default function ConfirmTransaction({
   txType = ITxType.STANDARD,
-  membershipSelected,
-  zapSelected,
   txConfig,
   onComplete,
   signedTx,
-  protectTxButton
-}: IStepComponentProps & { protectTxButton?(): JSX.Element }) {
-  const { asset, baseAsset, receiverAddress, network, from } = txConfig;
+  error,
+  protectTxButton,
+  customComponent
+}: IStepComponentProps & { protectTxButton?(): JSX.Element; customComponent?(): JSX.Element }) {
+  const { asset, baseAsset, receiverAddress, networkId, from, rawTransaction } = txConfig;
 
   const { getContactByAddressAndNetworkId } = useContacts();
   const { getAssetRate } = useRates();
-  const { accounts } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const accounts = useSelector(getStoreAccounts);
+  const { settings } = useSettings();
+  const { getNetworkById } = useNetworks();
+  const network = getNetworkById(networkId);
   const { state: ptxState } = useContext(ProtectTxContext);
-  const ptxFee = (() => {
-    if (ptxState && ptxState.protectTxEnabled && !ptxState.isPTXFree) {
-      return ptxState.feeAmount;
-    }
-    return undefined;
-  })();
+  const ptxFee =
+    ptxState && ptxState.enabled && !ptxState.isPTXFree ? ptxState.feeAmount : undefined;
   /* Get contact info */
-  const recipientContact = getContactByAddressAndNetworkId(receiverAddress, network.id);
+  const recipientContact =
+    receiverAddress && getContactByAddressAndNetworkId(receiverAddress, network.id);
   const senderContact = getContactByAddressAndNetworkId(from, network.id);
   const sender = constructSenderFromTxConfig(txConfig, accounts);
 
   /* Get Rates */
   const assetRate = getAssetRate(asset);
   const baseAssetRate = getAssetRate(baseAsset);
+
+  const contractName = useSelector(getContractName(network.id, rawTransaction.to));
 
   return (
     <ConfirmTransactionUI
@@ -152,14 +137,16 @@ export default function ConfirmTransaction({
       senderContact={senderContact}
       sender={sender}
       txType={txType}
-      zapSelected={zapSelected}
-      membershipSelected={membershipSelected}
       txConfig={txConfig}
       recipientContact={recipientContact}
+      contractName={contractName}
       onComplete={onComplete}
       signedTx={signedTx}
       ptxFee={ptxFee}
       protectTxButton={protectTxButton}
+      customComponent={customComponent}
+      error={error}
+      network={network}
     />
   );
 }
@@ -171,8 +158,11 @@ interface DataProps {
   recipientContact?: ExtendedContact;
   senderContact?: ExtendedContact;
   sender: ISender;
+  contractName?: string;
   ptxFee?: IFeeAmount;
   protectTxButton?(): JSX.Element;
+  customComponent?(): JSX.Element;
+  network: Network;
 }
 
 type UIProps = Omit<IStepComponentProps, 'resetFlow'> & DataProps;
@@ -184,157 +174,159 @@ export const ConfirmTransactionUI = ({
   senderContact,
   sender,
   recipientContact,
-  zapSelected,
-  membershipSelected,
+  contractName,
   txType,
   txConfig,
   onComplete,
   signedTx,
   ptxFee,
-  protectTxButton
+  error,
+  protectTxButton,
+  customComponent,
+  network
 }: UIProps) => {
-  const {
-    asset,
-    gasPrice,
-    gasLimit,
-    value,
-    amount,
-    receiverAddress,
-    nonce,
-    data,
-    baseAsset
-  } = txConfig;
+  const { asset, amount, receiverAddress, baseAsset, rawTransaction } = txConfig;
+  const { nonce, data, gasLimit } = rawTransaction;
   const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
   const handleApprove = () => {
     setIsBroadcastingTx(true);
     onComplete(null);
   };
 
+  useEffect(() => {
+    error && setIsBroadcastingTx(false);
+  }, [error]);
+
   const assetType = asset.type;
 
+  const gasPrice = isType2Tx(rawTransaction)
+    ? rawTransaction.maxFeePerGas
+    : rawTransaction.gasPrice;
+
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = totalTxFeeToWei(gasPrice, gasLimit);
-  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
+  const transactionFeeWei = totalTxFeeToWei(gasPrice, rawTransaction.gasLimit);
+  const maxTransactionFeeBase = totalTxFeeToString(gasPrice, rawTransaction.gasLimit);
 
   /* Calculate total base asset amount */
-  const valueWei = Wei(value);
+  const valueWei = Wei(rawTransaction.value);
   // @todo: BN math, add amount + maxCost !In same symbol
-  const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6);
+  const totalEtherEgress = bigify(fromWei(valueWei.plus(transactionFeeWei), 'ether')).toFixed(6);
 
   const fiat = getFiat(settings);
 
+  const isContractCall = isContractInteraction(data, txType);
+
   return (
     <ConfirmTransactionWrapper>
-      {txType === ITxType.DEFIZAP && zapSelected && <ZapSelectedBanner zapSelected={zapSelected} />}
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <MembershipSelectedBanner membershipSelected={membershipSelected} />
-      )}
       <FromToAccount
-        networkId={sender.network.id}
+        networkId={sender.networkId}
         fromAccount={{
           address: sender.address,
           addressBookEntry: senderContact
         }}
         toAccount={{
-          address: receiverAddress,
+          address: receiverAddress!,
           addressBookEntry: recipientContact
         }}
-        displayToAddress={txType !== ITxType.DEFIZAP && txType !== ITxType.PURCHASE_MEMBERSHIP}
+        displayToAddress={receiverAddress && txType !== ITxType.DEPLOY_CONTRACT}
       />
-      {txType === ITxType.DEFIZAP && zapSelected && (
-        <RowWrapper>
-          <TxIntermediaryDisplay address={zapSelected.contractAddress} contractName={'DeFi Zap'} />
-        </RowWrapper>
+      {/* CONTRACT BOX */}
+
+      {rawTransaction.to && isContractCall && (
+        <div className="TransactionReceipt-row">
+          <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+        </div>
       )}
-      {assetType === 'erc20' &&
-        asset &&
-        asset.contractAddress &&
-        txType !== ITxType.PURCHASE_MEMBERSHIP && (
-          <RowWrapper>
-            <TxIntermediaryDisplay address={asset.contractAddress} contractName={asset.ticker} />
-          </RowWrapper>
-        )}
-      {txType === ITxType.PURCHASE_MEMBERSHIP && membershipSelected && (
-        <RowWrapper>
-          <TxIntermediaryDisplay
-            address={membershipSelected.contractAddress}
-            contractName={asset.ticker}
-          />
-        </RowWrapper>
+
+      {/* CUSTOM FLOW CONTENT */}
+
+      {customComponent && (
+        <>
+          {customComponent()}
+          <div className="TransactionReceipt-divider" />
+        </>
       )}
+
       <RowWrapper>
         <ColumnWrapper>
-          <img src={sendIcon} alt="Send" />
+          <SIcon type="tx-send" alt="Send" />
           {txType === ITxType.DEFIZAP
             ? translate('ZAP_CONFIRM_TX_SENDING')
             : translate('CONFIRM_TX_SENDING')}
         </ColumnWrapper>
-        <AmountWrapper>
-          <AssetIcon uuid={asset.uuid} size={'25px'} />
+        <ColumnWrapper>
           <Amount
-            assetValue={`${parseFloat(amount).toFixed(6)} ${asset.ticker}`}
+            asset={{
+              amount: bigify(amount).toFixed(6),
+              ticker: asset.ticker,
+              uuid: asset.uuid
+            }}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(amount), assetRate).toFixed(2)
+              amount: convertToFiat(bigify(amount), assetRate).toFixed(2)
             }}
           />
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       <RowWrapper>
         <ColumnWrapper>
-          <img src={feeIcon} alt="Fee" /> {translate('CONFIRM_TX_FEE')}
+          <SIcon type="tx-fee" alt="Fee" />
+          {translate('CONFIRM_TX_FEE')}
         </ColumnWrapper>
-        <AmountWrapper>
-          <AssetIcon uuid={baseAsset.uuid} size={'25px'} />
+        <ColumnWrapper>
           <Amount
-            assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
+            asset={{
+              amount: maxTransactionFeeBase,
+              ticker: baseAsset.ticker,
+              uuid: baseAsset.uuid
+            }}
             fiat={{
               symbol: getFiat(settings).symbol,
               ticker: getFiat(settings).ticker,
-              amount: convertToFiat(parseFloat(maxTransactionFeeBase), baseAssetRate).toFixed(2)
+              amount: convertToFiat(maxTransactionFeeBase, baseAssetRate).toFixed(2)
             }}
           />
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       <Divider />
       <RowWrapper>
-        <ColumnWrapper bold={true}>
-          <img src={walletIcon} alt="Total" />
+        <ColumnWrapper>
+          <SIcon type="tx-sent" alt="Total" />
           {translate('TOTAL')}
         </ColumnWrapper>
-        <AmountWrapper>
+        <ColumnWrapper>
           {assetType === 'base' ? (
-            <>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
-              <Amount
-                assetValue={`${totalEtherEgress} ${asset.ticker}`}
-                fiat={{
-                  symbol: getFiat(settings).symbol,
-                  ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(parseFloat(totalEtherEgress), assetRate).toFixed(2)
-                }}
-              />
-            </>
+            <Amount
+              asset={{
+                amount: totalEtherEgress,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(totalEtherEgress, assetRate).toFixed(2)
+              }}
+            />
           ) : (
-            <>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
-              <Amount
-                assetValue={`${amount} ${asset.ticker}`}
-                bold={true}
-                baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
-                fiat={{
-                  symbol: getFiat(settings).symbol,
-                  ticker: getFiat(settings).ticker,
-                  amount: (
-                    convertToFiat(parseFloat(amount), assetRate) +
-                    convertToFiat(parseFloat(totalEtherEgress), baseAssetRate)
-                  ).toFixed(2)
-                }}
-              />
-            </>
+            <Amount
+              asset={{
+                amount: amount,
+                ticker: asset.ticker,
+                uuid: asset.uuid
+              }}
+              baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+              fiat={{
+                symbol: getFiat(settings).symbol,
+                ticker: getFiat(settings).ticker,
+                amount: convertToFiat(amount, assetRate)
+                  .plus(convertToFiat(totalEtherEgress, baseAssetRate))
+                  .toFixed(2)
+              }}
+            />
           )}
-        </AmountWrapper>
+        </ColumnWrapper>
       </RowWrapper>
       {ptxFee && (
         <PTXWrapper>
@@ -344,48 +336,59 @@ export const ConfirmTransactionUI = ({
               <ProtectIconCheck size="sm" />
               {translate('PROTECTED_TX_PRICE')}
             </ColumnWrapper>
-            <AmountWrapper>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
+            <ColumnWrapper>
               <Amount
-                assetValue={`${ptxFee.amount!.toFixed(6)} ${asset.ticker}`}
+                asset={{
+                  amount: ptxFee.amount!.toFixed(6),
+                  ticker: asset.ticker,
+                  uuid: asset.uuid
+                }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(ptxFee.amount!.toNumber(), assetRate).toFixed(2)
+                  amount: convertToFiat(ptxFee.amount!, assetRate).toFixed(2)
                 }}
               />
-            </AmountWrapper>
+            </ColumnWrapper>
           </RowWrapper>
           <RowWrapper>
             <ColumnWrapper>
-              <img src={feeIcon} alt="Fee" />
+              <SIcon type="tx-fee" alt="Fee" />
               {translate('PROTECTED_TX_FEE')}
             </ColumnWrapper>
-            <AmountWrapper>
-              <AssetIcon uuid={asset.uuid} size={'25px'} />
+            <ColumnWrapper>
               <Amount
-                assetValue={`${ptxFee.fee!.toFixed(6)} ${asset.ticker}`}
+                asset={{
+                  amount: ptxFee.fee!.toFixed(6),
+                  ticker: asset.ticker,
+                  uuid: asset.uuid
+                }}
                 fiat={{
                   symbol: getFiat(settings).symbol,
                   ticker: getFiat(settings).ticker,
-                  amount: convertToFiat(ptxFee.fee!.toNumber(), assetRate).toFixed(2)
+                  amount: convertToFiat(ptxFee.fee!, assetRate).toFixed(2)
                 }}
               />
-            </AmountWrapper>
+            </ColumnWrapper>
           </RowWrapper>
         </PTXWrapper>
       )}
       <TransactionDetailsDisplay
         baseAsset={baseAsset}
         asset={asset}
+        assetAmount={amount}
+        value={rawTransaction.value}
         data={data}
         sender={sender}
         gasLimit={gasLimit}
-        gasPrice={gasPrice}
         nonce={nonce}
         signedTransaction={signedTx}
         fiat={fiat}
         baseAssetRate={baseAssetRate}
+        assetRate={assetRate}
+        rawTransaction={rawTransaction}
+        recipient={rawTransaction.to}
+        network={network}
       />
       {txType === ITxType.DEFIZAP && (
         <DeFiDisclaimerWrapper>{translate('ZAP_CONFIRM_DISCLAIMER')}</DeFiDisclaimerWrapper>
@@ -400,6 +403,11 @@ export const ConfirmTransactionUI = ({
       >
         {isBroadcastingTx ? translateRaw('SUBMITTING') : translateRaw('CONFIRM_AND_SEND')}
       </SendButton>
+      {error && (
+        <InlineMessage>
+          {translate('GAS_LIMIT_ESTIMATION_ERROR_MESSAGE', { $error: error })}
+        </InlineMessage>
+      )}
       {txType === ITxType.DEFIZAP && (
         <DeFiZapLogoContainer>
           <PoweredByText provider="ZAPPER" />

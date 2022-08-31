@@ -1,9 +1,11 @@
-import React, { Component, createContext } from 'react';
-import translate from '@translations';
-import { formatErrorEmail, IS_DEV } from '@utils';
+import { Component, createContext, ReactElement } from 'react';
+
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ROUTE_PATHS } from '@config';
+import translate from '@translations';
 import { IRoutePath } from '@types';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { formatErrorEmail, IS_DEV } from '@utils';
 
 interface IError {
   error: Error;
@@ -15,7 +17,7 @@ interface ProviderState {
   suppressErrors: boolean;
   toggleSuppressErrors(): void;
   shouldShowError(): boolean;
-  getErrorMessage(error: IError): React.ReactElement<any>;
+  getErrorMessage(error: IError): ReactElement<any>;
 }
 
 const ERROR_TIMEOUT_MS = 30 * 1000;
@@ -23,7 +25,7 @@ let errorTimer: any = null;
 
 export const ErrorContext = createContext({} as ProviderState);
 
-class ErrorProvider extends Component<RouteComponentProps<{}>> {
+class ErrorProvider extends Component<RouteComponentProps> {
   public state: ProviderState = {
     error: undefined,
     suppressErrors: IS_DEV, //Remove Error catching when in dev environment.
@@ -49,7 +51,7 @@ class ErrorProvider extends Component<RouteComponentProps<{}>> {
     console.error(error);
     if (!this.state.suppressErrors) {
       const path = Object.values(ROUTE_PATHS).find((p) => p.path === window.location.pathname);
-      this.props.history.replace(ROUTE_PATHS.HOME.path);
+      this.props.history.replace(ROUTE_PATHS.ROOT.path);
       this.setState({
         error: { error, path }
       });

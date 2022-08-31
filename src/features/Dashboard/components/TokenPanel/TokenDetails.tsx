@@ -1,16 +1,13 @@
-import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
-import { StoreAsset, Social } from '@types';
-import { DashboardPanel, AssetIcon, Currency } from '@components';
-import { getNetworkById, StoreContext, SettingsContext } from '@services/Store';
-import { COLORS, FONT_SIZE, SPACING } from '@theme';
-import { weiToFloat } from '@utils';
-import Icon from '@components/Icon';
+import { AssetIcon, Box, Currency, DashboardPanel, Icon, LinkApp } from '@components';
 import { getFiat } from '@config/fiats';
-
-const etherscanUrl = ' https://etherscan.io';
+import { getNetworkById, useSettings } from '@services/Store';
+import { selectNetworks, useSelector } from '@store';
+import { COLORS, FONT_SIZE, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { Social, StoreAsset, TAddress } from '@types';
+import { buildTokenUrl, weiToFloat } from '@utils';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -27,7 +24,7 @@ const InfoTitle = styled.div`
   margin-bottom: 2px;
 `;
 
-const InfoValue = styled.div`
+const InfoValue = styled(Box)`
   font-size: ${FONT_SIZE.MD};
   font-weight: normal;
   word-break: break-all;
@@ -54,13 +51,11 @@ const DetailsHeadingWrapper = styled.div`
 
 const StyledIcon = styled(Icon)`
   height: auto;
-  cursor: pointer;
   transition: 100ms transform;
   &:hover {
     transition: 100ms transform;
     transform: scale(1.1);
   }
-
   width: 40px;
   padding: ${SPACING.SM};
 `;
@@ -74,16 +69,8 @@ const TokenIcon = styled.div`
   display: flex;
 `;
 
-const ResourceIcon = styled(StyledIcon)`
+const SIcon = styled(StyledIcon)`
   width: 46px;
-  margin-left: -${SPACING.SM};
-  margin-right: ${SPACING.SM};
-`;
-
-const SocialIcon = styled(StyledIcon)`
-  width: 46px;
-  margin-left: -${SPACING.SM};
-  margin-right: ${SPACING.BASE};
 `;
 
 interface InfoPieceProps {
@@ -125,7 +112,7 @@ export function TokenDetails(props: Props) {
   const {
     website,
     whitepaper,
-    social,
+    social = {},
     networkId,
     rate = 0,
     balance,
@@ -133,22 +120,16 @@ export function TokenDetails(props: Props) {
     ticker,
     contractAddress
   } = currentToken;
-  const { networks } = useContext(StoreContext);
-  const { settings } = useContext(SettingsContext);
+  const networks = useSelector(selectNetworks);
+  const { settings } = useSettings();
   const network = getNetworkById(networkId, networks);
 
-  const contractUrl = `${
-    network && network.blockExplorer ? network.blockExplorer.origin : etherscanUrl
-  }/token/${currentToken.contractAddress}`;
+  const contractUrl = buildTokenUrl(network.blockExplorer, contractAddress as TAddress);
 
   // Find available supported social links
-  const filteredSocial = social || {};
-  Object.keys(filteredSocial).forEach(
-    (key: Social) =>
-      (!filteredSocial[key] || !supportedSocialNetworks.hasOwnProperty(key)) &&
-      delete filteredSocial[key]
+  const filteredSocial = Object.keys(social).filter((key: Social) =>
+    Object.prototype.hasOwnProperty.call(supportedSocialNetworks, key)
   );
-  const filteredSocialArray = Object.keys(filteredSocial);
 
   return (
     <DashboardPanel
@@ -162,9 +143,9 @@ export function TokenDetails(props: Props) {
         </DetailsHeadingWrapper>
       }
       headingRight={
-        <a href={contractUrl} target="_blank" rel="noreferrer">
+        <LinkApp href={contractUrl} isExternal={true}>
           <Icon type="expand" />
-        </a>
+        </LinkApp>
       }
       padChildren={true}
     >
@@ -174,6 +155,8 @@ export function TokenDetails(props: Props) {
             title={translateRaw('LATEST_PRICE')}
             value={
               <Currency
+                color={COLORS.GREY_DARKEST}
+                fontSize={FONT_SIZE.MD}
                 symbol={getFiat(settings).symbol}
                 ticker={getFiat(settings).ticker}
                 amount={rate.toString()}
@@ -198,33 +181,29 @@ export function TokenDetails(props: Props) {
           <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={ticker} />
         </Section>
       </TwoColumnsWrapper>
-      {Object.keys(filteredSocial).length > 0 && (
+      {filteredSocial.length > 0 && (
         <Section>
-          <InfoPiece
-            title={translateRaw('RESOURCES')}
-            value={
-              <>
-                {website && (
-                  <a href={website} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="website" />
-                  </a>
-                )}
-                {whitepaper && (
-                  <a href={whitepaper} target="_blank" rel="noreferrer">
-                    <ResourceIcon type="whitepaper" />
-                  </a>
-                )}
-                {social &&
-                  filteredSocialArray.map((s: Social) => {
-                    return (
-                      <a key={s} href={social[s]} target="_blank" rel="noreferrer">
-                        <SocialIcon alt={s} type={supportedSocialNetworks[s]} />
-                      </a>
-                    );
-                  })}
-              </>
-            }
-          />
+          <InfoWrapper>
+            <InfoTitle>{translateRaw('RESOURCES')}</InfoTitle>
+            <InfoValue ml={`-${SPACING.SM}`}>
+              {website && (
+                <LinkApp href={website} isExternal={true} variant="barren">
+                  <SIcon type="website" />
+                </LinkApp>
+              )}
+              {whitepaper && (
+                <LinkApp href={whitepaper} isExternal={true} variant="barren">
+                  <SIcon type="whitepaper" />
+                </LinkApp>
+              )}
+              {social &&
+                filteredSocial.map((s: Social) => (
+                  <LinkApp key={s} href={social[s] as string} isExternal={true} variant="barren">
+                    <SIcon alt={s} type={supportedSocialNetworks[s]} color="BLUE_DARK_SLATE" />
+                  </LinkApp>
+                ))}
+            </InfoValue>
+          </InfoWrapper>
         </Section>
       )}
     </DashboardPanel>

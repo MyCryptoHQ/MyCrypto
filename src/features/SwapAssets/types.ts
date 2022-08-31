@@ -1,6 +1,18 @@
 import { BigNumber } from 'bignumber.js';
+import { DistributiveOmit } from 'react-redux';
 
-import { StoreAccount, ITxObject, ITxStatus, ISwapAsset } from '@types';
+import { UniversalGasEstimationResult } from '@services';
+import {
+  ISwapAsset,
+  ITxGasLimit,
+  ITxGasPrice,
+  ITxMetadata,
+  ITxObject,
+  ITxStatus,
+  ITxType,
+  NetworkId,
+  StoreAccount
+} from '@types';
 
 export enum LAST_CHANGED_AMOUNT {
   FROM = 'FROM_AMOUNT',
@@ -25,21 +37,33 @@ export interface SwapState {
 }
 
 export interface SwapFormState {
+  selectedNetwork: NetworkId;
   account: StoreAccount;
   assets: ISwapAsset[];
   fromAsset: ISwapAsset;
   fromAmount: string;
   toAsset: ISwapAsset;
   toAmount: string;
-  fromAmountError: string | JSX.Element;
+  fromAmountError?: string | JSX.Element;
   isCalculatingFromAmount: boolean;
-  toAmountError: string | JSX.Element;
+  toAmountError?: string | JSX.Element;
   isCalculatingToAmount: boolean;
+  isEstimatingGas: boolean;
   lastChangedAmount: LAST_CHANGED_AMOUNT;
-  initialToAmount: string; // This is used to reverse the fee calculation when inputing the recipient amount. It's how we determine the fee.
-  exchangeRate: string; // The exchange rate displayed to the user (post-markup)
-  markup: string;
+  exchangeRate?: string; // The exchange rate displayed to the user
   isMulti: boolean;
+  gasPrice?: ITxGasPrice;
+  approvalGasLimit?: ITxGasLimit;
+  tradeGasLimit?: ITxGasLimit;
+  approvalTx?: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
+    txType: ITxType;
+  };
+  expiration?: number;
+  tradeTx?: DistributiveOmit<ITxObject, 'nonce' | 'gasLimit'> & {
+    txType: ITxType;
+    metadata: ITxMetadata;
+  };
+  gas?: { estimate: UniversalGasEstimationResult; baseFee?: BigNumber };
 }
 
 export interface IAssetPair {
@@ -49,7 +73,6 @@ export interface IAssetPair {
   fromAmount: BigNumber;
   toAmount: BigNumber;
   rate: BigNumber;
-  markup: BigNumber;
 }
 
 export type SwapDisplayData = Pick<IAssetPair, 'fromAsset' | 'toAsset' | 'fromAmount' | 'toAmount'>;

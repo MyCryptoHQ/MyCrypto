@@ -1,52 +1,17 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer, decodeTransfer } from './contracts';
-export { Web3Node, isWeb3Node, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
-  makeExplorer,
-  stripHexPrefix,
-  stripHexPrefixAndLower,
-  gasPriceToBase,
-  fromWei,
-  baseToConvertedUnit,
-  normalise,
-  getTransactionFields,
-  makeTransaction,
-  hexEncodeData,
-  hexEncodeQuantity,
-  hexToNumber,
-  fromTokenBase,
-  bigNumGasLimitToViewable,
-  hexValueToViewableEther,
-  hexToString,
-  hexWeiToString,
-  bigNumGasPriceToViewableGwei,
-  bigNumGasPriceToViewableWei,
-  bigNumValueToViewableEther,
-  inputGasPriceToHex,
-  inputValueToHex,
-  inputGasLimitToHex,
-  inputNonceToHex,
-  totalTxFeeToString,
-  totalTxFeeToWei,
-  verifySignedMessage,
-  decryptMnemonicToPrivKey,
-  gasStringsToMaxGasNumber,
-  getStatusFromHash,
-  getTimestampFromBlockNum,
-  getTransactionReceiptFromHash,
-  getTxStatus,
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  messageToData,
-  appendNonce,
-  appendGasLimit,
-  appendGasPrice,
-  appendSender
-} from './utils';
+  Contract,
+  ERC20,
+  encodeTransfer,
+  decodeTransfer,
+  decodeApproval,
+  RepV2Token,
+  AntMigrator,
+  GolemV2Migration
+} from './contracts';
+export { setupWeb3Node, getApprovedAccounts, requestAccounts } from './web3';
 export {
   isValidPath,
-  isValidEncryptedPrivKey,
-  isValidPrivKey,
   isValidETHAddress,
   isValidHex,
   isValidPositiveOrZeroInteger,
@@ -54,34 +19,11 @@ export {
   isValidNonZeroInteger,
   gasPriceValidator,
   gasLimitValidator,
-  isValidGetBalance,
-  isValidEstimateGas,
-  isValidCallRequest,
-  isValidTokenBalance,
-  isValidTransactionCount,
-  isValidTransactionByHash,
-  isValidTransactionReceipt,
-  isValidCurrentBlock,
-  isValidRawTxApi,
-  isValidSendTransaction,
-  isValidSignMessage,
-  isValidGetAccounts,
-  isValidGetNetVersion,
   isValidAddress,
   isTransactionFeeHigh,
   isChecksumAddress,
   isBurnAddress,
-  isValidRequestPermissions
+  isValidETHRecipientAddress
 } from './validators';
 export { ProviderHandler, getDPath, getDPaths } from './network';
-export { getResolvedENSAddress } from './ens';
-export {
-  Wei,
-  TokenValue,
-  Address,
-  toWei,
-  getDecimalFromEtherUnit,
-  toTokenBase,
-  calculateGasUsedPercentage
-} from './utils/units';
-export * from './ens';
+export { isValidENSName } from './ens';

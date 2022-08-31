@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { TUuid, Balance, Fiat, IAccount } from '@types';
-import { SettingsContext } from '@services/Store';
-import { BalanceDetailsTable, Tooltip, AddIcon, DashboardPanel } from '@components';
+
+import { AddIcon, BalanceDetailsTable, DashboardPanel, Tooltip } from '@components';
+import { ColumnAction } from '@components/BalanceDetailsTable';
+import { useSettings } from '@services/Store';
 import { translateRaw } from '@translations';
+import { Balance, Fiat, IAccount } from '@types';
+import { useScreenSize } from '@utils';
 
 const SIconContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
-  const { removeAssetfromExclusionList } = useContext(SettingsContext);
+const UnHideAssetButton: ColumnAction = ({ uuid }) => {
+  const { removeAssetfromExclusionList } = useSettings();
   return (
     <SIconContainer onClick={() => removeAssetfromExclusionList(uuid)}>
       <Tooltip tooltip={translateRaw('UNHIDE_ASSET_TOOLTIP')}>
@@ -25,13 +27,14 @@ const UnHideAssetButton = ({ uuid }: { uuid: TUuid }) => {
 
 interface ExcludedAssetsProps {
   balances: Balance[];
-  totalFiatValue: number;
+  totalFiatValue: string;
   fiat: Fiat;
   accounts: IAccount[];
   selected: string[];
 }
 
 const ExcludedAssets = (props: ExcludedAssetsProps) => {
+  const { isMobile } = useScreenSize();
   return (
     <>
       {props.balances && props.balances.length !== 0 && (
@@ -44,7 +47,11 @@ const ExcludedAssets = (props: ExcludedAssetsProps) => {
           }
           className={`ExcludedAssetTableList E`}
         >
-          <BalanceDetailsTable {...props} createFirstButton={UnHideAssetButton} />
+          <BalanceDetailsTable
+            isMobile={isMobile}
+            {...props}
+            firstAction={(props) => <UnHideAssetButton {...props} isMobile={isMobile} />}
+          />
         </DashboardPanel>
       )}
     </>

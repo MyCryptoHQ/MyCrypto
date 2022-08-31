@@ -1,30 +1,26 @@
-import React from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 
-import { Tooltip, LinkOut, Account, FixedSizeCollapsibleTable } from '@components';
-import { translateRaw } from '@translations';
-import { breakpointToNumber, BREAK_POINTS } from '@theme';
-import { IconID } from '@components/Tooltip';
+import { Account, Box, FixedSizeCollapsibleTable, Icon, LinkApp, Tooltip } from '@components';
 import { ENS_MANAGER_URL, SECONDS_IN_MONTH } from '@config/constants';
+import { useContacts } from '@services/Store';
+import { BREAK_POINTS, breakpointToNumber } from '@theme';
+import { translateRaw } from '@translations';
+import { DomainNameRecord, TAddress } from '@types';
+import { formatDateTime, getTimeDifference } from '@utils';
 
-import { MyDomainsProps, DomainNameRecord } from './types';
+import { MyDomainsProps } from './types';
 
 const Label = styled.span`
   display: flex;
   align-items: center;
 `;
 
-const RowAlignment = styled.div`
-  float: ${(props: { align?: string }) => props.align || 'inherit'};
+const RowAlignment = styled.div<{ align?: string }>`
+  float: ${({ align = 'inherit' }) => align};
 `;
 
-const isLessThanAMonth = (date: number, now: number) => date - now <= SECONDS_IN_MONTH;
-
 export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
-  const formatDate = (timestamp: number): string =>
-    moment.unix(timestamp).format('YYYY-MM-DD H:mm A');
-
+  const { getContactByAddressAndNetworkId } = useContacts();
   const domainTable = {
     head: [
       '',
@@ -34,23 +30,35 @@ export default function MyDomains({ domainOwnershipRecords }: MyDomainsProps) {
       translateRaw('ENS_MY_DOMAINS_TABLE_RENEW_HEADER')
     ],
     body: domainOwnershipRecords.map((record: DomainNameRecord, index: number) => {
+      const unixTimestamp = parseInt(record.expiryDate, 10);
       return [
         <RowAlignment key={index}>
-          {isLessThanAMonth(record.expiryDate, moment().unix()) && (
-            <Tooltip type={IconID.warning} tooltip={translateRaw('ENS_EXPIRING_SOON')} />
+          {getTimeDifference(new Date(), unixTimestamp) < SECONDS_IN_MONTH && (
+            <Tooltip type="warning" tooltip={translateRaw('ENS_EXPIRING_SOON')} />
           )}
         </RowAlignment>,
         <Label key={2}>
-          <Account title={record.ownerLabel} address={record.owner} truncate={true} />
+          <Account
+            title={getContactByAddressAndNetworkId(record.owner as TAddress, 'Ethereum')?.label}
+            address={record.owner}
+            truncate={true}
+          />
         </Label>,
         <RowAlignment key={3} align="left">
           {record.readableDomainName}
         </RowAlignment>,
         <RowAlignment key={4} align="left">
-          {formatDate(record.expiryDate)}
+          {formatDateTime(unixTimestamp)}
         </RowAlignment>,
         <RowAlignment key={5} align="left">
-          <LinkOut link={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`} />
+          <LinkApp
+            isExternal={true}
+            href={`${ENS_MANAGER_URL}/name/${record.domainName}?utm_source=mycrypto`}
+          >
+            <Box display={'inline-flex'} alignItems={'center'}>
+              <Icon type="link-out" width="1em" />
+            </Box>
+          </LinkApp>
         </RowAlignment>
       ];
     }),

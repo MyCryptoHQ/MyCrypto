@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
 import { Input } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { Asset } from '@types';
 import { sanitizeDecimalSeparator } from '@utils';
 
 import AssetIcon from './AssetIcon';
+import Box from './Box';
 import Typography from './Typography';
 
 interface Props {
@@ -24,7 +24,7 @@ const SInput = styled(Input)`
 `;
 
 const SAssetIcon = styled(AssetIcon)`
-  margin-right: 16px;
+  margin-right: 1ch;
 `;
 
 function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: Props) {
@@ -41,10 +41,10 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
       placeholder={placeholder}
       iconSide={'right'}
       icon={() => (
-        <div>
+        <Box variant="rowCenter">
           {asset.ticker && <SAssetIcon uuid={asset.uuid} size={'1.5rem'} />}
           <Typography>{asset.ticker}</Typography>
-        </div>
+        </Box>
       )}
     />
   );

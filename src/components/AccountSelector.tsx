@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
-import { formatEther } from 'ethers/utils';
+import { useMemo } from 'react';
+
+import { formatUnits } from '@ethersproject/units';
 import { OptionProps } from 'react-select';
 
-import { translateRaw } from '@translations';
 import { AccountSummary, Divider, Selector } from '@components';
+import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { getAccountBalance, getBaseAsset } from '@services/Store';
 import { SPACING } from '@theme';
-import { StoreAccount, Asset, TUuid, TTicker } from '@types';
+import { translateRaw } from '@translations';
+import { Asset, StoreAccount, TTicker, TUuid } from '@types';
 import { sortByLabel } from '@utils';
 import { compose, map } from '@vendor';
-import { getAccountBalance, getBaseAsset } from '@services/Store';
 
 interface Props {
   accounts: StoreAccount[];
@@ -41,7 +43,10 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
     map((a: StoreAccount) => ({
       account: a,
       asset: {
-        balance: formatEther(asset ? getAccountBalance(a, asset) : getAccountBalance(a)),
+        balance: formatUnits(
+          asset ? getAccountBalance(a, asset) : getAccountBalance(a),
+          asset?.decimal ?? DEFAULT_ASSET_DECIMAL
+        ),
         assetUUID: asset ? asset.uuid : getBaseAsset(a)!.uuid,
         assetTicker: asset ? asset.ticker : getBaseAsset(a)!.ticker
       }
@@ -64,7 +69,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
       options={options}
       onChange={handleFormUpdate}
       getOptionLabel={(option) => option.account.label}
-      optionComponent={({ data, selectOption }: OptionProps<TOption>) => {
+      optionComponent={({ data, selectOption }: OptionProps<TOption, false>) => {
         const { account, asset: selectedAsset } = data;
         const { address, label } = account;
         const { balance, assetUUID, assetTicker } = selectedAsset;
@@ -77,8 +82,9 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
               assetTicker={assetTicker}
               label={label}
               onClick={() => selectOption(data)}
+              paddingLeft="15px"
             />
-            <Divider padding={SPACING.XS} />
+            <Divider />
           </>
         );
       }}
@@ -92,6 +98,7 @@ function AccountSelector({ accounts, asset, name, value, onSelect }: Props) {
             label={label}
             uuid={assetUUID}
             assetTicker={assetTicker}
+            paddingLeft={SPACING.XS}
           />
         );
       }}

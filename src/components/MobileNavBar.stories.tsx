@@ -1,4 +1,3 @@
-import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import MobileNavBar from './MobileNavBar';
@@ -23,7 +22,7 @@ const mobileNavBar = () => (
   </div>
 );
 
-storiesOf('MobileNavBar', module).add('Settings nav bar', (_) => mobileNavBar(), {
+storiesOf('Molecules/MobileNavBar', module).add('Settings nav bar', () => mobileNavBar(), {
   design: {
     type: 'figma',
     url:

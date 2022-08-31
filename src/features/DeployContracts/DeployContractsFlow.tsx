@@ -1,17 +1,18 @@
-import React, { useState, useContext } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useState } from 'react';
+
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
 import { ExtendedContentPanel, Tabs, WALLET_STEPS } from '@components';
 import { ROUTE_PATHS } from '@config';
-import { useStateReducer } from '@utils';
-import { ISignedTx, IPendingTxReceipt, Tab } from '@types';
+import { getDefaultAccount, useSelector } from '@store';
 import { BREAK_POINTS } from '@theme';
-import { StoreContext } from '@services';
+import { translateRaw } from '@translations';
+import { IPendingTxReceipt, ISignedTx, Tab } from '@types';
+import { useStateReducer } from '@utils';
 
-import { deployContractsInitialState, DeployContractsFactory } from './stateFactory';
 import { Deploy, DeployConfirm, DeployReceipt } from './components';
+import { DeployContractsFactory, deployContractsInitialState } from './stateFactory';
 import { DeployContractsState } from './types';
 
 const { SCREEN_XS } = BREAK_POINTS;
@@ -45,9 +46,9 @@ const TabsWrapper = styled.div`
   width: fit-content;
 `;
 
-const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
+export const DeployContractsFlow = ({ history, location }: RouteComponentProps) => {
   const [step, setStep] = useState(0);
-  const { defaultAccount } = useContext(StoreContext);
+  const defaultAccount = useSelector(getDefaultAccount());
   const {
     handleNetworkSelected,
     handleDeploySubmit,
@@ -55,6 +56,8 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
     handleAccountSelected,
     handleTxSigned,
     handleGasSelectorChange,
+    handleGasLimitChange,
+    handleNonceChange,
     deployContractsState
   } = useStateReducer(DeployContractsFactory, {
     ...deployContractsInitialState,
@@ -62,7 +65,6 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
   });
 
   const { account }: DeployContractsState = deployContractsState;
-  const { history, location } = props;
 
   const goToFirstStep = () => {
     setStep(0);
@@ -104,18 +106,15 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('DEPLOY_CONTRACTS'),
       component: Deploy,
-      props: (({ networkId, byteCode, rawTransaction }) => ({
-        account,
-        networkId,
-        byteCode,
-        rawTransaction
-      }))(deployContractsState),
+      props: deployContractsState,
       actions: {
         handleByteCodeChanged,
         handleNetworkSelected,
         handleDeploySubmit: () => handleDeploySubmit(goToNextStep),
         handleAccountSelected,
-        handleGasSelectorChange
+        handleGasSelectorChange,
+        handleNonceChange,
+        handleGasLimitChange
       }
     },
     {
@@ -127,10 +126,10 @@ const DeployContractsFlow = (props: RouteComponentProps<{}>) => {
     {
       title: translateRaw('DEPLOY_SIGN'),
       component: account && WALLET_STEPS[account.wallet],
-      props: (({ rawTransaction }) => ({
+      props: (({ txConfig }) => ({
         network: account && account.network,
         senderAccount: account,
-        rawTransaction
+        rawTransaction: txConfig?.rawTransaction
       }))(deployContractsState),
       actions: {
         onSuccess: (payload: IPendingTxReceipt | ISignedTx) => handleTxSigned(payload, goToNextStep)

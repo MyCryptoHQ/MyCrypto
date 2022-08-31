@@ -1,13 +1,17 @@
-import { TestOptions } from 'yup';
 import { isHexPrefixed } from 'ethjs-util';
+import { TestOptions } from 'yup';
+
+import { DEFAULT_ASSET_DECIMAL } from '@config';
 import {
-  isValidHex,
-  gasPriceValidator,
   gasLimitValidator,
+  gasPriceValidator,
+  isValidHex,
   isValidPositiveNumber
 } from '@services/EthService';
-import { translateRaw } from '@translations';
 import { isValidPositiveOrZeroInteger } from '@services/EthService/validators';
+import { translateRaw } from '@translations';
+import { Asset, IFormikFields } from '@types';
+import { bigify, gasStringsToMaxGasBN, toWei } from '@utils';
 
 export function validateGasPriceField(): TestOptions {
   return {
@@ -48,3 +52,18 @@ export function validateAmountField(): TestOptions {
     test: (value) => isValidPositiveNumber(value)
   };
 }
+
+export const canAffordTX = (
+  baseAsset: Asset,
+  { account, asset, gasLimitField, amount }: IFormikFields,
+  gasPrice: string
+) => {
+  const gasLimit = gasLimitField;
+  const gasTotal = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
+  const total =
+    asset.type === 'base'
+      ? gasTotal.plus(bigify(toWei(amount, baseAsset.decimal ?? DEFAULT_ASSET_DECIMAL).toString()))
+      : gasTotal;
+  const storeBaseAsset = account.assets && account.assets.find((a) => a.uuid === baseAsset.uuid);
+  return storeBaseAsset ? total.lte(bigify(storeBaseAsset.balance)) : false;
+};

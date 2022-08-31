@@ -1,16 +1,12 @@
-import React, { useContext, useState } from 'react';
-import styled from 'styled-components';
 import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { StoreContext } from '@services';
-import EnsService from '@services/ApiService/Ens/EnsService.ts';
-import { DashboardPanel, PoweredByText } from '@components';
-import { translateRaw } from '@translations';
+import { Box, DashboardPanel, Icon, LinkApp, PoweredByText, Text } from '@components';
+import { ROUTE_PATHS } from '@config';
+import { getENSFetched, getENSRecords, useSelector } from '@store';
 import { BREAK_POINTS, SPACING } from '@theme';
-import { useEffectOnce, usePromise } from '@vendor/react-use';
-import { isEthereumAccount } from '@services/Store/Account/helpers';
+import { translateRaw } from '@translations';
 
-import { DomainNameRecord } from './types';
 import { EnsTable } from './EnsTable';
 
 const DashboardWrapper = styled.div`
@@ -33,37 +29,9 @@ const StyledLayout = styled.div`
   }
 `;
 
-export interface MyDomainsData {
-  records: DomainNameRecord[];
-  isFetched: boolean;
-}
-
-const defaultData: MyDomainsData = {
-  records: [] as DomainNameRecord[],
-  isFetched: false
-};
-
 export default function EnsDashboard() {
-  const { accounts } = useContext(StoreContext);
-  const [ensOwnershipRecords, setEnsOwnershipRecords] = useState(defaultData);
-  const mounted = usePromise();
-
-  // Only use the accounts on the Ethereum mainnet network
-  const accountsEthereumNetwork = accounts.filter(isEthereumAccount);
-
-  useEffectOnce(() => {
-    (async () => {
-      const ownershipRecords: MyDomainsData = await mounted(
-        EnsService.fetchOwnershipRecords(accountsEthereumNetwork).then(
-          (data: DomainNameRecord[]) => ({
-            records: data,
-            isFetched: true
-          })
-        )
-      );
-      setEnsOwnershipRecords(ownershipRecords);
-    })();
-  });
+  const ensOwnershipRecords = useSelector(getENSRecords);
+  const isEnsFetched = useSelector(getENSFetched);
 
   return (
     <StyledLayout>
@@ -73,14 +41,31 @@ export default function EnsDashboard() {
         </DashboardSubHeader>
         <DashboardPanel
           heading={translateRaw('ENS_MY_DOMAINS_TABLE_HEADER')}
-          headingRight={<PoweredByText provider="ENS" />}
+          headingRight={
+            <Box variant="rowAlign">
+              <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
+                <Box variant="rowAlign">
+                  <Icon type="edit" width="1em" color="BLUE_SKY" />
+                  <Text ml={SPACING.XS} mb={0}>
+                    {translateRaw('EDIT')}
+                  </Text>
+                </Box>
+              </LinkApp>
+              <LinkApp href={ROUTE_PATHS.ADD_ACCOUNT.path} variant="opacityLink">
+                <Box variant="rowAlign">
+                  <Icon type="add-bold" width="1em" />
+                  <Text ml={SPACING.XS} mb={0}>
+                    {translateRaw('ADD')}
+                  </Text>
+                </Box>
+              </LinkApp>
+            </Box>
+          }
         >
-          <EnsTable
-            records={ensOwnershipRecords.records}
-            isFetched={ensOwnershipRecords.isFetched}
-          />
+          <EnsTable records={ensOwnershipRecords} isFetched={isEnsFetched} />
         </DashboardPanel>
       </DashboardWrapper>
+      {<PoweredByText provider="ENS" />}
     </StyledLayout>
   );
 }

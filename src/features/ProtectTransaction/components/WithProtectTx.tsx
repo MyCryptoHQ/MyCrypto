@@ -1,7 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Panel } from '@mycrypto/ui';
+import { ComponentType, useCallback, useContext, useEffect, useState } from 'react';
 
+import { Panel } from '@mycrypto/ui';
+import styled from 'styled-components';
+
+import { ContentPanel } from '@components';
+import { PROTECTED_TX_FEE_ADDRESS } from '@config';
+import { processFormDataToTx } from '@features/SendAssets/helpers';
+import { useTxMulti } from '@hooks';
+import { useFeatureFlags } from '@services';
+import { BREAK_POINTS } from '@theme';
 import {
   IFormikFields,
   ISignedTx,
@@ -12,20 +19,14 @@ import {
   ITxSigned,
   ITxToAddress
 } from '@types';
-import { isWeb3Wallet, useTxMulti, useScreenSize } from '@utils';
-import { BREAK_POINTS } from '@theme';
-import { processFormDataToTx } from '@features/SendAssets/helpers';
-import { PROTECTED_TX_FEE_ADDRESS } from '@config';
-import { useFeatureFlags } from '@services';
-import { ContentPanel } from '@components';
+import { isWeb3Wallet, useScreenSize } from '@utils';
 
-import { ProtectTxProtection } from './ProtectTxProtection';
-import { ProtectTxSign } from './ProtectTxSign';
-import { ProtectTxReport } from './ProtectTxReport';
 import { ProtectTxContext } from '../ProtectTxProvider';
-import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
-import { ProtectTxStepper } from './ProtectTxStepper';
 import { ProtectTxButton } from './ProtectTxButton';
+import { ProtectTxProtection } from './ProtectTxProtection';
+import { ProtectTxReport } from './ProtectTxReport';
+import { ProtectTxSign } from './ProtectTxSign';
+import { ProtectTxStepper } from './ProtectTxStepper';
 
 const WithProtectTxWrapper = styled.div`
   display: flex;
@@ -52,6 +53,7 @@ const WithProtectTxMain = styled.div<{ protectTxShow: boolean }>`
 
 const WithProtectTxSide = styled.div`
   position: absolute;
+  z-index: 999;
   left: 50%;
   transform: translateX(-50%);
   width: 375px;
@@ -78,29 +80,31 @@ interface Props extends IStepComponentProps {
   protectTxButton?(): JSX.Element;
 }
 
-export function withProtectTx(WrappedComponent: React.ComponentType<Props>, heading: string = '') {
+export function withProtectTx(WrappedComponent: ComponentType<Props>, showButton?: boolean) {
   return function WithProtectTransaction({
     txConfig: txConfigMain,
     signedTx: signedTxMain,
     txReceipt: txReceiptMain,
+    txQueryType: txQueryTypeMain,
     onComplete: onCompleteMain,
     customDetails,
     resetFlow,
+    heading,
     ...props
-  }: Props) {
+  }: Props & { heading: string }) {
     const [protectTx, setProtectTx] = useState<ITxObject | null>(null);
     const { state, initWith, prepareTx, sendTx } = useTxMulti();
     const { transactions, _currentTxIdx, account, network } = state;
 
     const {
-      state: { protectTxShow, protectTxEnabled, stepIndex, isPTXFree },
+      state: { protectTxShow, enabled, stepIndex, isPTXFree },
       setWeb3Wallet,
       goToNextStep,
       handleTransactionReport,
       showHideProtectTx
     } = useContext(ProtectTxContext);
 
-    const { IS_ACTIVE_FEATURE } = useFeatureFlags();
+    const { featureFlags } = useFeatureFlags();
 
     // Wait for useTxMulti to finish initWith
     useEffect(() => {
@@ -120,8 +124,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
           {
             component: ProtectTxProtection,
             actions: {
-              handleProtectTxSubmit: async () => {
-                await handleTransactionReport();
+              handleProtectTxSubmit: async (payload: IFormikFields) => {
+                await handleTransactionReport(payload.address.value, payload.network);
                 goToNextStep();
               }
             }
@@ -176,20 +180,31 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
 
     return (
       <WithProtectTxWrapper>
-        <ContentPanel heading={heading} basic={!IS_ACTIVE_FEATURE.PROTECT_TX}>
+        <ContentPanel heading={heading} basic={!featureFlags.PROTECT_TX}>
           <WithProtectTxMain protectTxShow={protectTxShow}>
             <WrappedComponent
               txConfig={txConfigMain}
               signedTx={signedTxMain}
               txReceipt={txReceiptMain}
+              txQueryType={txQueryTypeMain}
               onComplete={(values: IFormikFields | ITxReceipt | ISignedTx | null) => {
                 onCompleteMain(values);
               }}
               customDetails={customDetails}
               resetFlow={resetFlow}
               protectTxButton={() =>
-                protectTxEnabled ? (
-                  <ProtectTxButton reviewReport={true} onClick={toggleProtectTxShow} />
+                enabled || showButton ? (
+                  <ProtectTxButton
+                    reviewReport={enabled}
+                    onClick={toggleProtectTxShow}
+                    protectTxShow={protectTxShow}
+                    stepper={() => (
+                      <ProtectTxStepper
+                        currentStepIndex={stepIndex}
+                        steps={protectTxStepperSteps}
+                      />
+                    )}
+                  />
                 ) : (
                   <></>
                 )
@@ -198,9 +213,8 @@ export function withProtectTx(WrappedComponent: React.ComponentType<Props>, head
             />
           </WithProtectTxMain>
         </ContentPanel>
-        {protectTxShow && (
+        {protectTxShow && isMdScreen && (
           <>
-            {!isMdScreen && <ProtectTxModalBackdrop onBackdropClick={toggleProtectTxShow} />}
             <WithProtectTxSide>
               <Panel>
                 <ProtectTxStepper currentStepIndex={stepIndex} steps={protectTxStepperSteps} />

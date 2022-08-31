@@ -1,7 +1,5 @@
-import { bufferToHex } from 'ethereumjs-util';
+import { getChainIdAndLib, requestAccounts } from '@services/EthService/web3';
 
-import { Web3Node, getTransactionFields, makeTransaction } from '@services/EthService';
-import { INode, ITxFromAddress } from '@types';
 import { IFullWallet } from '../IWallet';
 
 export default class Web3Wallet implements IFullWallet {
@@ -14,7 +12,7 @@ export default class Web3Wallet implements IFullWallet {
     this.network = network;
   }
 
-  public getAddressString(): string {
+  public getAddress(): string {
     return this.address;
   }
 
@@ -22,63 +20,9 @@ export default class Web3Wallet implements IFullWallet {
     return Promise.reject(new Error('Web3 wallets cannot sign raw transactions.'));
   }
 
-  public async signMessage(msg: string, nodeLib: Web3Node | INode): Promise<string> {
-    const msgHex = bufferToHex(Buffer.from(msg));
+  public async signMessage(msg: string): Promise<string> {
+    const { lib: web3 } = await getChainIdAndLib();
 
-    if (!nodeLib) {
-      throw new Error('');
-    }
-    /*
-    if (!isWeb3Node(nodeLib)) {
-      throw new Error('Web3 wallets can only be used with a Web3 node.');
-    }*/
-
-    return (nodeLib as Web3Node).signMessage(msgHex, this.address);
-  }
-
-  public async sendTransaction(
-    serializedTransaction: string,
-    nodeLib: Web3Node,
-    networkConfig: any
-  ): Promise<string> {
-    const transactionInstance = makeTransaction(serializedTransaction);
-    const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = getTransactionFields(
-      transactionInstance
-    );
-    const from = this.address as ITxFromAddress;
-    const web3Tx = {
-      from,
-      to,
-      value,
-      gas,
-      gasPrice,
-      data,
-      nonce,
-      chainId
-    };
-
-    if (!nodeLib) {
-      throw new Error('');
-    }
-
-    /*
-    if (!isWeb3Node(nodeLib)) {
-      throw new Error('Web3 wallets can only be used with a Web3 node.');
-    }*/
-    await this.networkCheck(nodeLib, networkConfig);
-
-    return nodeLib.sendTransaction(web3Tx);
-  }
-
-  private async networkCheck(lib: Web3Node, networkConfig: any) {
-    const netId = await lib.getNetVersion();
-
-    if (!networkConfig) {
-      throw new Error(`MyCrypto doesn’t support the network with chain ID '${netId}'`);
-    } else if (this.network !== networkConfig.id) {
-      throw new Error(
-        `Expected MetaMask / Web3 network to be ${this.network}, but got ${networkConfig.id}. Please change the network or refresh the page.`
-      );
-    }
+    return requestAccounts(web3).then(() => web3.getSigner(this.address).signMessage(msg));
   }
 }

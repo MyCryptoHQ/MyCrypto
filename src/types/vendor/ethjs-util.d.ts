@@ -1,5 +1,5 @@
 declare module 'ethjs-util' {
-  export function arrayContainsArray(arrayA: any[], arrayB: any[]): Boolean;
+  export function arrayContainsArray(arrayA: any[], arrayB: any[]): boolean;
   export function getBinarySize(num: string): number;
   export function intToBuffer(integer: number): Buffer;
   export function isHexPrefixed(hex: string): boolean;

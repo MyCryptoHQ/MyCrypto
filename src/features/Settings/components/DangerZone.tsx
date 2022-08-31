@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { Button, Icon } from '@mycrypto/ui';
-import { COLORS, SPACING, BREAK_POINTS, FONT_SIZE } from '@theme';
-import translate from '@translations';
-import { DataContext } from '@services/Store';
-import { DashboardPanel, Tooltip } from '@components';
+import { FC, useState } from 'react';
 
-const Divider = styled.div`
-  height: 2px;
-  margin-bottom: ${SPACING.BASE};
-  background: ${COLORS.GREY_ATHENS};
-`;
+import { Button } from '@mycrypto/ui';
+import { AnyAction, bindActionCreators, Dispatch } from '@reduxjs/toolkit';
+import { connect, ConnectedProps } from 'react-redux';
+import styled from 'styled-components';
+
+import { DashboardPanel, Divider, RowDeleteOverlay, SubHeading, Tooltip } from '@components';
+import { appReset } from '@store';
+import { BREAK_POINTS, SPACING } from '@theme';
+import translate, { translateRaw } from '@translations';
 
 const SettingsField = styled.div`
   display: flex;
@@ -22,19 +20,7 @@ const SettingsField = styled.div`
   }
 `;
 
-const SettingsLabel = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: ${FONT_SIZE.LG};
-  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 100%;
-  }
-`;
-
 const SettingsControl = styled.div`
-  button {
-    margin-left: ${SPACING.SM};
-  }
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-top: ${SPACING.SM};
     width: 100%;
@@ -46,34 +32,49 @@ const SettingsButton = styled(Button)`
   padding: ${SPACING.SM};
 `;
 
-const SettingsTooltipIcon = styled(Icon)`
-  margin-left: ${SPACING.SM};
-  height: 1em;
+const SDashboardPanel = styled(DashboardPanel)`
+  border: 1px solid ${({ theme }) => theme.colors.warning};
 `;
 
-const DangerZone: React.FC = () => {
-  const { resetAppDb } = useContext(DataContext);
+const DangerZone: FC<Props> = ({ appReset }) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
-    <DashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
-      <Divider style={{ borderBottom: '1px solid red' }} />
-      <SettingsField>
-        <SettingsLabel>
-          {translate('SETTINGS_DB_RESET_LABEL')}{' '}
-          <Tooltip tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>}>
-            <div>
-              <SettingsTooltipIcon icon="shape" />
-            </div>
-          </Tooltip>
-        </SettingsLabel>
-        <SettingsControl>
-          <SettingsButton secondary={true} onClick={() => resetAppDb()}>
-            {translate('SETTINGS_DB_RESET_ACTION')}
-          </SettingsButton>
-        </SettingsControl>
-      </SettingsField>
-    </DashboardPanel>
+    <SDashboardPanel heading={translate('SETTINGS_DANGER_ZONE')}>
+      <Divider mb={SPACING.BASE} />
+      {confirmDelete ? (
+        <RowDeleteOverlay
+          prompt={translateRaw('DANGERZONE_CONFIRM')}
+          deleteText={translateRaw('SETTINGS_DB_RESET_ACTION')}
+          deleteAction={() => {
+            appReset();
+            setConfirmDelete(false);
+          }}
+          cancelAction={() => setConfirmDelete(false)}
+        />
+      ) : (
+        <SettingsField>
+          <SubHeading fontWeight="initial">
+            {translate('SETTINGS_DB_RESET_LABEL')}{' '}
+            <Tooltip
+              width="16px"
+              tooltip={<span>{translate('SETTINGS_DANGER_ZONE_TOOLTIP')}</span>}
+            />
+          </SubHeading>
+          <SettingsControl>
+            <SettingsButton secondary={true} onClick={() => setConfirmDelete(true)}>
+              {translate('SETTINGS_DB_RESET_ACTION')}
+            </SettingsButton>
+          </SettingsControl>
+        </SettingsField>
+      )}
+    </SDashboardPanel>
   );
 };
 
-export default DangerZone;
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators({ appReset }, dispatch);
+
+const connector = connect(null, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
+export default connector(DangerZone);

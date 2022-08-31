@@ -1,7 +1,7 @@
-import { Selector, ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
 
-import { PAGES } from './fixtures';
 import AddAccountPage from './addaccount-page.po';
+import { PAGES } from './fixtures';
 
 const addAccount = new AddAccountPage();
 fixture('Dashboard').page(PAGES.DASHBOARD);
@@ -17,12 +17,11 @@ test('It contains a favicon tag', async (t) => {
   const favicon = Selector('head link[rel=icon]');
   const hasHref = await favicon.hasAttribute('href');
 
-  await t.expect(favicon).ok();
+  await t.expect(favicon.exists).ok();
   await t.expect(hasHref).ok();
 });
 
-// For iframe of landing page
-// ie. <MigrateLS />
+// Ensure we have the same domain with the landing page.
 test('It set the correct document.domain per environment', async (t) => {
   const info = await getInfo();
   await t.expect(info.domain).eql(info.hostname);

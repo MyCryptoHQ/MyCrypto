@@ -1,26 +1,21 @@
-import { TransactionResponse } from 'ethers/providers';
+import { TransactionResponse } from '@ethersproject/providers';
 
-import { ProviderHandler, getTxsFromAccount } from '@services';
-import {
-  makeTxConfigFromTxResponse,
-  makeTxConfigFromTxReceipt,
-  makeUnknownTxReceipt
-} from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxReceipt } from '@types';
+import { makeTxConfigFromTx, makeTxConfigFromTxReceipt, makeUnknownTxReceipt } from '@helpers';
+import { ITxHistoryEntry, ProviderHandler } from '@services';
+import { Asset, ITxHash, ITxReceipt, ITxType, Network, NetworkId, StoreAccount } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
   networkId,
   networks,
-  accounts
+  txCache
 }: {
   txHash: string;
   networkId: NetworkId;
   networks: Network[];
-  accounts: StoreAccount[];
+  txCache: ITxHistoryEntry[];
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
-  const txCache = getTxsFromAccount(accounts);
   const cachedTx = txCache.find(
     (t) => t.hash === (txHash as ITxHash) && t.asset.networkId === networkId
   );
@@ -30,7 +25,7 @@ export const fetchTxStatus = async ({
   const provider = new ProviderHandler(network);
   const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
   if (!fetchedTx) {
-    return undefined;
+    return;
   }
   return { fetchedTx, cachedTx: undefined };
 };
@@ -49,17 +44,17 @@ export const makeTx = ({
   networks: Network[];
   accounts: StoreAccount[];
   assets: Asset[];
-  cachedTx?: ITxReceipt;
+  cachedTx?: ITxHistoryEntry | ITxReceipt;
   fetchedTx?: TransactionResponse;
 }) => {
   const network = networks.find((n) => n.id === networkId)!;
   if (cachedTx) {
     return {
-      config: makeTxConfigFromTxReceipt(cachedTx, assets, networks, accounts),
+      config: makeTxConfigFromTxReceipt(cachedTx as ITxReceipt, assets, network, accounts),
       receipt: cachedTx
     };
   } else {
-    const fetchedTxConfig = makeTxConfigFromTxResponse(fetchedTx!, assets, network, accounts);
+    const fetchedTxConfig = makeTxConfigFromTx(fetchedTx!, assets, network, accounts);
     return {
       config: fetchedTxConfig,
       receipt: makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)

@@ -1,19 +1,20 @@
-import React, { FC, useCallback, useContext } from 'react';
+import { FC, MouseEventHandler, useCallback, useContext } from 'react';
+
 import styled from 'styled-components';
 
-import { Trans, translateRaw } from '@translations';
-import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { EthAddress, LinkApp, PoweredByText, Spinner, VerticalStepper } from '@components';
+import CloseIcon from '@components/icons/CloseIcon';
 import ProtectIconCheck from '@components/icons/ProtectIconCheck';
 import WizardIcon from '@components/icons/WizardIcon';
-import CloseIcon from '@components/icons/CloseIcon';
-import { ETHAddressExplorer } from '@config';
-import { EthAddress, LinkOut, VerticalStepper, PoweredByText } from '@components';
 import { StepData } from '@components/VerticalStepper';
+import { ETHAddressExplorer } from '@config';
+import { BREAK_POINTS, COLORS, FONT_SIZE, LINE_HEIGHT, SPACING } from '@theme';
+import { Trans, translateRaw } from '@translations';
 import { useScreenSize } from '@utils';
 
-import ProtectTxBase from './ProtectTxBase';
 import { ProtectTxContext } from '../ProtectTxProvider';
 import { NansenReportType, PTXReport } from '../types';
+import ProtectTxBase from './ProtectTxBase';
 
 const Wrapper = styled(ProtectTxBase)<{ isSmScreen: boolean }>`
   .title-address {
@@ -118,8 +119,8 @@ export const ProtectTxReport: FC = () => {
     getReport
   } = useContext(ProtectTxContext);
 
-  const onHideModel = useCallback(
-    (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const onHideModel: MouseEventHandler<SVGSVGElement> = useCallback(
+    (e) => {
       e.preventDefault();
 
       if (showHideProtectTx) {
@@ -137,7 +138,7 @@ export const ProtectTxReport: FC = () => {
 interface Props {
   report: PTXReport;
   isWeb3: boolean;
-  onHide(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onHide: MouseEventHandler<SVGSVGElement>;
 }
 
 export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
@@ -158,7 +159,7 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
         {labels ? (
           <VerticalStepper currentStep={-1} size="lg" color={COLORS.PURPLE} steps={steps} />
         ) : (
-          <div className="loading" />
+          <Spinner color="brand" />
         )}
       </div>
       {labels && (
@@ -168,15 +169,13 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
               id="PROTECTED_TX_ETHERSCAN_EXTERNAL_LINK"
               variables={{
                 $etherscanLink: () => (
-                  <LinkOut
-                    showIcon={false}
-                    inline={true}
-                    fontSize={FONT_SIZE.BASE}
-                    fontColor={COLORS.PURPLE}
-                    underline={true}
-                    link={`${ETHAddressExplorer(address)}`}
-                    text="Etherscan"
-                  />
+                  <LinkApp
+                    color={COLORS.PURPLE}
+                    isExternal={true}
+                    href={`${ETHAddressExplorer(address)}`}
+                  >
+                    Etherscan
+                  </LinkApp>
                 )
               }}
             />
@@ -185,16 +184,19 @@ export const ProtectTxReportUI = ({ report, isWeb3, onHide }: Props) => {
           <p className="footer-text">
             {translateRaw('PROTECTED_TX_REPORT_FOOTER_TEXT')}
             {!isWeb3 && (
-              <Trans
-                id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
-                variables={{
-                  $20seconds: () => (
-                    <span className="highlighted">
-                      {translateRaw('PROTECTED_TX_REPORT_20_SEC')}
-                    </span>
-                  )
-                }}
-              />
+              <>
+                {' '}
+                <Trans
+                  id="PROTECTED_TX_REPORT_FOOTER_TEXT_NOT_WEB3_WALLET"
+                  variables={{
+                    $20seconds: () => (
+                      <span className="highlighted">
+                        {translateRaw('PROTECTED_TX_REPORT_20_SEC')}
+                      </span>
+                    )
+                  }}
+                />
+              </>
             )}
           </p>
         </>

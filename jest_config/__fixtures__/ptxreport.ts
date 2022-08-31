@@ -1,5 +1,6 @@
+import { NansenReportType, PTXReport } from '@features/ProtectTransaction';
 import { TAddress } from '@types';
-import { PTXReport, NansenReportType } from '@features/ProtectTransaction';
+
 import { fAssets } from './assets';
 
 const asset = fAssets[0];

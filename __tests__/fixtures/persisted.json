@@ -1,0 +1,2136 @@
+{
+  "version": "v2.0.0",
+  "mtime": 1606324295478,
+  "accounts": {
+    "ef94a882-3af7-5887-89f0-be9833c6b071": {
+      "address": "0x71810d732c6f0a799000f583e77fc301d4d8c1c8",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "ef94a882-3af7-5887-89f0-be9833c6b071",
+      "label": "MetaMask Account 10"
+    },
+    "5038d1b0-9afb-597f-8a0f-0f879390873f": {
+      "address": "0x9c9c3d1576de533427b4adcb5e6bfda935a86c78",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "ticker": "REP",
+          "name": "Augur",
+          "decimal": 18,
+          "contractAddress": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+          "website": "https://augur.net",
+          "support": {},
+          "social": {
+            "reddit": "https://www.reddit.com/r/Augur",
+            "slack": "https://invite.augur.net",
+            "twitter": "https://twitter.com/AugurProject"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "augur",
+            "coinGeckoId": "augur",
+            "cryptoCompareId": "REP",
+            "cryptoCurrencyIconName": "rep",
+            "dexAgId": "REP"
+          },
+          "isCustom": false,
+          "uuid": "d017a1e8-bdd3-5c32-8866-da258f75b0e9",
+          "balance": {
+            "_hex": "0x0de0b6b3a7640000"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "5038d1b0-9afb-597f-8a0f-0f879390873f",
+      "label": "MetaMask Account 11"
+    },
+    "5034876a-d91c-5b4b-9851-cce700717e4b": {
+      "address": "0x48b599afcc9e2b6d7b549bf0845ce687700b954e",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "5034876a-d91c-5b4b-9851-cce700717e4b",
+      "label": "MetaMask Account 12"
+    },
+    "7b9d75ac-ddfd-51bb-a9b8-30e3266fa075": {
+      "address": "0x82d69476357a03415e92b5780c89e5e9e972ce75",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "ticker": "uniDAI",
+          "name": "Uniswap: Dai Stablecoin",
+          "decimal": 18,
+          "contractAddress": "0x2a1530C4C41db0B0b2bB646CB5Eb1A67b7158667",
+          "website": "https://www.uniswap.io",
+          "support": {
+            "email": "contact@uniswap.io"
+          },
+          "social": {
+            "blog": "https://medium.com/uniswap",
+            "github": "https://github.com/Uniswap",
+            "reddit": "https://www.reddit.com/r/UniSwap/",
+            "twitter": "https://twitter.com/UniswapExchange"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "2b7a4d65-9c40-5c21-96eb-f7d380a4dc87",
+          "balance": {
+            "_hex": "0x902358479aa7a3"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "AMB",
+          "name": "Amber Token",
+          "decimal": 18,
+          "contractAddress": "0x4DC3643DbC642b72C158E7F3d2ff232df61cb6CE",
+          "website": "https://ambrosus.com/index.html",
+          "support": {},
+          "social": {
+            "blog": "https://blog.ambrosus.com/",
+            "facebook": "https://www.facebook.com/ambrosusAMB",
+            "github": "https://github.com/ambrosus",
+            "linkedin": "https://www.linkedin.com/company/ambrosus",
+            "reddit": "https://www.reddit.com/r/ambrosus/",
+            "telegram": "https://t.me/AmbrosusAMB",
+            "twitter": "https://twitter.com/AmbrosusAMB",
+            "youtube": "https://youtu.be/OkdCV6zw3lI"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "cryptoCompareId": "AMB",
+            "cryptoCurrencyIconName": "amb"
+          },
+          "isCustom": false,
+          "uuid": "4e7e2121-1f46-528b-bfe2-1fb1e2b512fb",
+          "balance": {
+            "_hex": "0x016345785d8a0000"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "ABT",
+          "name": "ArcBlock Token",
+          "decimal": 18,
+          "contractAddress": "0xB98d4C97425d9908E66E53A6fDf673ACcA0BE986",
+          "website": "https://www.arcblock.io",
+          "support": {
+            "email": "contact@arcblock.io"
+          },
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "arcblock",
+            "coinGeckoId": "arcblock",
+            "cryptoCompareId": "ABT",
+            "cryptoCurrencyIconName": "abt",
+            "dexAgId": "ABT"
+          },
+          "isCustom": false,
+          "uuid": "4f387b74-88e2-5a56-9664-0224ee546c6a",
+          "balance": {
+            "_hex": "0x0d810265adbf539d"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "ANT (old)",
+          "name": "Aragon",
+          "decimal": 18,
+          "contractAddress": "0x960b236A07cf122663c4303350609A66A7B288C0",
+          "website": "https://aragon.org",
+          "support": {
+            "email": "support@aragon.org"
+          },
+          "social": {
+            "blog": "https://aragon.org/blog",
+            "chat": "https://aragon.chat/",
+            "forum": "https://forum.aragon.org/",
+            "github": "https://github.com/aragon/",
+            "linkedin": "https://www.linkedin.com/company/aragonproject/",
+            "reddit": "https://www.reddit.com/r/aragonproject/",
+            "twitter": "https://twitter.com/AragonProject",
+            "youtube": "https://www.youtube.com/channel/UCODiU_-FWhr4SVOoBlm-qaQ"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "aragon",
+            "coinGeckoId": "aragon",
+            "cryptoCompareId": "ANT",
+            "cryptoCurrencyIconName": "ant",
+            "dexAgId": "ANT"
+          },
+          "isCustom": false,
+          "uuid": "7f4d2f19-9a76-5930-b63b-ac9b0afe6201",
+          "balance": {
+            "_hex": "0x4bfb1b7e01438000"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "cDAI",
+          "name": "Compound Dai",
+          "decimal": 8,
+          "contractAddress": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
+          "support": {},
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinGeckoId": "cdai",
+            "cryptoCompareId": "CDAI",
+            "dexAgId": "CDAI"
+          },
+          "isCustom": false,
+          "uuid": "a9cc6884-14bd-53b6-abcd-f9b56b60463d",
+          "balance": {
+            "_hex": "0x068b7f8a9b"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "LINK (Chainlink)",
+          "name": "LINK Chainlink",
+          "decimal": 18,
+          "contractAddress": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+          "website": "https://link.smartcontract.com",
+          "support": {
+            "email": "support@smartcontract.com"
+          },
+          "social": {
+            "slack": "https://chainlinknetwork.slack.com"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "chainlink",
+            "coinGeckoId": "chainlink",
+            "cryptoCompareId": "LINK"
+          },
+          "isCustom": false,
+          "uuid": "c0ae47d5-f020-5ea8-9886-522d3af70845",
+          "balance": {
+            "_hex": "0x3590c346e35b"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "unisETH",
+          "name": "Uniswap: Synth sETH",
+          "decimal": 18,
+          "contractAddress": "0xe9Cf7887b93150D4F2Da7dFc6D502B216438F244",
+          "website": "https://www.uniswap.io",
+          "support": {
+            "email": "contact@uniswap.io"
+          },
+          "social": {
+            "blog": "https://medium.com/uniswap",
+            "github": "https://github.com/Uniswap",
+            "reddit": "https://www.reddit.com/r/UniSwap/",
+            "twitter": "https://twitter.com/UniswapExchange"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "ca27272a-891e-577d-ae75-f8efe4d55231",
+          "balance": {
+            "_hex": "0x58c83319ffacc3"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "DAI",
+          "name": "Dai Stablecoin v2.0",
+          "decimal": 18,
+          "contractAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+          "website": "https://makerdao.com",
+          "support": {
+            "email": "support@makerdao.com",
+            "url": "https://chat.makerdao.com"
+          },
+          "social": {
+            "chat": "https://chat.makerdao.com",
+            "github": "https://github.com/makerdao",
+            "reddit": "https://www.reddit.com/r/MakerDAO",
+            "twitter": "https://twitter.com/MakerDAO"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "dai",
+            "coinGeckoId": "dai",
+            "cryptoCompareId": "DAI",
+            "cryptoCurrencyIconName": "dai",
+            "dexAgId": "DAI"
+          },
+          "isCustom": false,
+          "uuid": "e1f698bf-cb85-5405-b563-14774af14bf1",
+          "balance": {
+            "_hex": "0x025bfb3601c32f1d"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "BAT",
+          "name": "Basic Attention Token",
+          "decimal": 18,
+          "contractAddress": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+          "website": "https://basicattentiontoken.org",
+          "support": {},
+          "social": {
+            "reddit": "https://www.reddit.com/r/BATProject",
+            "twitter": "https://twitter.com/attentiontoken"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "basic-attention-token",
+            "coinGeckoId": "basic-attention-token",
+            "cryptoCompareId": "BAT",
+            "cryptoCurrencyIconName": "bat",
+            "dexAgId": "BAT"
+          },
+          "isCustom": false,
+          "uuid": "e34bb9ff-47be-503b-956b-30d4b3f3507b",
+          "balance": {
+            "_hex": "0x571f0b44ebf42873"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "KICK",
+          "name": "KickToken",
+          "decimal": 8,
+          "contractAddress": "0xC12D1c73eE7DC3615BA4e37E4ABFdbDDFA38907E",
+          "website": "https://www.kickico.com",
+          "support": {
+            "email": "support@kickico.com"
+          },
+          "social": {
+            "blog": "https://medium.com/@kickecosystem",
+            "chat": "https://t.me/kickico",
+            "facebook": "https://www.facebook.com/kickecosystem",
+            "github": "https://github.com/kickecosystem/",
+            "linkedin": "https://www.linkedin.com/company/kickecosystem/",
+            "reddit": "https://www.reddit.com/r/KICKICO_Platform/",
+            "telegram": "https://t.me/kickico",
+            "twitter": "https://twitter.com/KickEcosystem"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "cryptoCompareId": "KICK"
+          },
+          "isCustom": false,
+          "uuid": "f383cc01-4942-5d0e-8442-3dbbc8cc8836",
+          "balance": {
+            "_hex": "0x50d809593800"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x03f0a45449eeb6"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "7b9d75ac-ddfd-51bb-a9b8-30e3266fa075",
+      "label": "Test"
+    },
+    "faceb7fa-2551-561d-8374-3cfcb7fd9cf8": {
+      "address": "0xfeac75a09662396283f4bb50f0a9249576a81866",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "ticker": "sETH",
+          "name": "Synth sETH",
+          "decimal": 18,
+          "contractAddress": "0x5e74C9036fb86BD7eCdcb084a0673EFc32eA31cb",
+          "support": {},
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinGeckoId": "seth",
+            "dexAgId": "SETH"
+          },
+          "isCustom": false,
+          "uuid": "19c48978-796d-55c6-a0e2-9999d1592728",
+          "balance": {
+            "_hex": "0x24cb4cc5cdb644"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "ABT",
+          "name": "ArcBlock Token",
+          "decimal": 18,
+          "contractAddress": "0xB98d4C97425d9908E66E53A6fDf673ACcA0BE986",
+          "website": "https://www.arcblock.io",
+          "support": {
+            "email": "contact@arcblock.io"
+          },
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "arcblock",
+            "coinGeckoId": "arcblock",
+            "cryptoCompareId": "ABT",
+            "cryptoCurrencyIconName": "abt",
+            "dexAgId": "ABT"
+          },
+          "isCustom": false,
+          "uuid": "4f387b74-88e2-5a56-9664-0224ee546c6a",
+          "balance": {
+            "_hex": "0x027dc459dc5275a28e"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "sETH",
+          "name": "Synth sETH",
+          "decimal": 18,
+          "contractAddress": "0xD81AdA188331e627567BBEF80F91217cd3109592",
+          "support": {},
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {},
+          "isCustom": false,
+          "uuid": "6c7a1a4b-8987-57bc-a7ce-e763a6541839",
+          "balance": {
+            "_hex": "0x24cb4cc5cdb644"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "ANT (old)",
+          "name": "Aragon",
+          "decimal": 18,
+          "contractAddress": "0x960b236A07cf122663c4303350609A66A7B288C0",
+          "website": "https://aragon.org",
+          "support": {
+            "email": "support@aragon.org"
+          },
+          "social": {
+            "blog": "https://aragon.org/blog",
+            "chat": "https://aragon.chat/",
+            "forum": "https://forum.aragon.org/",
+            "github": "https://github.com/aragon/",
+            "linkedin": "https://www.linkedin.com/company/aragonproject/",
+            "reddit": "https://www.reddit.com/r/aragonproject/",
+            "twitter": "https://twitter.com/AragonProject",
+            "youtube": "https://www.youtube.com/channel/UCODiU_-FWhr4SVOoBlm-qaQ"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "aragon",
+            "coinGeckoId": "aragon",
+            "cryptoCompareId": "ANT",
+            "cryptoCurrencyIconName": "ant",
+            "dexAgId": "ANT"
+          },
+          "isCustom": false,
+          "uuid": "7f4d2f19-9a76-5930-b63b-ac9b0afe6201",
+          "balance": {
+            "_hex": "0x0bc18e1999fb5e8e"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "cDAI",
+          "name": "Compound Dai",
+          "decimal": 8,
+          "contractAddress": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
+          "support": {},
+          "social": {},
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinGeckoId": "cdai",
+            "cryptoCompareId": "CDAI",
+            "dexAgId": "CDAI"
+          },
+          "isCustom": false,
+          "uuid": "a9cc6884-14bd-53b6-abcd-f9b56b60463d",
+          "balance": {
+            "_hex": "0x01742f03e4"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "BAT",
+          "name": "Basic Attention Token",
+          "decimal": 18,
+          "contractAddress": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+          "website": "https://basicattentiontoken.org",
+          "support": {},
+          "social": {
+            "reddit": "https://www.reddit.com/r/BATProject",
+            "twitter": "https://twitter.com/attentiontoken"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "coinCapId": "basic-attention-token",
+            "coinGeckoId": "basic-attention-token",
+            "cryptoCompareId": "BAT",
+            "cryptoCurrencyIconName": "bat",
+            "dexAgId": "BAT"
+          },
+          "isCustom": false,
+          "uuid": "e34bb9ff-47be-503b-956b-30d4b3f3507b",
+          "balance": {
+            "_hex": "0x27f7fa156dd364d2"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "ticker": "KICK",
+          "name": "KickToken",
+          "decimal": 8,
+          "contractAddress": "0xC12D1c73eE7DC3615BA4e37E4ABFdbDDFA38907E",
+          "website": "https://www.kickico.com",
+          "support": {
+            "email": "support@kickico.com"
+          },
+          "social": {
+            "blog": "https://medium.com/@kickecosystem",
+            "chat": "https://t.me/kickico",
+            "facebook": "https://www.facebook.com/kickecosystem",
+            "github": "https://github.com/kickecosystem/",
+            "linkedin": "https://www.linkedin.com/company/kickecosystem/",
+            "reddit": "https://www.reddit.com/r/KICKICO_Platform/",
+            "telegram": "https://t.me/kickico",
+            "twitter": "https://twitter.com/KickEcosystem"
+          },
+          "networkId": "Ethereum",
+          "type": "erc20",
+          "mappings": {
+            "cryptoCompareId": "KICK"
+          },
+          "isCustom": false,
+          "uuid": "f383cc01-4942-5d0e-8442-3dbbc8cc8836",
+          "balance": {
+            "_hex": "0x50d809593800"
+          },
+          "mtime": 1606324232650
+        },
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "faceb7fa-2551-561d-8374-3cfcb7fd9cf8",
+      "label": "MetaMask Account 14"
+    },
+    "4a236c90-b722-5e26-8718-659db6b5d302": {
+      "address": "0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf",
+      "networkId": "Ethereum",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+          "ticker": "ETH",
+          "name": "Ether (Ethereum)",
+          "networkId": "Ethereum",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {
+            "coinCapId": "ethereum",
+            "coinGeckoId": "ethereum",
+            "cryptoCompareId": "ETH",
+            "cryptoCurrencyIconName": "eth",
+            "dexAgId": "ETH"
+          },
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "4a236c90-b722-5e26-8718-659db6b5d302",
+      "label": "MetaMask Account 16"
+    },
+    "f1c35f92-e0ba-55e0-a3ce-085c8c767b02": {
+      "address": "0x71810d732c6f0a799000f583e77fc301d4d8c1c8",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "f1c35f92-e0ba-55e0-a3ce-085c8c767b02",
+      "label": "ouuiiii\\\"test\"\\eeer"
+    },
+    "f25322d8-327c-5efa-896a-82f89c86a2f2": {
+      "address": "0x9c9c3d1576de533427b4adcb5e6bfda935a86c78",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "f25322d8-327c-5efa-896a-82f89c86a2f2",
+      "label": "MetaMask Account 3"
+    },
+    "84963ccf-7ad8-53b4-8195-2720861007e6": {
+      "address": "0x48b599afcc9e2b6d7b549bf0845ce687700b954e",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "84963ccf-7ad8-53b4-8195-2720861007e6",
+      "label": "MetaMask Account 4"
+    },
+    "54a618a2-6da5-57fa-893f-f10a114e27ae": {
+      "address": "0x82d69476357a03415e92b5780c89e5e9e972ce75",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x60b89bc0a8c18097"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "54a618a2-6da5-57fa-893f-f10a114e27ae",
+      "label": "MetaMask Account 5"
+    },
+    "e4f87fd1-2104-5b81-af05-669ca4d7d99b": {
+      "address": "0xfeac75a09662396283f4bb50f0a9249576a81866",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x4563451c7ecac000"
+          },
+          "mtime": 1606324232650
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "e4f87fd1-2104-5b81-af05-669ca4d7d99b",
+      "label": "MetaMask Account 6"
+    },
+    "f7ebd825-d1b7-5255-ac95-5fd737ef8477": {
+      "address": "0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf",
+      "networkId": "Ropsten",
+      "wallet": "METAMASK",
+      "assets": [
+        {
+          "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
+          "ticker": "RopstenETH",
+          "name": "Ether (Ropsten)",
+          "networkId": "Ropsten",
+          "type": "base",
+          "decimal": 18,
+          "support": {},
+          "social": {},
+          "mappings": {},
+          "isCustom": false,
+          "balance": {
+            "_hex": "0x00"
+          },
+          "mtime": 1606324232651
+        }
+      ],
+      "transactions": [],
+      "favorite": false,
+      "mtime": 0,
+      "uuid": "f7ebd825-d1b7-5255-ac95-5fd737ef8477",
+      "label": "MetaMask Account 8"
+    }
+  },
+  "addressBook": {
+    "8be109ad-6816-45d5-ad8f-bd50ea08f4b0": {
+      "label": "Test",
+      "address": "0x82d69476357a03415e92b5780c89e5e9e972ce75",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "8be109ad-6816-45d5-ad8f-bd50ea08f4b0"
+    },
+    "6748daca-1715-450a-b042-d750a465e568": {
+      "label": "ouuiiii\\\"test\"\\eeer",
+      "address": "0x71810d732c6f0a799000f583e77fc301d4d8c1c8",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "6748daca-1715-450a-b042-d750a465e568"
+    },
+    "a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe": {
+      "label": "MyCrypto Team Tip Jar",
+      "address": "0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520",
+      "notes": "This is MyCrypto's Donate address. Feel free to delete it!",
+      "network": "Ethereum",
+      "uuid": "a1acf1f2-0380-5bd6-90c3-2b4a0974a6fe"
+    },
+    "9ae4141f-3098-4930-838b-36fcc6709873": {
+      "label": "MetaMask Account 3",
+      "address": "0x9c9c3d1576de533427b4adcb5e6bfda935a86c78",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "9ae4141f-3098-4930-838b-36fcc6709873"
+    },
+    "b94e1ee6-2243-44b9-83ae-7a1468bc366b": {
+      "label": "MetaMask Account 4",
+      "address": "0x48b599afcc9e2b6d7b549bf0845ce687700b954e",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "b94e1ee6-2243-44b9-83ae-7a1468bc366b"
+    },
+    "041d0e8c-1bcb-4f4f-9877-7db3304a0b44": {
+      "label": "MetaMask Account 5",
+      "address": "0x82d69476357a03415e92b5780c89e5e9e972ce75",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "041d0e8c-1bcb-4f4f-9877-7db3304a0b44"
+    },
+    "208a5a47-93e7-4c05-9c96-74084415f2aa": {
+      "label": "MetaMask Account 6",
+      "address": "0xfeac75a09662396283f4bb50f0a9249576a81866",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "208a5a47-93e7-4c05-9c96-74084415f2aa"
+    },
+    "020ce739-6d54-48a0-a371-3dcb13868a0f": {
+      "label": "MetaMask Account 8",
+      "address": "0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf",
+      "notes": "",
+      "network": "Ropsten",
+      "uuid": "020ce739-6d54-48a0-a371-3dcb13868a0f"
+    },
+    "5d6aa5bb-5c13-4916-a619-cd5af1c58a47": {
+      "label": "MetaMask Account 10",
+      "address": "0x71810d732c6f0a799000f583e77fc301d4d8c1c8",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "5d6aa5bb-5c13-4916-a619-cd5af1c58a47"
+    },
+    "69c38114-7439-4071-8b85-56a0aae9ed92": {
+      "label": "MetaMask Account 11",
+      "address": "0x9c9c3d1576de533427b4adcb5e6bfda935a86c78",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "69c38114-7439-4071-8b85-56a0aae9ed92"
+    },
+    "7d3a7d76-f0be-4994-bb1f-dfa2af401c2f": {
+      "label": "MetaMask Account 12",
+      "address": "0x48b599afcc9e2b6d7b549bf0845ce687700b954e",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "7d3a7d76-f0be-4994-bb1f-dfa2af401c2f"
+    },
+    "2ca1ba00-ed0f-4660-bd26-68858b628297": {
+      "label": "MetaMask Account 14",
+      "address": "0xfeac75a09662396283f4bb50f0a9249576a81866",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "2ca1ba00-ed0f-4660-bd26-68858b628297"
+    },
+    "1c5c19c2-a2bd-47b1-9daf-0d8112c1e615": {
+      "label": "MetaMask Account 16",
+      "address": "0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf",
+      "notes": "",
+      "network": "Ethereum",
+      "uuid": "1c5c19c2-a2bd-47b1-9daf-0d8112c1e615"
+    }
+  },
+  "assets": {
+    "3efdf01a-63d5-5a79-ab4e-deb84bd63c83": {
+      "uuid": "3efdf01a-63d5-5a79-ab4e-deb84bd63c83",
+      "name": "300",
+      "decimal": 18,
+      "ticker": "300",
+      "networkId": "Ethereum",
+      "contractAddress": "0xaec98a708810414878c3bcdf46aad31ded4a4557",
+      "type": "erc20",
+      "isCustom": true
+    }
+  },
+  "contracts": {
+    "a65bd393-4f60-5f69-ae79-2bfe17e8fd3f": {
+      "uuid": "a65bd393-4f60-5f69-ae79-2bfe17e8fd3f",
+      "name": "Super duper custom contract",
+      "address": "0x126d852A3150C53B851eB340ea54Dc379d62f27c",
+      "abi": "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"router_\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"factory_\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"trader_\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"payout\",\"type\":\"uint256\"}],\"name\":\"FlashClosed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"premium\",\"type\":\"uint256\"}],\"name\":\"FlashOpened\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"optionAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"quantityOptions\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amountBMax\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amountBMin\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"addShortLiquidityWithUnderlying\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IOption\",\"name\":\"optionToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountRedeems\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minPayout\",\"type\":\"uint256\"}],\"name\":\"closeFlashLong\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"optionAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"otherToken\",\"type\":\"address\"}],\"name\":\"deployUniswapMarket\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"factory\",\"outputs\":[{\"internalType\":\"contract IUniswapV2Factory\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pairAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"optionAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"flashLoanQuantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minPayout\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"path\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"flashCloseLongOptionsThenSwap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pairAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"optionAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"flashLoanQuantity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxPremium\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"path\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"flashMintShortOptionsThenSwap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IOption\",\"name\":\"optionToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"}],\"name\":\"getClosePremium\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getName\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IOption\",\"name\":\"optionToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"quantity\",\"type\":\"uint256\"}],\"name\":\"getOpenPremium\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"token1\",\"type\":\"address\"}],\"name\":\"getUniswapMarketForTokens\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getVersion\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IOption\",\"name\":\"optionToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountIn\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amountOutMin\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"path\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"mintShortOptionsThenSwapToTokens\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IOption\",\"name\":\"optionToken\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amountOptions\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxPremium\",\"type\":\"uint256\"}],\"name\":\"openFlashLong\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"optionAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"liquidity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amountAMin\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amountBMin\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"removeShortLiquidityThenCloseOptions\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"router\",\"outputs\":[{\"internalType\":\"contract IUniswapV2Router02\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"trader\",\"outputs\":[{\"internalType\":\"contract ITrader\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"uniswapV2Call\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+      "networkId": "Ethereum",
+      "isCustom": true
+    }
+  },
+  "networks": {},
+  "notifications": {
+    "7ed39d53-d5d5-4688-98e1-21bd9acf812b": {
+      "uuid": "7ed39d53-d5d5-4688-98e1-21bd9acf812b",
+      "template": "onboarding-responsible",
+      "templateData": {
+        "firstDashboardVisitDate": "2020-11-25T16:40:30.950Z"
+      },
+      "dateDisplayed": "2020-11-25T16:40:30.950Z",
+      "dismissed": false
+    },
+    "122d4054-f650-4683-95e4-b4d0accc6be5": {
+      "uuid": "122d4054-f650-4683-95e4-b4d0accc6be5",
+      "template": "wallets-added",
+      "templateData": {
+        "accounts": [
+          {
+            "address": "0x71810d732c6f0a799000f583e77fc301d4d8c1c8",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "ef94a882-3af7-5887-89f0-be9833c6b071",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 10"
+          },
+          {
+            "address": "0x9c9c3d1576de533427b4adcb5e6bfda935a86c78",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "5038d1b0-9afb-597f-8a0f-0f879390873f",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 11"
+          },
+          {
+            "address": "0x48b599afcc9e2b6d7b549bf0845ce687700b954e",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "5034876a-d91c-5b4b-9851-cce700717e4b",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 12"
+          },
+          {
+            "address": "0x82d69476357a03415e92b5780c89e5e9e972ce75",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "7b9d75ac-ddfd-51bb-a9b8-30e3266fa075",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 13"
+          },
+          {
+            "address": "0xfeac75a09662396283f4bb50f0a9249576a81866",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "faceb7fa-2551-561d-8374-3cfcb7fd9cf8",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 14"
+          },
+          {
+            "address": "0xc6d5a3c98ec9073b54fa0969957bd582e8d874bf",
+            "networkId": "Ethereum",
+            "wallet": "METAMASK",
+            "assets": [
+              {
+                "ticker": "ETH",
+                "name": "Ether (Ethereum)",
+                "decimal": 18,
+                "support": {},
+                "social": {},
+                "networkId": "Ethereum",
+                "type": "base",
+                "mappings": {
+                  "coinCapId": "ethereum",
+                  "coinGeckoId": "ethereum",
+                  "cryptoCompareId": "ETH",
+                  "cryptoCurrencyIconName": "eth",
+                  "dexAgId": "ETH"
+                },
+                "isCustom": false,
+                "uuid": "356a192b-7913-504c-9457-4d18c28d46e6",
+                "balance": {
+                  "_hex": "0x00"
+                },
+                "mtime": 1606322464395
+              }
+            ],
+            "transactions": [],
+            "favorite": false,
+            "mtime": 0,
+            "uuid": "4a236c90-b722-5e26-8718-659db6b5d302",
+            "network": {
+              "id": "Ethereum",
+              "name": "Ethereum",
+              "chainId": 1,
+              "isCustom": false,
+              "color": "#007896",
+              "gasPriceSettings": {
+                "min": 1,
+                "max": 60,
+                "initial": 20
+              },
+              "shouldEstimateGasPrice": true,
+              "dPaths": {
+                "TREZOR": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "TREZOR_NEW": {
+                  "label": "TREZOR (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                },
+                "LEDGER_NANO_S_NEW": {
+                  "label": "Ledger (ETH)",
+                  "value": "m/44'/60'/0'"
+                },
+                "default": {
+                  "label": "Default (ETH)",
+                  "value": "m/44'/60'/0'/0"
+                }
+              },
+              "tokenExplorer": {
+                "name": "https://ethplorer.io"
+              },
+              "contracts": [
+                "7f4bee9a-b3a7-5f5d-9fdd-70a07fc30ccf",
+                "a22967bf-7809-5318-976c-3cfd6076b44e",
+                "d40ae695-e12f-5d20-8eb7-feba7f9fb771",
+                "4c9ed17d-9862-5c1d-8e45-d9ea7a155eff",
+                "83c3a8c1-6797-5268-8059-d31f2489bad7",
+                "d70c4394-f31a-5bde-b86d-0f804ecb10ab",
+                "570e4c2e-05ee-553e-b9ca-3502ccd029ab",
+                "138e4404-35cf-5469-8415-dcc0a6e52baa",
+                "c2ac20d6-5844-5748-9b12-960e6b6d1812",
+                "027ea87c-6029-5648-97e2-fa5207e644c9",
+                "13f61e61-fc49-5ae7-a933-d146d5b86127",
+                "b6902782-3d18-5179-8a60-9a3cf4bb7667",
+                "f93d9c0d-be4e-589b-a1e9-63b62b25bebc",
+                "bfe2570d-f158-5bbd-986c-9beffc84781b",
+                "da868a97-24fd-5225-b06a-e03a332ad719",
+                "6c40b877-2c6c-5b7b-a522-a5812fcad293",
+                "d606d804-6280-5795-b79b-1ac0c879a765",
+                "29e8e081-2b69-5508-a63c-84abff5277fb",
+                "566f9dba-0e28-5dfe-bf78-d0aea8e7b2ff",
+                "2f8533df-9b1e-5cf1-a802-b3a87cad7185",
+                "4fa8789e-c769-5c20-bf02-ce5669186fa7",
+                "4701d934-99dc-5c7e-9575-efed8f694ea6",
+                "f51049a5-f560-5d86-8937-4d80ddf71f46",
+                "f9b60875-3992-537c-8836-d0b3b3212cd7",
+                "08925f01-5d2a-533f-a03c-63ae46b7dc61",
+                "c815ccd6-ffae-57e6-baad-7a5dc48a5be1",
+                "8156f598-11dd-5a7a-8a3a-805c3acc356b",
+                "624d4cb6-b9ba-5b46-b40b-02bf4e435b08",
+                "eacdc803-011b-5397-a0f6-b400dc9f61ba",
+                "6e7abb55-78c1-56c9-b513-18cb253726d9",
+                "86e5fb90-a15f-5173-b774-6454e3c0a014",
+                "738d757b-a438-5f21-b116-c18c4decc5e5",
+                "635c7c2c-545b-5844-8826-27b5d69f5b29",
+                "13bde552-ab9e-5422-b21f-09f3fbad0f2b",
+                "7a7bf9a0-723e-5289-96da-8108134dd780"
+              ],
+              "assets": [],
+              "baseAsset": "356a192b-7913-504c-9457-4d18c28d46e6",
+              "baseUnit": "ETH",
+              "nodes": [
+                {
+                  "name": "eth_mycrypto",
+                  "type": "rpc",
+                  "service": "MyCrypto",
+                  "url": "https://api.mycryptoapi.com/eth"
+                },
+                {
+                  "name": "eth_ethscan",
+                  "type": "etherscan",
+                  "service": "Etherscan",
+                  "url": "https://api.etherscan.io/api"
+                },
+                {
+                  "name": "eth_infura",
+                  "type": "infura",
+                  "service": "Infura",
+                  "url": "https://mainnet.infura.io/v3/f3b4711ae677488bb3c56de93c6cab1a"
+                },
+                {
+                  "name": "eth_pocket",
+                  "type": "pocket",
+                  "service": "Pocket",
+                  "url": "https://eth-mainnet.gateway.pokt.network/v1/lb/5f6a53d75053d3232349e41e"
+                },
+                {
+                  "name": "web3",
+                  "isCustom": false,
+                  "type": "web3",
+                  "url": "",
+                  "service": "MetaMask / Web3",
+                  "hidden": true
+                }
+              ],
+              "autoNode": "eth_mycrypto",
+              "selectedNode": "web3",
+              "blockExplorer": {
+                "name": "Etherscan",
+                "origin": "https://etherscan.io"
+              }
+            },
+            "label": "MetaMask Account 16"
+          }
+        ]
+      },
+      "dateDisplayed": "2020-11-25T16:41:04.592Z",
+      "dismissed": true,
+      "dateDismissed": "2020-11-25T16:46:00.343Z",
+      "viewed": true
+    },
+    "947d052d-0c76-4be8-9b03-76895ca48d89": {
+      "uuid": "947d052d-0c76-4be8-9b03-76895ca48d89",
+      "template": "save-settings",
+      "dateDisplayed": "2020-11-25T16:41:04.592Z",
+      "dismissed": false,
+      "viewed": true
+    }
+  },
+  "settings": {
+    "fiatCurrency": "RUB",
+    "darkMode": false,
+    "dashboardAccounts": [
+      "f1c35f92-e0ba-55e0-a3ce-085c8c767b02",
+      "f25322d8-327c-5efa-896a-82f89c86a2f2",
+      "84963ccf-7ad8-53b4-8195-2720861007e6",
+      "54a618a2-6da5-57fa-893f-f10a114e27ae",
+      "e4f87fd1-2104-5b81-af05-669ca4d7d99b",
+      "33369d60-dc7d-5bd8-b304-97e90eba8a2e",
+      "f7ebd825-d1b7-5255-ac95-5fd737ef8477",
+      "b3ee0bdc-b8b6-50fd-9b8a-204e825d03b8",
+      "ef94a882-3af7-5887-89f0-be9833c6b071",
+      "5038d1b0-9afb-597f-8a0f-0f879390873f",
+      "5034876a-d91c-5b4b-9851-cce700717e4b",
+      "7b9d75ac-ddfd-51bb-a9b8-30e3266fa075",
+      "faceb7fa-2551-561d-8374-3cfcb7fd9cf8",
+      "4a236c90-b722-5e26-8718-659db6b5d302"
+    ],
+    "excludedAssets": [],
+    "rates": {
+      "e1f698bf-cb85-5405-b563-14774af14bf1": {
+        "usd": 0.996893,
+        "eur": 0.837184,
+        "gbp": 0.745264,
+        "rub": 75.57,
+        "inr": 73.57,
+        "cny": 6.56,
+        "try": 7.93
+      },
+      "c737fec0-a9e9-5841-b4c8-64d48731eb1c": {
+        "usd": 3.98,
+        "eur": 3.34,
+        "gbp": 2.97,
+        "rub": 301.38,
+        "inr": 293.58,
+        "cny": 26.17,
+        "try": 31.64
+      },
+      "356a192b-7913-504c-9457-4d18c28d46e6": {
+        "usd": 588.43,
+        "eur": 494.13,
+        "gbp": 439.85,
+        "rub": 44592,
+        "inr": 43412,
+        "cny": 3871.27,
+        "try": 4674.13
+      },
+      "d017a1e8-bdd3-5c32-8866-da258f75b0e9": {
+        "usd": 17.35,
+        "eur": 14.57,
+        "gbp": 12.97,
+        "rub": 1314.7,
+        "inr": 1279.92,
+        "cny": 114.14,
+        "try": 137.81
+      },
+      "2ed3ebcd-2d4f-52f7-b12b-54360ed49b55": {
+        "usd": 0.998981,
+        "eur": 0.838889,
+        "gbp": 0.746742,
+        "rub": 75.7,
+        "inr": 73.7,
+        "cny": 6.57,
+        "try": 7.94
+      },
+      "0e99ca80-7edf-5b74-a2f5-03d37eed30bf": {
+        "usd": 0.184194,
+        "eur": 0.154694,
+        "gbp": 0.137713,
+        "rub": 13.95,
+        "inr": 13.59,
+        "cny": 1.21,
+        "try": 1.46
+      },
+      "a9cc6884-14bd-53b6-abcd-f9b56b60463d": {
+        "usd": 0.02082965,
+        "eur": 0.01749159,
+        "gbp": 0.01557024,
+        "rub": 1.58,
+        "inr": 1.54,
+        "cny": 0.137038,
+        "try": 0.165458
+      },
+      "e34bb9ff-47be-503b-956b-30d4b3f3507b": {
+        "usd": 0.274964,
+        "eur": 0.2309,
+        "gbp": 0.205537,
+        "rub": 20.84,
+        "inr": 20.29,
+        "cny": 1.81,
+        "try": 2.18
+      },
+      "7f4d2f19-9a76-5930-b63b-ac9b0afe6201": {
+        "usd": 3.92,
+        "eur": 3.29,
+        "gbp": 2.93,
+        "rub": 296.97,
+        "inr": 289.11,
+        "cny": 25.78,
+        "try": 31.13
+      },
+      "19c48978-796d-55c6-a0e2-9999d1592728": {
+        "usd": 580.4,
+        "eur": 487.45,
+        "gbp": 433.94,
+        "rub": 43972,
+        "inr": 42834,
+        "cny": 3818.48,
+        "try": 4615.94
+      },
+      "c0ae47d5-f020-5ea8-9886-522d3af70845": {
+        "usd": 15.13,
+        "eur": 12.7,
+        "gbp": 11.31,
+        "rub": 1146.43,
+        "inr": 1116.11,
+        "cny": 99.53,
+        "try": 120.17
+      },
+      "4f387b74-88e2-5a56-9664-0224ee546c6a": {
+        "usd": 0.089783,
+        "eur": 0.075395,
+        "gbp": 0.067113,
+        "rub": 6.8,
+        "inr": 6.62,
+        "cny": 0.590681,
+        "try": 0.713181
+      }
+    },
+    "language": "en",
+    "node": "web3"
+  },
+  "networkNodes": {
+    "Ethereum": {
+      "selectedNode": "ethereum_Emmanuel_Macron",
+      "nodes": [
+        {
+          "url": "https://mainnet.infura.io/v3/ba946b0ddc10409dab63cbfc0f68dd1a",
+          "service": "Emmanuel Macron",
+          "name": "ethereum_Emmanuel_Macron",
+          "isCustom": true,
+          "type": "myccustom"
+        }
+      ]
+    },
+    "Ropsten": {
+      "selectedNode": "web3"
+    }
+  },
+  "userActions": {
+    "2ddea243-9534-4c9e-b5bc-17386a410d82": {
+      "name": "twitter",
+      "state": "completed",
+      "uuid": "2ddea243-9534-4c9e-b5bc-17386a410d82"
+    },
+    "d69a3098-3862-44b6-9b8a-623dceb1b506": {
+      "name": "migrate_rep",
+      "state": "hidden",
+      "uuid": "d69a3098-3862-44b6-9b8a-623dceb1b506"
+    },
+    "d449e9f7-8743-45e6-9884-4fa6160256df": {
+      "name": "update_label",
+      "state": "completed",
+      "uuid": "d449e9f7-8743-45e6-9884-4fa6160256df"
+    },
+    "c20d39d3-1e2e-4db5-8690-b2b57d33031e": {
+      "name": "buy_hw",
+      "state": "new",
+      "uuid": "c20d39d3-1e2e-4db5-8690-b2b57d33031e"
+    },
+    "d8a4346f-da5a-43f1-94df-8aae916b8ea8": {
+      "name": "add_account",
+      "state": "new",
+      "uuid": "d8a4346f-da5a-43f1-94df-8aae916b8ea8"
+    },
+    "78a147c5-d467-4a12-9808-c75ce6bc04a2": {
+      "name": "myc_membership",
+      "state": "new",
+      "uuid": "78a147c5-d467-4a12-9808-c75ce6bc04a2"
+    },
+    "e05108d8-bd88-455b-b78a-4631faf73bed": {
+      "name": "feedback",
+      "state": "new",
+      "uuid": "e05108d8-bd88-455b-b78a-4631faf73bed"
+    },
+    "932e31e4-ced0-4ccf-8561-e7d682bb5f5a": {
+      "name": "newsletter",
+      "state": "new",
+      "uuid": "932e31e4-ced0-4ccf-8561-e7d682bb5f5a"
+    },
+    "7b60e7df-1020-41b8-82a8-c4041f2696e6": {
+      "name": "telegram",
+      "state": "new",
+      "uuid": "7b60e7df-1020-41b8-82a8-c4041f2696e6"
+    },
+    "6e12e325-06c4-44e0-8077-4b3f0ef90d17": {
+      "name": "backup",
+      "state": "new",
+      "uuid": "6e12e325-06c4-44e0-8077-4b3f0ef90d17"
+    },
+    "e56064e7-919d-4275-845d-c28394a1f905": {
+      "name": "swap",
+      "state": "new",
+      "uuid": "e56064e7-919d-4275-845d-c28394a1f905"
+    },
+    "32d292bc-8669-4aa2-837b-f0441fe91c40": {
+      "name": "migrate_ant",
+      "state": "new",
+      "uuid": "32d292bc-8669-4aa2-837b-f0441fe91c40"
+    },
+    "c7e4b0a6-13a7-4d13-b841-ae83e1b5083c": {
+      "name": "claim_uni",
+      "state": "new",
+      "uuid": "c7e4b0a6-13a7-4d13-b841-ae83e1b5083c"
+    }
+  }
+}

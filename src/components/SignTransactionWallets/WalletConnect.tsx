@@ -1,17 +1,29 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import isEmpty from 'ramda/src/isEmpty';
+import { FC } from 'react';
 
-import translate, { translateRaw } from '@translations';
-import { Button, CodeBlock, QRCodeContainer, Typography, Overlay, Spinner } from '@components';
-import { WalletId, ISignComponentProps, TAddress, ITxHash } from '@types';
-import { getWalletConfig } from '@config';
-import { COLORS, FONT_SIZE, BREAK_POINTS } from '@theme';
-import { useUpdateEffect } from '@vendor';
-import { noOp, objToString } from '@utils';
+import isEmpty from 'ramda/src/isEmpty';
+import styled, { css } from 'styled-components';
+
+import {
+  Box,
+  BusyBottom,
+  Button,
+  CodeBlock,
+  Overlay,
+  QRCodeContainer,
+  Spinner,
+  Typography
+} from '@components';
+import { TxIntermediaryDisplay } from '@components/TransactionFlow/displays';
+import { isContractInteraction } from '@components/TransactionFlow/helpers';
 import { getNetworkByChainId } from '@services';
 import { useNetworks } from '@services/Store';
-import { useWalletConnect, WcReducer, TActionError } from '@services/WalletService';
+import { TActionError, useWalletConnect, WcReducer } from '@services/WalletService';
+import { getContractName, useSelector } from '@store';
+import { BREAK_POINTS, COLORS, FONT_SIZE } from '@theme';
+import translate, { translateRaw } from '@translations';
+import { BusyBottomConfig, ISignComponentProps, ITxHash, TAddress } from '@types';
+import { noOp, objToString } from '@utils';
+import { useUpdateEffect } from '@vendor';
 
 import EthAddress from '../EthAddress';
 
@@ -52,12 +64,6 @@ const SSection = styled.div<{ center: boolean; withOverlay?: boolean }>`
   text-overflow: ellipsis;
 `;
 
-const SFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 1em 0;
-`;
-
 const SContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -68,7 +74,9 @@ const SContainer = styled.div`
   }
 `;
 
-const helpLink = getWalletConfig(WalletId.WALLETCONNECT).helpLink;
+const SFooter = styled.div`
+  margin: 1em 0;
+`;
 
 interface ErrorProps {
   address: TAddress;
@@ -76,7 +84,7 @@ interface ErrorProps {
   onClick(): void;
 }
 
-const ErrorHandlers: { [K in TActionError]: React.FC<ErrorProps> } = {
+const ErrorHandlers: { [K in TActionError]: FC<ErrorProps> } = {
   WRONG_ADDRESS: ({ address }) => (
     <Typography style={{ padding: '0 2em' }}>
       {translateRaw('SIGN_TX_WALLETCONNECT_FAILED_ACCOUNT', {
@@ -155,6 +163,8 @@ export function SignTransactionWalletConnect({
     sendTx();
   }, [state.isConnected, state.promptSignRetry, state.errors]);
 
+  const contractName = useSelector(getContractName(network.id, rawTransaction.to));
+
   return (
     <>
       <SHeader>
@@ -194,6 +204,11 @@ export function SignTransactionWalletConnect({
             <Typography as="div">{translateRaw('SIGN_TX_WALLETCONNECT_INSTRUCTIONS_3')}</Typography>
           </SSection>
         )}
+        {isContractInteraction(rawTransaction.data) && rawTransaction.to && (
+          <Box mt={3}>
+            <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+          </Box>
+        )}
         <SSection center={true} withOverlay={true}>
           <Overlay absolute={true} center={true} show={state.isConnected || !isEmpty(state.errors)}>
             <SContainer>
@@ -214,7 +229,7 @@ export function SignTransactionWalletConnect({
         </SSection>
       </SContent>
       <SFooter>
-        <Typography>{translate('ADD_WALLETCONNECT_LINK', { $wiki_link: helpLink })}</Typography>
+        <BusyBottom type={BusyBottomConfig.WALLETCONNECT} />
       </SFooter>
     </>
   );

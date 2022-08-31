@@ -1,14 +1,16 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+
+import { Avatar, scale } from '@mycrypto/ui';
 import { toChecksumAddress } from 'ethereumjs-util';
 import styled from 'styled-components';
-import { Avatar, Identicon, scale } from '@mycrypto/ui';
 
+import { BREAK_POINTS, FONT_SIZE, SPACING } from '@theme';
 import { translateRaw } from '@translations';
-import { FONT_SIZE, BREAK_POINTS } from '@theme';
 
-import Typography from './Typography';
 import EthAddress from './EthAddress';
+import { Identicon } from './Identicon';
 import Tooltip from './Tooltip';
+import Typography from './Typography';
 
 const Flex = styled.div`
   align-items: center;
@@ -16,7 +18,7 @@ const Flex = styled.div`
 `;
 
 const Content = styled.div`
-  padding-left: 1em;
+  padding-left: ${SPACING.SM};
 `;
 
 const Title = styled(Typography)`
@@ -31,7 +33,7 @@ const Title = styled(Typography)`
 Title.defaultProps = { as: 'div' };
 
 const MissingTitle = styled(Title)`
-  color: ${(props) => props.theme.textLight};
+  color: ${(props) => props.theme.colors.GREYISH_BROWN};
   font-style: italic;
 `;
 
@@ -43,15 +45,15 @@ const Address = styled(EthAddress)`
 
 const SAvatar = styled(Avatar)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
   }
 `;
 
 const SIdenticon = styled(Identicon)`
   &&& img {
-    height: 45px;
-    width: 44px;
+    height: 36px;
+    width: 36px;
     max-width: none;
   }
 `;

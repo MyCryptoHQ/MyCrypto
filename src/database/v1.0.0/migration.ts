@@ -1,20 +1,20 @@
-import find from 'ramda/src/find';
 import allPass from 'ramda/src/allPass';
-import propEq from 'ramda/src/propEq';
-import values from 'ramda/src/values';
 import curry from 'ramda/src/curry';
-import prop from 'ramda/src/prop';
-import uniq from 'ramda/src/uniq';
+import find from 'ramda/src/find';
 import map from 'ramda/src/map';
+import prop from 'ramda/src/prop';
+import propEq from 'ramda/src/propEq';
+import uniq from 'ramda/src/uniq';
+import values from 'ramda/src/values';
 
 import {
-  LocalStorage,
   Asset,
-  TUuid,
+  AssetBalanceObject,
   IAccount,
-  TTicker,
+  LocalStorage,
   NetworkId,
-  AssetBalanceObject
+  TTicker,
+  TUuid
 } from '@types';
 
 // Migration from v0.0.1 to v1.0.0
@@ -31,19 +31,17 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   const updateAccountAssetsUUID = ({ networkId, assets = [], ...rest }: IAccount) => {
     const getTicker = (uuid: TUuid) => {
-      //@ts-ignore
+      //@ts-expect-error: cannot use Brand<string, "UUID"> to index Record<Brand<string, "UUID">, Asset> !?
       const asset = prev.assets[uuid] || {};
       return asset && asset.ticker ? asset.ticker : undefined;
     };
     const getUUID = (ticker: TTicker) => {
-      const asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
-      //@ts-ignore
+      const asset: Asset = curry(getAssetByTickerAndNetworkID)(curr.assets)(networkId)(ticker);
       return prop('uuid', asset);
     };
 
     const updateUUID = (assetBalance: AssetBalanceObject) => ({
       ...assetBalance,
-      //@ts-ignore
       uuid: getUUID(getTicker(assetBalance.uuid))
     });
 
@@ -63,7 +61,6 @@ export function migrate(prev: LocalStorage, curr: LocalStorage) {
 
   // Add labels to address book
   const { dashboardAccounts = [] } = prev.settings;
-  //@ts-ignore
   const accountUUIDs = map(prop('uuid'), values(accounts));
 
   const settings = {

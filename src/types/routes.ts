@@ -1,11 +1,13 @@
+import { ComponentType } from 'react';
+
 export interface IRoutePath {
   name: string;
-  title?: string;
+  title: string;
   path: string;
 }
 
 export interface IAppRoute extends IRoutePath {
-  component: React.ReactNode;
+  component: ComponentType<any>;
   enabled: boolean;
   exact?: boolean;
   seperateLayout?: boolean;

@@ -1,28 +1,15 @@
-import { TAddress, TTicker, ITxObject } from '@types';
-
-interface DexMetadata {
-  input: {
-    address: TAddress; // The token contract that is the base currency of our assetPair
-    spender: TAddress; // The handler contract for the MYC trade contract. Prefer DEXAG_MYC_HANDLER_CONTRACT
-    amount: string; // The base currency value
-  };
-  output: {
-    address: TAddress;
-  };
-  source: {
-    dex: string;
-    price: string;
-  };
-  query: {
-    from: TTicker;
-    to: TTicker;
-    fromAmount: string;
-    dex: string;
-    proxy: TAddress;
-  };
-}
+import { ITxData, ITxToAddress, ITxValue, TAddress } from '@types';
 
 export interface DexTrade {
-  trade: Partial<ITxObject>;
-  metadata: DexMetadata;
+  price: string;
+  to: ITxToAddress;
+  value: ITxValue;
+  gas: string; // Wei
+  data: ITxData;
+  gasPrice: string; // Wei
+  allowanceTarget: TAddress;
+  sellAmount: string; // Wei
+  buyAmount: string; // Wei
+  buyTokenAddress: TAddress;
+  sellTokenAddress: TAddress;
 }

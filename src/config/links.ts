@@ -1,8 +1,8 @@
 import { translateRaw } from '@translations';
-import { CRYPTOSCAMDB } from './data';
 import { TURL } from '@types';
 
 import SocialTelegramIcon from '../assets/images/social-icons/social-telegram-white.svg';
+import { CRYPTOSCAMDB } from './data';
 
 interface Link {
   link: string;
@@ -16,6 +16,12 @@ interface IExtUrl {
 }
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
+
+export const SUBSCRIBE_NEWSLETTER_LINK = 'http://eepurl.com/ggh4r5';
+
+export const MYCRYPTO_PROD_LINK = 'https://app.mycrypto.com';
+
+export const MYCRYPTO_FAUCET_LINK = `${MYCRYPTO_PROD_LINK}/faucet`;
 
 export const socialMediaLinks: Link[] = [
   {
@@ -99,7 +105,7 @@ const affiliateLinks: IExtUrl[] = [
     url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735' as TURL
   },
   {
-    name: 'QUIKNODE_REFERRAL',
+    name: 'QUICKNODE_REFERRAL',
     url: 'https://quiknode.io?tap_a=67226-09396e&tap_s=860550-6c3251' as TURL
   },
   {
@@ -109,6 +115,22 @@ const affiliateLinks: IExtUrl[] = [
   {
     name: 'COINBASE_REFERRAL',
     url: 'https://coinbase-consumer.sjv.io/RVmkN' as TURL
+  },
+  {
+    name: 'POOLTOGETHER_REFERRAL',
+    url: 'https://app.pooltogether.com/?referrer=0x3186f968aaa3a670354e33a9ad679d98858dda5b' as TURL
+  },
+  {
+    name: 'MYCRYPTO_WINTER_REFERRAL',
+    url: 'https://winter.mycrypto.com/?utm_source=mycrypto&utm_medium=banner&utm_campaign=winter' as TURL
+  },
+  {
+    name: 'SWAP_REFERRAL',
+    url: 'https://app.mycrypto.com/swap?utm_medium=mycrypto&utm_source=dashboard&utm_campaign=swap' as TURL
+  },
+  {
+    name: 'GRIDPLUS_REFERRAL',
+    url: 'http://www.gridplus.io?afmc=MyCrypto' as TURL
   }
 ];
 
@@ -130,6 +152,15 @@ export const partnerLinks: Link[] = [
     text: 'Etherchain'
   }
 ];
+
+export const UNISWAP_LINK = 'https://app.uniswap.org/';
+export const DAPPNODE_AIRDROP_LINK = 'https://app.dappnode.io/nodedrop';
+export const ENS_AIRDROP_LINK = 'https://claim.ens.domains/';
+export const GIV_AIRDROP_LINK = 'https://giv.giveth.io/claim';
+
+export const MYC_WINTER_LINK = 'https://winter.mycrypto.com';
+
+export const TWEET_LINK = 'https://twitter.com/intent/tweet?text=';
 
 function createNavLinksFromExternalLinks(links: IExtUrl[]) {
   return links.reduce((acc, link) => {

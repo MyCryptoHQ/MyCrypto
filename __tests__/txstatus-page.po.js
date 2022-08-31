@@ -1,9 +1,8 @@
-import { t, Selector } from 'testcafe';
+import { Selector, t } from 'testcafe';
 
-import { getTransValueByKey } from './translation-utils';
-
-import { PAGES, FIXTURE_ETHEREUM, FIXTURE_INCOMING_TX_HASH } from './fixtures';
 import BasePage from './base-page.po';
+import { FIXTURE_ETHEREUM, PAGES } from './fixtures';
+import { getTransValueByKey } from './translation-utils';
 
 export default class TxStatusPage extends BasePage {
   async navigateToPage() {
@@ -14,11 +13,11 @@ export default class TxStatusPage extends BasePage {
     await this.waitForPage(PAGES.TX_STATUS, timeout);
   }
 
-  async fillForm() {
+  async fillForm(hash) {
     await t
-      .typeText(Selector('div[data-testid="selector"]').find('input'), FIXTURE_ETHEREUM)
+      .click(Selector('div[data-testid="selector"]'))
       .click(Selector('div[data-testid="selector"]').find('span').withText(FIXTURE_ETHEREUM))
-      .typeText(Selector(`input[name="txhash"]`), FIXTURE_INCOMING_TX_HASH)
+      .typeText(Selector(`input[name="txhash"]`), hash, { paste: true })
       .click(Selector('button').withText(getTransValueByKey('FETCH')));
   }
 }

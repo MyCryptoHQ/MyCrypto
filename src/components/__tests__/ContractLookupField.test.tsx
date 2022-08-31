@@ -1,12 +1,9 @@
-import React from 'react';
-import { simpleRender, fireEvent, waitFor } from 'test-utils';
-import { fNetwork, fContracts } from '@fixtures';
-
-import { DataContext } from '@services/Store';
-import { ExtendedContact, TUuid, IReceiverAddress } from '@types';
-import { contacts } from '@database/seed/contacts';
+import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import ContractLookupField from '@components/ContractLookupField';
+import { fContacts, fContracts, fNetwork } from '@fixtures';
+import { ProviderHandler } from '@services/EthService';
+import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
 interface FormValues {
   data: {
@@ -39,33 +36,22 @@ function getComponent(
   };
 
   return simpleRender(
-    <DataContext.Provider
-      value={
-        ({
-          assets: [{ uuid: fNetwork.baseAsset }],
-          createActions: jest.fn()
-        } as unknown) as any
-      }
-    >
-      <ContractLookupField
-        {...props}
-        value={output.data.address}
-        setFieldValue={(_, value) => setFormValue(value)}
-      />
-    </DataContext.Provider>
+    <ContractLookupField
+      {...props}
+      value={output.data.address}
+      setFieldValue={(_, value) => setFormValue(value)}
+    />
   );
 }
 
 const enter = { key: 'Enter', keyCode: 13 };
-const mockMappedContacts: ExtendedContact[] = Object.entries(contacts).map(([key, value]) => ({
+const mockMappedContacts: ExtendedContact[] = Object.entries(fContacts).map(([key, value]) => ({
   ...value,
   uuid: key as TUuid
 }));
 
 // mock domain resolving function
-jest.mock('@services/UnstoppableService', () => ({
-  getResolvedAddress: () => mockMappedContacts[0].address
-}));
+ProviderHandler.prototype.resolveName = jest.fn().mockResolvedValue(mockMappedContacts[0].address);
 
 describe('ContractLookupField', () => {
   test('it renders the placeholder when no value', async () => {
@@ -80,8 +66,9 @@ describe('ContractLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: address } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(address);
     expect(output.data.address.display).toBe('Contract');
@@ -107,8 +94,9 @@ describe('ContractLookupField', () => {
     const { container } = getComponent(getDefaultProps(), output);
     const input = container.querySelector('input');
     fireEvent.click(input!);
+    input!.focus();
     fireEvent.change(input!, { target: { value: inputString } });
-    fireEvent.blur(input!);
+    input!.blur();
 
     expect(output.data.address.value).toBe(inputString);
     expect(output.data.address.display).toBe(inputString);

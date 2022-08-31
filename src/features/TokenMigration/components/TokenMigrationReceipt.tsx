@@ -1,40 +1,59 @@
-import React, { useContext } from 'react';
-
 import { MultiTxReceipt } from '@components/TransactionFlow';
-import { ITxType, TxParcel, StoreAccount } from '@types';
-import { makeTxItem } from '@utils/transaction';
 import { getFiat } from '@config/fiats';
-import { SettingsContext, useAssets, useRates } from '@services';
+import { makeTxConfigFromTx, makeTxItem } from '@helpers';
+import { useAssets, useNetworks, useRates, useSettings } from '@services';
+import { ITokenMigrationConfig, ITxType, StoreAccount, TxParcel } from '@types';
 
 import { makeTokenMigrationTxConfig } from '../helpers';
 
-interface Props {
+export interface TokenMigrationReceiptProps {
   account: StoreAccount;
+  amount: string;
   transactions: TxParcel[];
+  flowConfig: ITokenMigrationConfig;
   onComplete(): void;
 }
 
-export default function TokenMigrationReceipt({ account, transactions, onComplete }: Props) {
-  const { settings } = useContext(SettingsContext);
-  const { getAssetByUUID } = useAssets();
+export default function TokenMigrationReceipt({
+  account,
+  amount,
+  transactions,
+  flowConfig,
+  onComplete
+}: TokenMigrationReceiptProps) {
+  const { settings } = useSettings();
+  const { getAssetByUUID, assets } = useAssets();
   const { getAssetRate } = useRates();
+  const { getNetworkById } = useNetworks();
   const txItems = transactions.map((tx, idx) => {
-    const txConfig = makeTokenMigrationTxConfig(tx.txRaw, account);
-    const txType = idx === transactions.length - 1 ? ITxType.REP_TOKEN_MIGRATION : ITxType.APPROVAL;
-    return makeTxItem(txType, txConfig, tx.txResponse, tx.txReceipt);
+    const txType = flowConfig.txConstructionConfigs[idx].txType;
+    const txConfig =
+      txType === ITxType.APPROVAL
+        ? makeTxConfigFromTx(tx.txRaw, assets, account.network, [account])
+        : makeTokenMigrationTxConfig(tx.txRaw, account, amount)(flowConfig);
+    return makeTxItem(txType, txConfig, tx.txHash!, tx.txReceipt);
   });
 
-  const baseAsset = getAssetByUUID(txItems[0].txConfig.network.baseAsset)!;
+  const network = getNetworkById(txItems[0].txConfig.networkId);
+
+  const baseAsset = getAssetByUUID(network.baseAsset)!;
 
   const baseAssetRate = getAssetRate(baseAsset);
 
-  const fiat = getFiat(settings);
+  const steps = flowConfig.txConstructionConfigs.map((txConstructionConfig) => ({
+    title: txConstructionConfig.stepTitle,
+    icon: txConstructionConfig.stepSvg
+  }));
 
+  const fiat = getFiat(settings);
+  const lastTxConfig =
+    flowConfig.txConstructionConfigs[flowConfig.txConstructionConfigs.length - 1];
   return (
     <MultiTxReceipt
-      txType={ITxType.REP_TOKEN_MIGRATION}
+      txType={lastTxConfig.txType}
       transactions={transactions}
       transactionsConfigs={txItems.map(({ txConfig }) => txConfig)}
+      steps={steps}
       account={account}
       network={account.network}
       baseAssetRate={baseAssetRate}

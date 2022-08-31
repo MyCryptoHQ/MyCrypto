@@ -1,26 +1,34 @@
-import React, { useCallback, FC, useState, useEffect } from 'react';
-import { OptionProps } from 'react-select';
-import styled from 'styled-components';
+import { FC, useCallback } from 'react';
+
 import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
-
-import { NetworkUtils, useNetworks } from '@services/Store';
-import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
-import { Typography, Selector } from '@components/index';
-import { translateRaw } from '@translations';
-import { SPACING, COLORS } from '@theme';
+import { connect, ConnectedProps } from 'react-redux';
+import { OptionProps } from 'react-select';
+import styled from 'styled-components';
 
 import addIcon from '@assets/images/icn-add.svg';
 import editIcon from '@assets/images/icn-edit.svg';
+import { Selector, Typography } from '@components/index';
+import { NetworkUtils, useNetworks } from '@services/Store';
+import { AppState, selectNetwork } from '@store';
+import { COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
+import { CustomNodeConfig, NetworkId, NodeOptions } from '@types';
 
-const SContainer = styled.div`
+const SContainer = styled.div<StyleProps>`
   display: flex;
   flex-direction: row;
   padding: ${SPACING.SM};
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
 `;
 
-const SContainerValue = styled(SContainer)`
-  padding: ${SPACING.XS};
+interface StyleProps {
+  paddingLeft?: string;
+}
+
+const SContainerValue = styled(SContainer)<StyleProps>`
+  padding: ${SPACING.XS} ${SPACING.XS} ${SPACING.XS} 0px;
+  ${({ paddingLeft }) => paddingLeft && `padding-left: ${paddingLeft};`}
   > img {
     position: absolute;
     right: ${SPACING.SM};
@@ -52,27 +60,31 @@ const AddIcon = styled.img`
 `;
 
 const newNode = 'NEW_NODE';
-const autoNodeLabel = translateRaw('AUTO_NODE');
 
-type NetworkNodeOptionProps = OptionProps<CustomNodeConfig> & {
+type NetworkNodeOptionProps = OptionProps<CustomNodeConfig, false> & {
   isEditEnabled: boolean;
 };
 
-const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
-  data = { value: {} },
-  selectOption
-}) => {
+const NetworkNodeOption: FC<NetworkNodeOptionProps> = ({ data, label, selectOption }) => {
   const handleSelect = (d: CustomNodeConfig) => selectOption && selectOption(d);
 
-  if (data.label !== newNode) {
+  if (label !== newNode) {
     return (
-      <SContainerValue onClick={() => handleSelect(data.value)}>
-        <Typography value={data.label} />
+      <SContainerValue
+        paddingLeft={SPACING.SM}
+        data-testid={`node-selector-option-${data.service}`}
+        onClick={() => handleSelect(data)}
+      >
+        <Typography value={label} />
       </SContainerValue>
     );
   } else {
     return (
-      <SContainerOption onClick={() => handleSelect(data.value)}>
+      <SContainerOption
+        paddingLeft={SPACING.SM}
+        data-testid="node-selector-option-custom"
+        onClick={() => handleSelect(data)}
+      >
         <AddIcon src={addIcon} />
         {translateRaw('CUSTOM_NODE_DROPDOWN_NEW_NODE')}
       </SContainerOption>
@@ -80,28 +92,19 @@ const NetworkNodeOption: React.FC<NetworkNodeOptionProps> = ({
   }
 };
 
-interface Props {
+interface OwnProps {
   networkId: NetworkId;
   onEdit?(node?: CustomNodeConfig): void;
 }
 
-const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
-  const { networks, getNetworkById, setNetworkSelectedNode } = useNetworks();
-  const [network, setNetwork] = useState(() => getNetworkById(networkId));
-  const [selectedNode, setSelectedNode] = useState(() => NetworkUtils.getSelectedNode(network));
-
-  useEffect(() => {
-    const newNetwork = getNetworkById(networkId);
-    setNetwork(newNetwork);
-    setSelectedNode(NetworkUtils.getSelectedNode(newNetwork));
-  }, [networkId, networks]);
+const NetworkNodeDropdown: FC<Props> = ({ networkId, network, onEdit }) => {
+  const { setNetworkSelectedNode } = useNetworks();
 
   const onChange = useCallback(
     (node: NodeOptions) => {
       if (!isEmpty(node) && node.service !== newNode) {
         const { name } = node;
         setNetworkSelectedNode(networkId, name);
-        setSelectedNode(node);
       } else if (onEdit) {
         onEdit();
       }
@@ -109,30 +112,27 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
     [networkId, setNetworkSelectedNode]
   );
 
-  const { nodes, autoNode: autoNodeName } = network;
+  const { nodes } = network;
   const autoNode = {
-    ...NetworkUtils.getAutoNode(network),
-    service: autoNodeLabel
+    service: translateRaw('AUTO_NODE')
   };
-  const { service, name: selectedNodeName } = selectedNode;
+  const selectedNode = NetworkUtils.getSelectedNode(network) ?? autoNode;
   const displayNodes = [autoNode, ...nodes, ...(isFunction(onEdit) ? [{ service: newNode }] : [])];
 
   return (
     <Selector<NodeOptions & any>
-      value={{
-        label: selectedNodeName === autoNodeName ? autoNodeLabel : service,
-        value: selectedNode
-      }}
-      options={displayNodes.map((n) => ({ label: n.service, value: n, onEdit }))}
+      value={selectedNode}
+      options={displayNodes}
+      getOptionLabel={(n) => n.service}
       placeholder={'Auto'}
       searchable={true}
       onChange={(option) => onChange(option)}
       optionComponent={NetworkNodeOption}
       valueComponent={({ value }) => (
         <SContainerValue>
-          <Typography value={value.label} />
-          {isFunction(onEdit) && value.value.isCustom && value.label !== autoNodeLabel && (
-            <EditIcon onClick={() => onEdit(value.value)} src={editIcon} />
+          <Typography value={value.service} />
+          {isFunction(onEdit) && value.isCustom && (
+            <EditIcon onClick={() => onEdit(value)} src={editIcon} />
           )}
         </SContainerValue>
       )}
@@ -140,4 +140,13 @@ const NetworkNodeDropdown: FC<Props> = ({ networkId, onEdit }) => {
   );
 };
 
-export default NetworkNodeDropdown;
+const mapStateToProps = (state: AppState, ownProps: OwnProps) => {
+  const { networkId } = ownProps;
+  return {
+    network: selectNetwork(networkId)(state)
+  };
+};
+const connector = connect(mapStateToProps);
+type Props = ConnectedProps<typeof connector> & OwnProps;
+
+export default connector(NetworkNodeDropdown);

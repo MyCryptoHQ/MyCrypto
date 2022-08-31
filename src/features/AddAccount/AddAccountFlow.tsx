@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { useEffect, useReducer, useState } from 'react';
+
 import { withRouter } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { useUpdateEffect } from '@vendor';
-import { ROUTE_PATHS, WALLETS_CONFIG, IWalletConfig } from '@config';
-import { WalletId, IStory, StoreAccount } from '@types';
 import { ExtendedContentPanel, WalletList } from '@components';
-import { StoreContext } from '@services/Store';
-import { ANALYTICS_CATEGORIES } from '@services/ApiService';
-import { useAnalytics, isSameAddress } from '@utils';
+import { IWalletConfig, ROUTE_PATHS, WALLETS_CONFIG } from '@config';
+import { useDispatch } from '@store';
+import { addNewAccounts } from '@store/account.slice';
+import { IStory, WalletId } from '@types';
+import { useUpdateEffect } from '@vendor';
 
-import { NotificationsContext, NotificationTemplates } from '../NotificationsPanel';
-import { FormDataActionType as ActionType } from './types';
-import { getStories } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
-import './AddAccountFlow.scss';
+import { getStories } from './stories';
+import { FormDataActionType as ActionType } from './types';
 
 export const getStory = (storyName: WalletId): IStory => {
   return getStories().filter((selected) => selected.name === storyName)[0];
@@ -40,20 +38,9 @@ export const isValidWalletId = (id: WalletId | string | undefined) => {
     - AddAccountFormProvider handles the form state and is accessed by each story.
 */
 const AddAccountFlow = withRouter(({ history, match }) => {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
-  const {
-    scanAccountTokens,
-    scanTokens,
-    scanForMemberships,
-    addMultipleAccounts,
-    accounts
-  } = useContext(StoreContext);
-  const { displayNotification } = useContext(NotificationsContext);
-  const trackNewAccountAdded = useAnalytics({
-    category: ANALYTICS_CATEGORIES.ADD_ACCOUNT,
-    actionName: 'New Account Added'
-  });
 
   const storyName: WalletId = formData.accountType; // The Wallet Story that we are tracking.
   const isDefaultView = storyName === undefined;
@@ -62,53 +49,11 @@ const AddAccountFlow = withRouter(({ history, match }) => {
   // If we have completed the form, and add account fails we return to dashboard
   useEffect(() => {
     const { network, accountData, accountType } = formData;
-    if (addr && accountData && !addMultipleAccounts(network, accountType, accountData)) {
-      displayNotification(NotificationTemplates.walletsNotAdded);
+    if (addr && accountData) {
+      dispatch(addNewAccounts({ networkId: network, accountType, newAccounts: accountData }));
       history.push(ROUTE_PATHS.DASHBOARD.path);
     }
   }, [addr]);
-
-  // If add account succeeds, accounts is updated and we can return to dashboard
-  useEffect(() => {
-    const { network, accountData } = formData;
-    if (!accounts || accounts.length === 0) return;
-    const newAccounts: StoreAccount[] = accountData
-      .map(({ address }) => {
-        const newAccount = accounts.find(
-          (account) => isSameAddress(account.address, address) && account.networkId === network
-        );
-        if (!!newAccount) {
-          trackNewAccountAdded({
-            eventParams: {
-              newAccountAddedType: newAccount.wallet,
-              newAccountAddedNumOfAccounts: accounts.length
-            }
-          });
-        }
-        return newAccount;
-      })
-      .filter((a) => a !== undefined) as StoreAccount[];
-
-    if (newAccounts.length !== 0) {
-      if (accounts.length > 1) displayNotification(NotificationTemplates.saveSettings);
-      const handleAddition =
-        newAccounts.length === 1
-          ? () => {
-              displayNotification(NotificationTemplates.walletAdded, {
-                address: newAccounts[0].address
-              });
-              scanAccountTokens(newAccounts[0]);
-              scanForMemberships([newAccounts[0]]);
-            }
-          : () => {
-              displayNotification(NotificationTemplates.walletsAdded, { accounts: newAccounts });
-              scanTokens();
-              scanForMemberships([...newAccounts]);
-            };
-      handleAddition();
-      history.push(ROUTE_PATHS.DASHBOARD.path);
-    }
-  }, [accounts]);
 
   // If there is a valid walletName parameter in the URL, update state and let router effect redirect to that wallet
   useEffect(() => {
@@ -152,19 +97,12 @@ const AddAccountFlow = withRouter(({ history, match }) => {
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
   };
 
-  const calculateMargin = (index: number) => (index < 4 ? '2%' : '10px');
-
   const renderDefault = () => {
     return (
-      <ExtendedContentPanel width="800px">
+      <ExtendedContentPanel width="810px">
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
-            <WalletList
-              wallets={getStories()}
-              onSelect={onWalletSelection}
-              showHeader={true}
-              calculateMargin={calculateMargin}
-            />
+            <WalletList wallets={getStories()} onSelect={onWalletSelection} showHeader={true} />
           </CSSTransition>
         </TransitionGroup>
       </ExtendedContentPanel>
@@ -179,7 +117,7 @@ const AddAccountFlow = withRouter(({ history, match }) => {
       <ExtendedContentPanel
         onBack={goToPreviousStep}
         stepper={steps.length > 1 ? { current: step + 1, total: steps.length } : undefined}
-        width="800px"
+        width="810px"
       >
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>

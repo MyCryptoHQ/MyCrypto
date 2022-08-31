@@ -13,7 +13,11 @@
     "address": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
     "networkId": "Ropsten",
     "wallet": "WALLETCONNECT",
-    "dPath": "",
+    "path": {
+      "name": "Ledger (ETH)",
+      "path": "m/44'/60'/0'/<account>"
+    },
+    "index": 0,
     "assets": [
       {
         "uuid": "77de68da-ecd8-53ba-bbb5-8edb1c8e14d7",
@@ -123,9 +127,5 @@
     "decimal": 18
   },
   "from": "0xfE5443FaC29fA621cFc33D41D1927fd0f5E0bB7c",
-  "gasPrice": "4000000000",
-  "gasLimit": "21000",
-  "nonce": "50",
-  "data": "0x",
-  "value": "100000000000000"
+  "networkId": "Ropsten"
 }

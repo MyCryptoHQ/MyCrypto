@@ -1,0 +1,141 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "eslint-config-prettier", "plugin:eslint-plugin-import/errors"],
+  "plugins": ["eslint-plugin-react", "eslint-plugin-import"],
+  "ignorePatterns": ["**/static/matomo.js", "hardhat.config.ts", "jest_config", "node-scripts"],
+  "rules": {
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-deprecated": "error",
+    "import/no-duplicates": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-namespace": "error",
+    "import/no-self-import": "error",
+    "import/no-unresolved": "off",
+    "import/no-useless-path-segments": "error",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+        "pathGroups": [
+          {
+            "pattern": "@{assets,components,config,database,fixtures,features,helpers,hooks,routing,sass,services,store,theme,translations,types,utils,vendor,workers}{**,**/**}",
+            "group": "internal"
+          },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "allowSeparatedGroups": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:eslint-plugin-react/recommended",
+        "plugin:eslint-plugin-react-hooks/recommended",
+        "plugin:eslint-plugin-import/typescript",
+        "eslint-config-prettier/@typescript-eslint"
+      ],
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "@typescript-eslint/consistent-type-assertions": [
+          "error",
+          {
+            "assertionStyle": "as"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/method-signature-style": ["error", "method"],
+        "@typescript-eslint/no-inferrable-types": [
+          "error",
+          {
+            "ignoreParameters": true
+          }
+        ],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": ["private-constructors"]
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "ignoreRestSiblings": true,
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "@typescript-eslint/prefer-nullish-coalescing": "error",
+        "react/display-name": "off",
+        "react/no-unescaped-entities": "off",
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "react-hooks/exhaustive-deps": "off",
+        // Configure Jest to recognise react-saga-test-plan assertions
+        // https://github.com/jfairbank/redux-saga-test-plan/issues/329
+        "jest/expect-expect": [
+          "error",
+          {
+            "assertFunctionNames": ["expect", "expectSaga", "testSaga", "expectToThrow"]
+          }
+        ]
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      },
+      "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+      }
+    },
+    {
+      "files": ["*.test.{ts,tsx}", "*.spec.{ts,tsx}", "jest_config/**/*"],
+      "env": {
+        "node": true,
+        "jest": true
+      },
+      "extends": ["plugin:eslint-plugin-jest/recommended", "plugin:eslint-plugin-jest/style"],
+      "plugins": ["eslint-plugin-jest"]
+    },
+    {
+      "files": ["__tests__/**/*.js"],
+      "extends": ["plugin:testcafe/recommended"],
+      "plugins": ["eslint-plugin-testcafe"]
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

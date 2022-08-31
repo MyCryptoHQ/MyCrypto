@@ -1,18 +1,27 @@
-import { useContext } from 'react';
-import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
 
-import { Network, NetworkId, NodeOptions, LSKeys } from '@types';
+import {
+  createNetwork,
+  destroyNetwork as deleteNetworkRedux,
+  deleteNodeOrNetwork as deleteNodeOrNetworkRedux,
+  deleteNode as deleteNodeRedux,
+  selectNetworks,
+  updateNetwork as updateNetworkRedux,
+  useDispatch,
+  useSelector
+} from '@store';
+import { Network, NetworkId, NodeOptions } from '@types';
 
-import { DataContext } from '../DataManager';
-import { NetworkUtils } from './utils';
 import { EthersJS } from '../../EthService/network/ethersJsProvider';
 import { getNetworkById as getNetworkByIdFunc } from './helpers';
+import { NetworkUtils } from './utils';
 
 export interface INetworkContext {
   networks: Network[];
   addNetwork(item: Network): void;
-  updateNetwork(id: NetworkId, item: Network): void;
+  updateNetwork(item: Network): void;
+  deleteNetwork(networkId: NetworkId): void;
   getNetworkById(networkId: NetworkId): Network;
   getNetworkByChainId(chainId: number): Network | undefined;
   getNetworkNodes(networkId: NetworkId): NodeOptions[];
@@ -24,11 +33,14 @@ export interface INetworkContext {
 }
 
 function useNetworks() {
-  const { createActions, networks } = useContext(DataContext);
-  const model = createActions(LSKeys.NETWORKS);
+  const networks = useSelector(selectNetworks);
+  const dispatch = useDispatch();
 
-  const addNetwork = (network: Network) => model.create(network);
-  const updateNetwork = (id: NetworkId, item: Network) => model.update(id, item);
+  const addNetwork = (network: Network) => dispatch(createNetwork(network));
+  const updateNetwork = (item: Network) => dispatch(updateNetworkRedux(item));
+  const deleteNodeOrNetwork = (network: NetworkId, nodeName: string) =>
+    dispatch(deleteNodeOrNetworkRedux({ network, nodeName }));
+  const deleteNetwork = (id: NetworkId) => dispatch(deleteNetworkRedux(id));
   const getNetworkById = (networkId: NetworkId) => {
     const foundNetwork = getNetworkByIdFunc(networkId, networks);
     if (foundNetwork) {
@@ -59,7 +71,7 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToAdd.id, n);
+    updateNetwork(n);
     EthersJS.updateEthersInstance(n);
   };
 
@@ -77,41 +89,11 @@ function useNetworks() {
       selectedNode: node.name
     };
 
-    updateNetwork(networkToEdit.id, networkUpdate);
+    updateNetwork(networkUpdate);
     EthersJS.updateEthersInstance(networkUpdate);
   };
-  const deleteNode = (nodeName: string, network: Network | NetworkId) => {
-    let networkToEdit: Network = network as Network;
-    if (isString(network)) {
-      networkToEdit = getNetworkById(network);
-    }
-
-    const { nodes } = networkToEdit;
-
-    const newNodes = [...nodes.filter((n) => n.name !== nodeName)];
-
-    const newSelectedNode = (() => {
-      if (
-        networkToEdit.selectedNode === nodeName &&
-        (networkToEdit.selectedNode === networkToEdit.autoNode ||
-          networkToEdit.autoNode === undefined)
-      ) {
-        return newNodes[0]?.name;
-      } else if (networkToEdit.selectedNode === nodeName) {
-        return networkToEdit.autoNode;
-      }
-      return networkToEdit.selectedNode;
-    })();
-
-    const networkUpdate = {
-      ...networkToEdit,
-      nodes: newNodes,
-      selectedNode: newSelectedNode
-    };
-
-    updateNetwork(networkToEdit.id, networkUpdate);
-    EthersJS.updateEthersInstance(networkUpdate);
-  };
+  const deleteNode = (nodeName: string, network: NetworkId) =>
+    dispatch(deleteNodeRedux({ network, nodeName }));
   const setNetworkSelectedNode = (networkId: NetworkId, selectedNode: string) => {
     const foundNetwork = networks.find((n: Network) => n.id === networkId);
 
@@ -121,7 +103,7 @@ function useNetworks() {
 
     const network = { ...foundNetwork, selectedNode };
 
-    updateNetwork(networkId, network);
+    updateNetwork(network);
     EthersJS.updateEthersInstance(network);
   };
   const isNodeNameAvailable = (
@@ -147,6 +129,8 @@ function useNetworks() {
     networks,
     addNetwork,
     updateNetwork,
+    deleteNetwork,
+    deleteNodeOrNetwork,
     getNetworkById,
     getNetworkByChainId,
     getNetworkNodes,

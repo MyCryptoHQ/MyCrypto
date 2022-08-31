@@ -1,11 +1,8 @@
-import { Transaction as Tx } from 'ethereumjs-tx';
-
-import { INode } from '@types';
-import { Web3Node } from '@services/EthService';
+import { UnsignedTransaction } from '@ethersproject/transactions';
 
 interface IBaseWallet {
   isReadOnly?: boolean;
-  getAddressString(): string;
+  getAddress(): string;
   getPrivateKeyString?(): string;
 }
 
@@ -15,8 +12,8 @@ export interface IReadOnlyWallet extends IBaseWallet {
 
 export interface IFullWallet extends IBaseWallet {
   isReadOnly?: false;
-  signRawTransaction(tx: Tx): Promise<Buffer> | Buffer;
-  signMessage(msg: string, nodeLib: Web3Node | INode): Promise<string> | string;
+  signRawTransaction(tx: UnsignedTransaction): Promise<Buffer> | Buffer;
+  signMessage(msg: string): Promise<string> | string;
 }
 
 export type IWallet = IReadOnlyWallet | IFullWallet;

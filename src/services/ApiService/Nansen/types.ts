@@ -1,10 +1,9 @@
-import { TAddress } from '@types';
-
 export interface NansenServiceResponse {
-  page?: NansenServiceEntry[];
+  result?: NansenServiceEntry;
+  error?: string;
 }
 
 export interface NansenServiceEntry {
-  address: TAddress;
-  label: string[];
+  labels: string[];
+  name: string;
 }

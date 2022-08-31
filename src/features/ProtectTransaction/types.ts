@@ -1,4 +1,4 @@
-import { TAddress, Asset } from '@types';
+import { Asset, TAddress } from '@types';
 
 export enum ProtectTxError {
   NO_ERROR,

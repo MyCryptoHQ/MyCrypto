@@ -1,4 +1,4 @@
-export function makeBlob(mime: string, str: string | object) {
+export function makeBlob(mime: string, str: string | TObject) {
   str = typeof str === 'object' ? JSON.stringify(str) : str;
   if (str === null) {
     return '';

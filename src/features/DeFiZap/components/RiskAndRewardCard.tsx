@@ -1,9 +1,9 @@
-import React from 'react';
+import styled from 'styled-components';
+
+import { TranslateMarkdown, Typography } from '@components';
+import { BREAK_POINTS, SPACING } from '@theme';
 
 import { RiskAndReward } from '../config';
-import styled from 'styled-components';
-import { TranslateMarkdown, Typography } from '@components';
-import { SPACING, BREAK_POINTS } from '@theme';
 
 interface Props {
   riskAndReward: RiskAndReward;

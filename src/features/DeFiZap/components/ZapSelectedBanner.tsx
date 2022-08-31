@@ -1,8 +1,7 @@
-import React from 'react';
 import styled from 'styled-components';
 
-import { translateRaw } from '@translations';
 import { COLORS, SPACING } from '@theme';
+import { translateRaw } from '@translations';
 
 import { IZapConfig } from '../config';
 

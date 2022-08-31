@@ -1,11 +1,14 @@
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const merge = require('webpack-merge');
+
+const { LOCAL } = require('../environment');
 const common = require('./common');
 const config = require('./config');
-const { IS_ELECTRON, LOCAL } = require('../environment');
 
 const HTTP_PORT = 3000;
 
@@ -18,7 +21,7 @@ module.exports = merge.smart(common, {
     historyApiFallback: true,
     progress: false,
     hot: true,
-    https: !IS_ELECTRON,
+    https: true,
     port: HTTP_PORT,
     clientLogLevel: 'warning', // Silence [WDS] && [HMR] output in console
     headers: {
@@ -31,10 +34,6 @@ module.exports = merge.smart(common, {
 
   output: {
     filename: '[name].js'
-  },
-
-  resolve: {
-    alias: { 'react-dom': '@hot-loader/react-dom' }
   },
 
   module: {
@@ -51,34 +50,30 @@ module.exports = merge.smart(common, {
 
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              prependData: `$is-electron: ${IS_ELECTRON};`
-            }
-          }
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
 
   plugins: [
     new webpack.EnvironmentPlugin({
-      'TARGET_ENV': process.env.TARGET_ENV || LOCAL
+      TARGET_ENV: process.env.TARGET_ENV || LOCAL
     }),
 
     new FriendlyErrorsPlugin({
       clearConsole: false
     }),
 
-    new webpack.HotModuleReplacementPlugin(),
-
+    new ReactRefreshWebpackPlugin(),
     // Analyse webpack bundle. Available at: http://localhost:8888
     // https://www.npmjs.com/package/webpack-bundle-analyzer
-    new BundleAnalyzerPlugin({ openAnalyzer: false })
+    new BundleAnalyzerPlugin({ openAnalyzer: false }),
+
+    // Make .env variables available to react code.
+    // We use Github secrets for production, so this is only defined in development.
+    new Dotenv({
+      safe: true // loads .env.example to sure all values are defined in .env
+    })
   ],
 
   performance: {

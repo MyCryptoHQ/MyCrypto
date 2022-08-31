@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
-import { Panel, Button } from '@mycrypto/ui';
+import { Fragment } from 'react';
+
+import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { SPACING } from '@theme';
-import { IAccount } from '@types';
-import { NotificationsContext } from './NotificationsProvider';
-import { notificationsConfigs, NotificationTemplates } from './constants';
-
-// Legacy
 import closeIcon from '@assets/images/icn-close.svg';
+import { SPACING } from '@theme';
+import { IAccount, NotificationTemplates } from '@types';
+import { useScreenSize } from '@utils';
+import { useEffectOnce } from '@vendor';
+
+import { notificationsConfigs } from './constants';
+import { useNotifications } from './useNotifications';
 
 export const MainPanel = styled(Panel)`
   position: relative;
@@ -35,8 +37,13 @@ const NotificationsPanel = ({ accounts }: Props) => {
     notifications,
     displayNotification,
     currentNotification,
-    dismissCurrentNotification
-  } = useContext(NotificationsContext);
+    dismissCurrentNotification,
+    trackNotificationViewed
+  } = useNotifications();
+
+  useEffectOnce(() => {
+    trackNotificationViewed();
+  });
 
   const handleCloseClick = () => {
     if (!currentNotification) {
@@ -71,24 +78,30 @@ const NotificationsPanel = ({ accounts }: Props) => {
     });
   }
 
+  const template = currentNotification?.template;
+
+  const { isMobile } = useScreenSize();
+  const config = notificationsConfigs[template];
+
   const getNotificationBody = () => {
-    const template = currentNotification!.template;
     const templateData = currentNotification!.templateData;
-    const NotificationComponent = notificationsConfigs[template].layout;
+    const NotificationComponent = config.layout;
     return <NotificationComponent {...templateData} />;
   };
 
+  const style = config && config.style ? config.style(isMobile) : undefined;
+
   return (
-    <React.Fragment>
-      {currentNotification && (
-        <MainPanel>
+    <Fragment>
+      {currentNotification && config && (
+        <MainPanel style={style}>
           <CloseButton basic={true} onClick={handleCloseClick}>
             <img src={closeIcon} alt="Close" />
           </CloseButton>
           {getNotificationBody()}
         </MainPanel>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,9 +1,8 @@
 import { fNetwork as Ropsten } from '@fixtures';
 import { TAddress } from '@types';
 
-import { getNonce } from './nonce';
-
 import { ProviderHandler } from './network';
+import { getNonce } from './nonce';
 
 const mockGetTransaction = (value: number, target: typeof ProviderHandler) => {
   target.prototype.getTransactionCount = ProviderHandler.prototype.getTransactionCount = jest

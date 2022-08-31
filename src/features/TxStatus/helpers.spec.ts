@@ -1,49 +1,58 @@
-import {
-  fAssets,
-  fAccounts,
-  fTxReceipt,
-  fNetworks,
-  fETHWeb3TxResponse,
-  fETHNonWeb3TxResponse,
-  fETHNonWeb3TxConfig,
-  fETHNonWeb3TxReceipt
-} from '@fixtures';
-
-import { makeTx, fetchTxStatus } from './helpers';
-import { bigNumberify } from 'ethers/utils';
-import { ITxType, ITxStatus } from '@types';
+import { BigNumber } from '@ethersproject/bignumber';
 import { toChecksumAddress } from 'ethereumjs-util';
 
-jest.mock('ethers/providers', () => {
+import {
+  fAccounts,
+  fAssets,
+  fETHNonWeb3TxConfig,
+  fETHNonWeb3TxReceipt,
+  fETHNonWeb3TxResponse,
+  fETHWeb3TxResponse,
+  fNetworks,
+  fTxReceipt
+} from '@fixtures';
+import { ITxStatus, ITxType } from '@types';
+
+import { fetchTxStatus, makeTx } from './helpers';
+
+jest.mock('@vendor', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, jest/no-mocks-import
   const { mockFactory } = require('./__mocks__/txstatus');
-  return mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d');
+  return {
+    ...jest.requireActual('@vendor'),
+    ...mockFactory('0xa63c5a2249d919eabc4ab38ed47846d4c01c261f1bf2f7dc5e6a7fe8860ac87d')
+  };
 });
 
 describe('fetchTxStatus', () => {
   it('fetches tx from ls', async () => {
     const result = await fetchTxStatus({
-      accounts: [{ ...fAccounts[0], transactions: [fTxReceipt] }],
+      txCache: [fTxReceipt],
       networks: fNetworks,
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
     });
     expect(result?.cachedTx).toStrictEqual(fTxReceipt);
-    expect(result?.fetchedTx).toBe(undefined);
+    expect(result?.fetchedTx).toBeUndefined();
   });
   it('fetches tx from nodes', async () => {
     const result = await fetchTxStatus({
-      accounts: [{ ...fAccounts[0] }],
+      txCache: [],
       networks: fNetworks,
       networkId: fNetworks[1].id,
       txHash: fTxReceipt.hash
     });
-    expect(result?.cachedTx).toBe(undefined);
+    expect(result?.cachedTx).toBeUndefined();
     expect({
       ...result?.fetchedTx,
-      gasLimit: bigNumberify(result?.fetchedTx?.gasLimit || 0),
-      gasPrice: bigNumberify(result?.fetchedTx?.gasPrice || 0),
-      value: bigNumberify(result?.fetchedTx?.value || 0)
-    }).toStrictEqual(fETHWeb3TxResponse);
+      gasLimit: BigNumber.from(result?.fetchedTx?.gasLimit ?? 0),
+      gasPrice: BigNumber.from(result?.fetchedTx?.gasPrice ?? 0),
+      value: BigNumber.from(result?.fetchedTx?.value ?? 0)
+    }).toStrictEqual({
+      ...fETHWeb3TxResponse,
+      gasLimit: BigNumber.from('0x7d3c'),
+      value: BigNumber.from('0x00')
+    });
   });
 });
 
@@ -63,7 +72,8 @@ describe('makeTx', () => {
         ...fETHNonWeb3TxConfig.rawTransaction,
         from: fETHNonWeb3TxConfig.from,
         nonce: '0x06',
-        gasPrice: '0x012a05f200'
+        gasPrice: '0x012a05f200',
+        type: undefined
       }
     });
     expect(result.receipt).toBe(fETHNonWeb3TxReceipt);
@@ -83,17 +93,20 @@ describe('makeTx', () => {
         ...fETHNonWeb3TxConfig.rawTransaction,
         from: fETHNonWeb3TxConfig.from,
         nonce: '0x06',
-        gasPrice: '0x012a05f200'
+        gasPrice: '0x012a05f200',
+        type: undefined
       }
     });
-    expect(result.receipt).toStrictEqual({
-      ...fETHNonWeb3TxReceipt,
-      asset: fAssets[1],
-      txType: ITxType.UNKNOWN,
-      status: ITxStatus.UNKNOWN,
-      to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
-      from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
-      receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
-    });
+    expect(result.receipt).toStrictEqual(
+      expect.objectContaining({
+        ...fETHNonWeb3TxReceipt,
+        asset: fAssets[1],
+        txType: ITxType.UNKNOWN,
+        status: ITxStatus.UNKNOWN,
+        to: toChecksumAddress(fETHNonWeb3TxReceipt.to),
+        from: toChecksumAddress(fETHNonWeb3TxReceipt.from),
+        receiverAddress: toChecksumAddress(fETHNonWeb3TxReceipt.receiverAddress)
+      })
+    );
   });
 });

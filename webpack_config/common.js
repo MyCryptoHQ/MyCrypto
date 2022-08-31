@@ -1,15 +1,15 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+
+const { IS_DEV } = require('../environment');
 const config = require('./config');
-const { IS_DEV, IS_ELECTRON } = require('../environment');
 
 module.exports = {
   target: 'web',
@@ -29,15 +29,19 @@ module.exports = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [config.path.src, config.path.modules, config.path.root],
+    modules: [config.path.src, 'node_modules'],
     alias: {
       modernizr$: path.resolve(__dirname, '../.modernizrrc.js'),
-      '@fixtures': `${config.path.root}/jest_config/__fixtures__`
+      '@fixtures': `${config.path.root}/jest_config/__fixtures__`,
+      // recharts 1.8.5 relies on core-js@2. Allow it to resolve to core-js@3
+      // https://github.com/recharts/recharts/issues/1673#issuecomment-499680671
+      'core-js/es6': 'core-js/es'
     },
     plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, '../tsconfig.json') })]
   },
 
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         default: false,
@@ -46,12 +50,10 @@ module.exports = {
           chunks: 'all',
           name: 'vendor.bundle',
           test(mod) {
-            const excluded = `${config.chunks.individual.join(
-              '|'
-            )}|${config.chunks.electronOnly.join('|')}|${config.chunks.devOnly
+            const excluded = `${config.chunks.individual.join('|')}|${config.chunks.devOnly
               .join('|')
               .replace(/\//, '[\\\\/]')}`;
-            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded})\.*)`);
+            const excludeNodeModules = new RegExp(`[\\\\/]node_modules[\\\\/]((${excluded}).*)`);
             const includeSrc = new RegExp(/[\\/]src[\\/]/);
             const includeNodeModules = new RegExp(/node_modules/);
             return (
@@ -102,16 +104,15 @@ module.exports = {
               cacheCompression: false,
               // allow lodash-webpack-plugin to reduce lodash size.
               // allow babel-plugin-recharts to reduce recharts size.
-              plugins: ['lodash', 'recharts']
+              plugins: [
+                'lodash',
+                'recharts',
+                IS_DEV && require.resolve('react-refresh/babel')
+              ].filter(Boolean)
             }
           }
         ],
-        include: [
-          config.path.src,
-          config.path.shared,
-          config.path.electron,
-          config.path.testConfig
-        ],
+        include: [config.path.src, config.path.shared, config.path.testConfig],
         exclude: [/node_modules/]
       },
 
@@ -236,9 +237,7 @@ module.exports = {
       },
       metaCsp: IS_DEV
         ? ''
-        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *${
-            IS_ELECTRON ? ' eth-enclave:' : ''
-          }; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://beta.mycrypto.com;`
+        : `default-src 'none'; script-src 'self'; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://mycryptoapi.com/api/v1/images/; connect-src *; frame-src 'self' https://connect.trezor.io https://landing.mycryptobuilds.com https://app.mycrypto.com;`
     }),
 
     new CopyWebpackPlugin([
@@ -248,15 +247,11 @@ module.exports = {
 
     new ForkTsCheckerWebpackPlugin({
       tsconfig: path.join(config.path.root, 'tsconfig.json'),
-      tslint: path.join(config.path.root, 'tslint.json'),
       reportFiles: ['**/*.{ts,tsx}', '!node_modules/**/*']
     }),
 
     // Allow tree shaking for lodash
-    new LodashModuleReplacementPlugin(),
-
-    // Ignore all locale files of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new LodashModuleReplacementPlugin({ flattening: true })
   ],
 
   stats: {

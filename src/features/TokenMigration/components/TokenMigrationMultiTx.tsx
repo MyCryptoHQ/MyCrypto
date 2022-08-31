@@ -1,47 +1,35 @@
-import React from 'react';
 import path from 'ramda/src/path';
 
-import { ITxStatus, TxParcel } from '@types';
 import { VerticalStepper } from '@components';
-import { translateRaw } from '@translations';
+import { ITokenMigrationConfig, ITxMultiConfirmProps, ITxStatus } from '@types';
 
-import step1SVG from '@assets/images/icn-send.svg';
-import step2SVG from '@assets/images/icn-receive.svg';
-
-interface Props {
-  currentTxIdx: number;
-  transactions: TxParcel[];
-  onComplete?(): void;
-}
-
-export default function ConfirmTokenMigration({ currentTxIdx, transactions, onComplete }: Props) {
+export default function ConfirmTokenMigrationMultiTx({
+  currentTxIdx,
+  transactions,
+  flowConfig,
+  onComplete,
+  error
+}: ITxMultiConfirmProps) {
   const status = transactions.map((t) => path(['status'], t));
 
   const broadcastingIndex = status.findIndex((s) => s === ITxStatus.BROADCASTED);
-
-  const approveTx = {
-    title: translateRaw('APPROVE_REP_TOKEN_MIGRATION'),
-    icon: step1SVG,
-    content: translateRaw('REP_TOKEN_MIGRATION_STEP1_TEXT'),
-    buttonText: `${translateRaw('APPROVE_REP_TOKEN_MIGRATION')}`,
-    loading: status[0] === ITxStatus.BROADCASTED,
-    onClick: onComplete
-  };
-
-  const transferTx = {
-    title: translateRaw('COMPLETE_REP_TOKEN_MIGRATION'),
-    icon: step2SVG,
-    content: translateRaw('REP_TOKEN_MIGRATION_STEP2_TEXT'),
-    buttonText: `${translateRaw('CONFIRM_TRANSACTION')}`,
-    loading: status[1] === ITxStatus.BROADCASTED,
-    onClick: onComplete
-  };
+  const steps = (flowConfig as ITokenMigrationConfig).txConstructionConfigs.map(
+    (txConstructionConfig, index) => ({
+      title: txConstructionConfig.stepTitle,
+      icon: txConstructionConfig.stepSvg,
+      content: txConstructionConfig.stepContent,
+      buttonText: txConstructionConfig.actionBtnText,
+      loading: status[index] === ITxStatus.BROADCASTED,
+      onClick: onComplete
+    })
+  );
 
   return (
     <div>
       <VerticalStepper
         currentStep={broadcastingIndex === -1 ? currentTxIdx : broadcastingIndex}
-        steps={[approveTx, transferTx]}
+        steps={steps}
+        error={error !== undefined}
       />
     </div>
   );

@@ -1,4 +1,4 @@
 'use strict';
 require('isomorphic-fetch');
-require('@babel/polyfill');
-window.BASE_API = 'http://localhost:4000/api/v1';
+
+jest.mock('@ledgerhq/hw-transport-u2f');

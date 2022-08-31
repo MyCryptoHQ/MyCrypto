@@ -1,14 +1,12 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { Panel } from '@mycrypto/ui';
+import { storiesOf } from '@storybook/react';
 
-import { COLORS } from '@theme';
-import { noOp, bigify } from '@utils';
 import { Fiats } from '@config';
+import { COLORS } from '@theme';
+import { bigify, noOp } from '@utils';
 
-import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
-import ProtectTxModalBackdrop from './ProtectTxModalBackdrop';
 import { ProtectTxError } from '..';
+import { ProtectTxProtectionUI, UIProps } from './ProtectTxProtection';
 
 const defaultProps: UIProps = {
   error: ProtectTxError.NO_ERROR,
@@ -47,7 +45,6 @@ const ProtectTxStep1Mobile = () => (
         justifyContent: 'center'
       }}
     >
-      <ProtectTxModalBackdrop onBackdropClick={noOp} />
       <div style={{ maxWidth: '375px', position: 'relative' }}>
         <Panel>
           <ProtectTxProtectionUI {...defaultProps} />
@@ -56,22 +53,22 @@ const ProtectTxStep1Mobile = () => (
     </div>
   </>
 );
-storiesOf('ProtectTransaction', module)
-  .add('Step 1', (_) => ProtectTxStep1(), {
+storiesOf('Features/ProtectTransaction', module)
+  .add('Step 1', () => ProtectTxStep1(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Web 3', (_) => ProtectTxStep1Web3(), {
+  .add('Step 1 - Web 3', () => ProtectTxStep1Web3(), {
     design: {
       type: 'figma',
       url:
         'https://www.figma.com/file/BY0SWc75teEUZzws8JdgLMpy/%5BMyCrypto%5D-GAU-Master?node-id=5137%3A5310'
     }
   })
-  .add('Step 1 - Mobile', (_) => ProtectTxStep1Mobile(), {
+  .add('Step 1 - Mobile', () => ProtectTxStep1Mobile(), {
     design: {
       type: 'figma',
       url:

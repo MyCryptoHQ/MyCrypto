@@ -1,14 +1,9 @@
-import moment from 'moment';
-
+import { PROMO_CONFIG } from '@config';
 import { ExtendedNotification } from '@types';
+import { dateIsBetween, getDayDifference } from '@utils';
 
 export const saveSettingsCheck = (): boolean => {
   // @todo: Check if all additional conditions are met for displaying the "save settings" notification
-  return true;
-};
-
-export const printPaperWalletCheck = (): boolean => {
-  // @todo: Check if all additional conditions are met for displaying the "print paper wallet" notification
   return true;
 };
 
@@ -21,22 +16,22 @@ export const onboardingPleaseUnderstandCheck = (notification: ExtendedNotificati
   if (!notification.templateData) {
     return false;
   }
-  return (
-    moment
-      .duration(
-        moment(new Date()).diff(moment(notification.templateData.previousNotificationClosedDate))
-      )
-      .asDays() > 1
-  );
+
+  return getDayDifference(notification.templateData.previousNotificationClosedDate) > 1;
 };
 
 export const onboardingResponsibleCheck = (notification: ExtendedNotification): boolean => {
   if (!notification.templateData) {
     return false;
   }
-  return (
-    moment
-      .duration(moment(new Date()).diff(moment(notification.templateData.firstDashboardVisitDate)))
-      .asDays() > 1
-  );
+
+  return getDayDifference(notification.templateData.firstDashboardVisitDate) > 1;
+};
+
+export const promoPoapCheck = (): boolean => {
+  const config = PROMO_CONFIG.find((c) => c.key === 'winter2021');
+  if (!config) {
+    return false;
+  }
+  return dateIsBetween(config.startDate, config.endDate, Date.now() / 1000);
 };

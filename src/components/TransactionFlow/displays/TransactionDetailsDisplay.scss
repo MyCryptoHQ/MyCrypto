@@ -8,12 +8,16 @@
       flex-direction: column;
       align-items: flex-start;
     }
-    &:nth-child(even) {
-      //should actually pull GREY_LIGHTEST from v2/theme
-      background: #f8f8f8;
+    &.border {
+      border-bottom: 1px solid #e8eaed;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    &:last-child {
+      border: 0;
     }
     & > div {
-      padding: 7px 10px;
+      padding: 7px 0px;
     }
     &.stacked &-column + &-data {
       // yay vertical rhymth!

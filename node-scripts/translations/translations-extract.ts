@@ -1,13 +1,12 @@
 /* tslint:disable:no-console */
 import { tsquery } from '@phenomnomnominal/tsquery';
-import * as ts from 'typescript';
+import fs from 'fs';
+import glob from 'glob';
+import path from 'path';
+import ts from 'typescript';
 
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
-
-const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
-const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
+export const PROJECT_FILE_PATTERN = './src/**/*.{ts,tsx}';
+export const TRANSLATION_FILE_PATTERN = './src/translations/lang/*.json';
 const TRANSLATE_FUNCTIONS = ['translateRaw', 'translate', 'translateMarker'];
 const JSX_ELEMENTS_WITH_PROP: [string, string][] = [['Trans', 'id']];
 
@@ -34,6 +33,11 @@ const findJxsElementExpressions = (
   return tsquery(node, query, { visitAllChildren: true });
 };
 
+const findAllStringLiterals = (node: ts.Node): ts.StringLiteral[] => {
+  const query = `StringLiteral`;
+  return tsquery(node, query, { visitAllChildren: true });
+};
+
 const getStringFromExpression = (expression: ts.Node) => {
   const text = expression.getText();
 
@@ -41,7 +45,7 @@ const getStringFromExpression = (expression: ts.Node) => {
     text &&
     typeof text === 'string' &&
     text.toUpperCase() === text &&
-    /^[0-9]*['"][A-Z][A-Z0-9_'"]*$/.test(text) // Ignore only digits
+    /^[0-9]*[`'"][A-Z][A-Z0-9_'"`]*$/.test(text) // Ignore only digits
   ) {
     return [text];
   }
@@ -96,6 +100,39 @@ export const translationKeysExtract = (projectFilePattern = PROJECT_FILE_PATTERN
     .reduce((acc, item) => ({ ...acc, [item]: '' }), {});
 };
 
+export const getJsonKeys = (translationFilePattern = TRANSLATION_FILE_PATTERN) => {
+  const translationFilePaths = getFilesMatchingPattern(path.resolve(translationFilePattern));
+  return translationFilePaths.map((translationFilePath: string) => {
+    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath, 'utf-8'));
+
+    const translationJson = translationFileJson.data;
+    return Object.keys(translationJson);
+  });
+};
+
+export const findTranslationKeys = (
+  projectFilePattern = PROJECT_FILE_PATTERN,
+  jsonKeys: string[]
+) => {
+  const files = getFilesMatchingPattern(path.resolve(projectFilePattern));
+  let keys: string[] = [];
+
+  files.forEach((filePath: string) => {
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const ast = tsquery.ast(fileContent, 'filePath', ts.ScriptKind.TSX);
+
+    const stringLiterals = findAllStringLiterals(ast);
+
+    const strings = stringLiterals.map((s) => s.text);
+
+    const matchedStrings = strings.filter((s) => jsonKeys.includes(s));
+
+    keys = [...keys, ...matchedStrings];
+  });
+
+  return [...new Set(keys)];
+};
+
 export const updateJsonTranslations = (
   translated: { [name: string]: string },
   translationFilePattern = TRANSLATION_FILE_PATTERN
@@ -105,7 +142,7 @@ export const updateJsonTranslations = (
 
   const translationFilePaths = getFilesMatchingPattern(path.resolve(translationFilePattern));
   translationFilePaths.forEach((translationFilePath: string) => {
-    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath));
+    const translationFileJson = JSON.parse(fs.readFileSync(translationFilePath, 'utf-8'));
 
     const translationJson = {
       ...translated,

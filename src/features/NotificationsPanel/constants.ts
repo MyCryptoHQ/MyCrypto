@@ -1,36 +1,26 @@
+import winterBg from '@assets/images/winter-bg.svg';
+import { NotificationTemplates } from '@types';
+
 import {
-  saveSettingsCheck,
-  printPaperWalletCheck,
+  GetHardwareWalletNotification,
+  OnboardingPleaseUnderstandNotification,
+  OnboardingResponsibleNotification,
+  SaveDashboardNotification,
+  WalletAddedNotification,
+  WalletCreatedNotification,
+  WalletNotAddedNotification,
+  WalletsAddedNotification,
+  WalletsNotAddedNotification,
+  WinterNotification
+} from './components';
+import {
   getHardwareWalletCheck,
   onboardingPleaseUnderstandCheck,
-  onboardingResponsibleCheck
+  onboardingResponsibleCheck,
+  promoPoapCheck,
+  saveSettingsCheck
 } from './helpers';
 import { NotificationsConfigsProps } from './types';
-import {
-  WalletCreatedNotification,
-  WalletAddedNotification,
-  WalletsAddedNotification,
-  SaveDashboardNotification,
-  PrintPaperWalletNotification,
-  GetHardwareWalletNotification,
-  WalletNotAddedNotification,
-  WalletsNotAddedNotification,
-  OnboardingPleaseUnderstandNotification,
-  OnboardingResponsibleNotification
-} from './components';
-
-export const NotificationTemplates = {
-  walletCreated: 'wallet-created',
-  walletAdded: 'wallet-added',
-  walletsAdded: 'wallets-added',
-  walletNotAdded: 'wallet-not-added',
-  walletsNotAdded: 'wallets-not-added',
-  saveSettings: 'save-settings',
-  printPaperWallet: 'print-paper-wallet',
-  getHardwareWallet: 'get-hardware-wallet',
-  onboardingPleaseUnderstand: 'onboarding-please-understand',
-  onboardingResponsible: 'onboarding-responsible'
-};
 
 export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.walletCreated]: {
@@ -69,12 +59,6 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     repeatInterval: 86400,
     condition: saveSettingsCheck
   },
-  [NotificationTemplates.printPaperWallet]: {
-    analyticsEvent: 'Print Your Paper Wallet',
-    layout: PrintPaperWalletNotification,
-    repeatInterval: 86400,
-    condition: printPaperWalletCheck
-  },
   [NotificationTemplates.getHardwareWallet]: {
     analyticsEvent: 'Get a Hardware Wallet',
     layout: GetHardwareWalletNotification,
@@ -94,5 +78,15 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     dismissForever: true,
     condition: onboardingResponsibleCheck,
     preventDismisExisting: true
+  },
+  [NotificationTemplates.winterPoap]: {
+    analyticsEvent: 'Winter Poap',
+    layout: WinterNotification,
+    condition: promoPoapCheck,
+    priority: true,
+    style: (isMobile) => ({
+      backgroundImage: `url(${winterBg})`,
+      backgroundSize: isMobile ? 'cover' : '100% 100%'
+    })
   }
 };

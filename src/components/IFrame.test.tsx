@@ -1,11 +1,12 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 
-import { simpleRender, screen, fireEvent } from 'test-utils';
+import { fireEvent, screen, simpleRender } from 'test-utils';
+
 import { TURL } from '@types';
 
 import { default as IFrame } from './IFrame';
 
-function getComponent(props: React.ComponentProps<typeof IFrame>) {
+function getComponent(props: ComponentProps<typeof IFrame>) {
   return simpleRender(<IFrame {...props} />);
 }
 
@@ -31,15 +32,7 @@ describe('IFrame', () => {
     const props = { ...defaultProps };
     getComponent(props);
     fireEvent.load(screen.getByTestId('iframe'));
-    expect(props.onLoad).toBeCalledTimes(1);
-    expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
+    expect(props.onLoad).toHaveBeenCalledTimes(1);
+    expect(props.onLoad).toHaveBeenCalledWith(screen.getByTestId('iframe'));
   });
-
-  // it('triggers reload on prop change', () => {
-  //   const props = { ...defaultProps };
-  //   getComponent(props);
-  //   screen.rerender(<IFrame {...props} reload={true} />);
-  //   expect(props.onLoad).toBeCalledTimes(1);
-  //   expect(props.onLoad).toBeCalledWith(screen.getByTestId('iframe'));
-  // });
 });

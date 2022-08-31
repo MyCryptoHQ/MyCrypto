@@ -1,7 +1,5 @@
-import React from 'react';
-
-import { IReceiverAddress, Network, TAddress } from '@types';
 import { findNextRecipientLabel, useContacts } from '@services/Store';
+import { IReceiverAddress, Network, TAddress } from '@types';
 import { useEffectOnce } from '@vendor';
 
 import GeneralLookupField, { IGeneralLookupFieldComponentProps } from './GeneralLookupField';

@@ -1,7 +1,2 @@
-export { AccountContext, AccountProvider } from './AccountProvider';
-export {
-  getBaseAsset,
-  getAccountByAddressAndNetworkName,
-  getAccountsByAsset,
-  getDashboardAccounts
-} from './helpers';
+export { default as useAccounts, IAccountContext } from './useAccounts';
+export * from './helpers';
