@@ -14,7 +14,7 @@ const undoDeleteOverlayMobile = () => (
       restoreAccount={noOp}
       overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
-        $walletId: 'Metamask'
+        $walletId: 'MetaMask'
       })}
     />
   </div>
@@ -27,7 +27,7 @@ const undoDeleteOverlayDesktop = () => (
       restoreAccount={noOp}
       overlayText={translateRaw('ACCOUNT_LIST_UNDO_REMOVE_OVERLAY_TEXT', {
         $label: 'Sample address 1',
-        $walletId: 'Metamask'
+        $walletId: 'MetaMask'
       })}
     />
   </div>

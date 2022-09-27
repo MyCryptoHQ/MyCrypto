@@ -3,7 +3,7 @@ import { WindowPostMessageStream } from '@metamask/post-message-stream';
 
 import { injectMobile } from './inpage-metamask-mobile';
 
-// Metamask injection hack
+// MetaMask injection hack
 // Due to https://github.com/MetaMask/metamask-extension/issues/3133
 
 (() => {
