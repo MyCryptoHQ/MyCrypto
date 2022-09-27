@@ -28,7 +28,7 @@
     "@mycrypto/eth-scan": "3.4.4",
     "@mycrypto/ui": "0.24.1",
     "@mycrypto/unlock-scan": "1.2.0",
-    "@mycrypto/wallets": "1.4.4",
+    "@mycrypto/wallets": "1.5.1",
     "@reduxjs/toolkit": "1.6.0",
     "@styled-system/should-forward-prop": "5.1.5",
     "@types/papaparse": "5.0.6",
@@ -87,7 +87,7 @@
     "what-input": "5.2.6",
     "whatwg-fetch": "2.0.3",
     "ws": "7.5.3",
-    "yup": "0.28.2"
+    "yup": "0.30.0"
   },
   "devDependencies": {
     "@babel/core": "7.14.5",

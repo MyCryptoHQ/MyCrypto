@@ -9,7 +9,7 @@ export const resetFork = async (stickyBlockNum = true) => {
   await provider.send('hardhat_reset', [
     {
       forking: {
-        jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        jsonRpcUrl: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
         blockNumber: stickyBlockNum ? 13373860 : undefined
       }
     }

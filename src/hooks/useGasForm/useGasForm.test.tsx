@@ -1,7 +1,7 @@
 import { waitFor } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import { fAccount, fNetwork, fTransactionEIP1559 } from '@fixtures';
+import { fNetwork, fTransactionEIP1559 } from '@fixtures';
 
 import { useGasForm } from './useGasForm';
 
@@ -24,9 +24,7 @@ describe('useGasForm', () => {
   it('can handleGasPriceEstimation', async () => {
     const { result: r } = render();
 
-    await act(() =>
-      r.current.handleGasPriceEstimation({ ...fNetwork, supportsEIP1559: true }, fAccount)
-    );
+    await act(() => r.current.handleGasPriceEstimation({ ...fNetwork, supportsEIP1559: true }));
 
     const values = r.current.values;
     await waitFor(() => expect(values.maxFeePerGasField).toBe('200'));
@@ -37,9 +35,7 @@ describe('useGasForm', () => {
   it('can handleGasPriceEstimation non EIP 1595', async () => {
     const { result: r } = render();
 
-    await act(() =>
-      r.current.handleGasPriceEstimation({ ...fNetwork, supportsEIP1559: false }, fAccount)
-    );
+    await act(() => r.current.handleGasPriceEstimation({ ...fNetwork, supportsEIP1559: false }));
 
     const values = r.current.values;
     await waitFor(() => expect(values.gasPriceField).toBe('50'));

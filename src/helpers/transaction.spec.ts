@@ -3,7 +3,6 @@ import { parse as parseTransaction } from '@ethersproject/transactions';
 
 import { donationAddressMap, ETHUUID } from '@config';
 import {
-  fAccount,
   fAccounts,
   fAssets,
   fERC20NonWeb3TxConfigJSON as fERC20NonWeb3TxConfig,
@@ -456,7 +455,7 @@ describe('appendGasPrice', () => {
       data: '0x0' as ITxData,
       chainId: 1
     };
-    const actual = await appendGasPrice(fNetworks[0], fAccount)(input);
+    const actual = await appendGasPrice(fNetworks[0])(input);
     const expected = {
       to: senderAddr,
       value: '0x0',
@@ -475,7 +474,7 @@ describe('appendGasPrice', () => {
       gasPrice: '0x2540be400' as ITxGasPrice,
       chainId: 1
     };
-    const actual = await appendGasPrice(fNetworks[0], fAccount)(input);
+    const actual = await appendGasPrice(fNetworks[0])(input);
     const expected = {
       to: senderAddr,
       value: '0x0',

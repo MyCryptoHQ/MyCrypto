@@ -437,14 +437,14 @@ export const appendSender = (senderAddress: ITxFromAddress) => (
   };
 };
 
-export const appendGasPrice = (network: Network, account: StoreAccount) => async (
+export const appendGasPrice = (network: Network) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
   // Respect gas price if present
   if (tx.gasPrice || (tx.maxFeePerGas && tx.maxPriorityFeePerGas)) {
     return tx as TxBeforeGasLimit;
   }
-  const gas = await fetchUniversalGasPriceEstimate(network, account)
+  const gas = await fetchUniversalGasPriceEstimate(network)
     .then(({ estimate: r }) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
     .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
@@ -538,16 +538,15 @@ export const makeTxFromForm = (
   value: string,
   data: ITxData
 ): ITxObject => {
-  const gas =
-    form.account && isEIP1559Supported(form.network, form.account)
-      ? {
-          maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
-          maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
-          type: 2 as const
-        }
-      : {
-          gasPrice: inputGasPriceToHex(form.gasPrice)
-        };
+  const gas = isEIP1559Supported(form.network)
+    ? {
+        maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
+        maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
+        type: 2 as const
+      }
+    : {
+        gasPrice: inputGasPriceToHex(form.gasPrice)
+      };
 
   return {
     ...gas,

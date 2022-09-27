@@ -1,7 +1,7 @@
 import { TAddress } from '@types';
 
 /*
-  These types are used for Web3 interactions under Metamask's permissions system
+  These types are used for Web3 interactions under MetaMask's permissions system
   identified here: https://github.com/MetaMask/rpc-cap
   Web3 api methods are usually injected by a browser extension or mobile app browser
 */
