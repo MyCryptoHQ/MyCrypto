@@ -458,5 +458,13 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       service: 'Apothem.BlocksScan.io',
       url: 'https://mycryptoarpc.blocksscan.io'
     }
+  ],
+  Fuse: [
+    {
+      name: NetworkUtils.makeNodeName('Fuse', 'rpc.fuse.io'),
+      type: NodeType.RPC,
+      service: 'rpc.fuse.io',
+      url: 'https://rpc.fuse.io'
+    }
   ]
 };
