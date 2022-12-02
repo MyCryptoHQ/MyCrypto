@@ -1195,5 +1195,33 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       initial: 1
     },
     supportsEIP1559: true
+  },
+  Fuse: {
+    id: 'Fuse',
+    name: 'Fuse Chain',
+    unit: 'FUSE' as TTicker,
+    chainId: 122,
+    isCustom: false,
+    color: '#194675',
+    blockExplorer: makeExplorer({
+      name: 'Fuse Explorer',
+      origin: 'https://explorer.fuse.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_ETH
+    },
+    gasPriceSettings: {
+      min: 10,
+      max: 30,
+      initial: 10
+    },
+    supportsEIP1559: false
   }
 };

@@ -39,4 +39,5 @@ export type NetworkId =
   | 'Fantom'
   | 'HECO'
   | 'XDC'
-  | 'XDCApothem';
+  | 'XDCApothem'
+  | 'Fuse';
