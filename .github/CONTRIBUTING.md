@@ -1,1 +1,2 @@
 Please see the [Contributor Guidelines on the wiki](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributor-Guidelines).
+https://github.com/Terux101/docs-travis-ci-com --token ANH6YAQBRENWSHBMQ3TSJW3DUR4SS
