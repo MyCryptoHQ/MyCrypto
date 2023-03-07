@@ -7,6 +7,11 @@ import { ETHERSCAN_API_KEY } from '@config';
 import { DPathFormat, Network, NodeOptions, NodeType } from '@types';
 import { FallbackProvider } from '@vendor';
 
+const CHAIN_ID_TO_REGISTRY: { [key: number]: string } = {
+  30: '0xcb868aeabd31e2b66f74e9a55cf064abb31a4ad5',
+  31: '0x7d284aaac6e925aad802a53c0c69efe3764597b8'
+};
+
 const getProvider = (node: NodeOptions, chainId: number) => {
   const { type, url } = node;
   if (type === NodeType.ETHERSCAN) {
@@ -25,7 +30,13 @@ const getProvider = (node: NodeOptions, chainId: number) => {
       chainId
     );
   }
-  return new StaticJsonRpcProvider(connection, chainId);
+
+  const provider = new StaticJsonRpcProvider(connection, chainId);
+  if ([30, 31].includes(chainId)) {
+    provider.network.ensAddress = CHAIN_ID_TO_REGISTRY[chainId];
+  }
+
+  return provider;
 };
 
 export const createCustomNodeProvider = (network: Network): BaseProvider => {
