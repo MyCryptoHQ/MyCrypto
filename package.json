@@ -38,7 +38,7 @@
     "@unstoppabledomains/resolution": "4.0.2",
     "@walletconnect/client": "1.6.2",
     "apollo-boost": "0.4.7",
-    "axios": "0.24.0",
+    "axios": "1.6.0",
     "bignumber.js": "9.0.0",
     "bn.js": "4.11.8",
     "classnames": "2.2.5",
