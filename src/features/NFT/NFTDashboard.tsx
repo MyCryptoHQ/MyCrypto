@@ -90,7 +90,7 @@ export default function NftDashboard() {
               )}
               <LinkApp href={ROUTE_PATHS.SETTINGS.path} mr={SPACING.BASE} variant="opacityLink">
                 <Box variant="rowAlign">
-                  <Icon type="edit" width="1em" />
+                  <Icon type="edit" width="1em" color="BLUE_SKY" />
                   <Text ml={SPACING.XS} mb={0}>
                     {translateRaw('EDIT')}
                   </Text>

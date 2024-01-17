@@ -1,31 +1,34 @@
-import { screen, simpleRender } from 'test-utils';
+import { mockStore, screen, simpleRender } from 'test-utils';
 
 import { fAccounts } from '@fixtures';
-import { ClaimState, ClaimType } from '@types';
+import { ClaimState, ClaimType, ITxValue } from '@types';
 import { truncate } from '@utils';
 
 import { ClaimTable } from '../components/ClaimTable';
 
 function getComponent() {
   return simpleRender(<ClaimTable type={ClaimType.UNI} />, {
-    initialState: {
-      claims: {
+    initialState: mockStore({
+      dataStoreState: {
         claims: {
-          [ClaimType.UNI]: [
-            {
-              address: fAccounts[0].address,
-              state: ClaimState.UNCLAIMED,
-              amount: '403'
-            },
-            {
-              address: fAccounts[2].address,
-              state: ClaimState.CLAIMED,
-              amount: '403'
-            }
-          ]
+          claims: {
+            [ClaimType.UNI]: [
+              {
+                address: fAccounts[0].address,
+                state: ClaimState.UNCLAIMED,
+                amount: '403' as ITxValue
+              },
+              {
+                address: fAccounts[2].address,
+                state: ClaimState.CLAIMED,
+                amount: '403' as ITxValue
+              }
+            ]
+          },
+          error: false
         }
       }
-    }
+    })
   });
 }
 

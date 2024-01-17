@@ -177,9 +177,9 @@ const getInitialFormikValues = ({
   return mergeDeepWith(preferValueFromState, initialFormikValues, state);
 };
 
-const createQueryWarning = (translationId?: string) => (
+const createQueryWarning = (translationId: string = 'WARN_SEND_LINK') => (
   <div className="alert alert-info">
-    <p>{translate(translationId || 'WARN_SEND_LINK')}</p>
+    <p>{translate(translationId)}</p>
   </div>
 );
 
@@ -390,7 +390,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     ? getBaseAssetByNetwork({ network, assets })!
     : getBaseAssetByNetwork({ network: defaultNetwork!, assets })!;
 
-  const isEIP1559 = isEIP1559Supported(network, values.account);
+  const isEIP1559 = isEIP1559Supported(network);
 
   const gasPrice = isEIP1559
     ? values.maxFeePerGasField.toString()
@@ -410,7 +410,7 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
 
   useEffect(() => {
     handleGasPriceEstimation();
-  }, [values.account, values.network]);
+  }, [values.network]);
 
   useDebounce(
     () => {
@@ -420,14 +420,14 @@ export const SendAssetsForm = ({ txConfig, onComplete, protectTxButton }: ISendF
     [values.account, values.address, values.amount, values.txDataField]
   );
 
-  const handleGasPriceEstimation = (network = values.network) =>
-    performGasPriceEstimation(network, values.account);
+  const handleGasPriceEstimation = (network = values.network) => performGasPriceEstimation(network);
 
   useEffect(() => {
     const asset = values.asset;
     const newAccount = getDefaultAccount(asset);
     const newInitialValues = getInitialFormikValues({
-      s: txConfig,
+      // @ts-expect-error @todo Fix reliance on txConfig being {}
+      s: asset.uuid === txConfig.asset?.uuid ? txConfig : {},
       defaultAccount: newAccount,
       defaultAsset: asset,
       defaultNetwork: getDefaultNetwork(newAccount),

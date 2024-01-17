@@ -18,6 +18,6 @@ function getComponent() {
 describe('TopNav', () => {
   test('renders the TopNav', async () => {
     getComponent();
-    expect(screen.getByText(new RegExp(translateRaw('NAVIGATION_JOIN'), 'i'))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(translateRaw('NAVIGATION_HELP'), 'i'))).toBeInTheDocument();
   });
 });

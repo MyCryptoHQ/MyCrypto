@@ -1,4 +1,4 @@
-import { DerivationPath as DPath } from '@mycrypto/wallets';
+import { DeterministicWallet, DerivationPath as DPath } from '@mycrypto/wallets';
 import { ValuesType } from 'utility-types';
 
 import { HDWalletErrors } from '@features/AddAccount/components/hdWallet.slice';
@@ -26,6 +26,7 @@ export type ExtendedDPath = DPath & {
 };
 
 export interface HDWalletState {
+  session?: DeterministicWallet;
   isInit: boolean;
   isConnected: boolean;
   isConnecting: boolean;

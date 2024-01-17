@@ -7,3 +7,4 @@ export { default as WalletNotAddedNotification } from './WalletNotAddedNotificat
 export { default as WalletsNotAddedNotification } from './WalletsNotAddedNotification';
 export { default as OnboardingPleaseUnderstandNotification } from './OnboardingPleaseUnderstandNotification';
 export { default as OnboardingResponsibleNotification } from './OnboardingResponsibleNotification';
+export * from './WinterNotification';

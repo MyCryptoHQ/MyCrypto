@@ -196,6 +196,12 @@ const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
     `};
 `;
 
+const BreakDownBalanceChange = styled(BreakDownBalanceAssetName)<{ change: number }>`
+  text-align: right;
+  font-size: ${FONT_SIZE.SM};
+  color: ${(props) => (props.change > 0 ? COLORS.SUCCESS_GREEN_LIGHT : COLORS.ERROR_RED_LIGHT)};
+`;
+
 const BalanceTotalWrapper = styled.div`
   margin-top: auto;
 `;
@@ -372,7 +378,7 @@ export default function WalletBreakdownView({
           )}
           {!isScanning &&
             breakdownBalances.map(
-              ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid }, index) => (
+              ({ name, amount, fiatValue, ticker, isOther, exchangeRate, uuid, change }, index) => (
                 <BreakDownBalance
                   key={`${uuid}${name}`}
                   onMouseOver={() => handleMouseOver(index)}
@@ -406,6 +412,12 @@ export default function WalletBreakdownView({
                         decimals={2}
                       />
                     </BreakDownBalanceAssetAmount>
+                    {change != null && change !== 0 && (
+                      <BreakDownBalanceChange change={change}>
+                        {change > 0 && '+'}
+                        {change.toFixed(2)}%
+                      </BreakDownBalanceChange>
+                    )}
                   </Tooltip>
                 </BreakDownBalance>
               )

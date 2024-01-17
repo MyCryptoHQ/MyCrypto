@@ -1,4 +1,5 @@
 import { Button, Typography } from '@mycrypto/ui';
+import { Property } from 'csstype';
 import styled from 'styled-components';
 
 import { Icon, LinkApp } from '@components';
@@ -7,13 +8,13 @@ import { isUrl } from '@utils';
 
 import { Action } from '../types';
 
-const SContainer = styled('div')`
+const SContainer = styled('div')<{ justifyContent: Property.JustifyContent }>`
   align-items: center;
   background: ${COLORS.WHITE};
   border-radius: 5px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   display: flex;
-  justify-content: center;
+  ${(p) => `justify-content: ${p.justifyContent};`}
   margin-bottom: ${SPACING.BASE};
   padding: ${SPACING.BASE};
 
@@ -88,10 +89,6 @@ const STitle = styled('div')`
   }
 
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
-    font-size: ${FONT_SIZE.BASE};
-  }
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_LG}) {
     font-size: ${FONT_SIZE.XL};
   }
 `;
@@ -104,12 +101,12 @@ const SDescription = styled('div')`
   }
 `;
 
-function ActionTile({ icon, faded, title, description, link }: Action) {
+function ActionTile({ icon, faded, title, description, link, justifyContent }: Action) {
   return (
-    <SContainer>
+    <SContainer justifyContent={justifyContent ?? 'center'}>
       <LinkApp href={link} isExternal={isUrl(link)}>
         <SButton basic={true} faded={faded}>
-          <Icon type={icon} alt={title} />
+          {icon && <Icon type={icon} alt={title} />}
           <Typography as="div">
             <STitle isLonger={title.length > 15}>{title}</STitle>
             <SDescription>{description}</SDescription>

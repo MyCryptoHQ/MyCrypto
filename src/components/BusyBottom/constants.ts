@@ -53,7 +53,7 @@ export const configs: Record<
     {
       copy: 'BUSY_BOTTOM_GET_WEB3',
       copyVariables: { $app: web3Config.name },
-      link: web3Config.install?.getItLink || WALLETS_CONFIG[WalletId.METAMASK].install!.getItLink!,
+      link: web3Config.install?.getItLink ?? WALLETS_CONFIG[WalletId.METAMASK].install!.getItLink!,
       external: true
     },
     SUPPORT_LINK
@@ -82,6 +82,20 @@ export const configs: Record<
       link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
       external: true
     },
+    SUPPORT_LINK
+  ],
+  GRIDPLUS: [
+    {
+      copy: 'BUSY_BOTTOM_GRIDPLUS_1',
+      link: EXT_URLS.GRIDPLUS_REFERRAL.url,
+      external: true
+    },
+    // @todo Add article for this?
+    /**{
+      copy: 'BUSY_BOTTOM_TROUBLESHOOTING',
+      link: getKBHelpArticle(KB_HELP_ARTICLE.TREZOR_TROUBLESHOOTING),
+      external: true
+    },**/
     SUPPORT_LINK
   ],
   WALLETCONNECT: [

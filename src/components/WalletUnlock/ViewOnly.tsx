@@ -14,7 +14,7 @@ import { ErrorObject, FormData, IReceiverAddress, TAddress, WalletId } from '@ty
 import { isFormValid, toChecksumAddressByChainId } from '@utils';
 
 const FormWrapper = styled(Form)`
-  padding: 2em 0;
+  padding-top: 2em;
 `;
 
 const ButtonWrapper = styled(Button)`
@@ -54,8 +54,8 @@ export function ViewOnlyDecrypt({ formData, onUnlock }: Props) {
   };
 
   return (
-    <Box p="2.5em">
-      <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+    <Box>
+      <Heading fontSize="32px" textAlign="center" fontWeight="bold" mt="0">
         {translateRaw('INPUT_PUBLIC_ADDRESS_LABEL')}
       </Heading>
       <Body textAlign="center" fontSize="18px" paddingTop="16px">

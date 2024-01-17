@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 
 import { Body, Box } from '@components';
-import { OpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
+import { CustomOpenSeaCollection, OpenSeaNFT } from '@services/ApiService/OpenSea';
 import { SPACING } from '@theme';
 
 import { NFTCard } from './NFTCard';
@@ -9,7 +9,7 @@ import { NFTCard } from './NFTCard';
 export const NFTCollectionView = ({
   nftsByCollection
 }: {
-  nftsByCollection: { nfts: OpenSeaNFT[]; collection: OpenSeaCollection }[];
+  nftsByCollection: { nfts: OpenSeaNFT[]; collection: CustomOpenSeaCollection }[];
 }) => (
   <>
     {nftsByCollection

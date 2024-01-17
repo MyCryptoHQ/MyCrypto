@@ -135,8 +135,8 @@ export function AddToken(props: Props) {
         .then((tokenInformation) => {
           if (tokenInformation) {
             const { symbol, decimals: fetchedDecimals } = tokenInformation;
-            setTicker(symbol || ticker);
-            setDecimals(fetchedDecimals?.toString() || decimals);
+            setTicker(symbol ?? ticker);
+            setDecimals(fetchedDecimals?.toString() ?? decimals);
           }
         })
         .catch(() => {

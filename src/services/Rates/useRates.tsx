@@ -31,6 +31,17 @@ function useRates() {
       : DEFAULT_FIAT_RATE;
   };
 
+  const getAssetChange = (asset: ExtendedAsset) => {
+    const uuid = asset.uuid;
+    if (!isEmpty(rates) && !rates[uuid] && !trackedAssets[uuid]) {
+      dispatch(trackAsset(asset));
+      return DEFAULT_FIAT_RATE;
+    }
+    return rates[uuid]
+      ? rates[uuid][`${(settings.fiatCurrency as string).toLowerCase()}_24h_change`]
+      : DEFAULT_FIAT_RATE;
+  };
+
   const getAssetRateInCurrency = (asset: ExtendedAsset, currency: string) => {
     const uuid = asset.uuid;
     if (!isEmpty(rates) && !rates[uuid] && !trackedAssets[uuid]) {
@@ -50,7 +61,8 @@ function useRates() {
   return {
     getAssetRate,
     getAssetRateInCurrency,
-    getPoolAssetReserveRate
+    getPoolAssetReserveRate,
+    getAssetChange
   };
 }
 

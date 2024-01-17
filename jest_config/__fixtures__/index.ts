@@ -1,5 +1,6 @@
 import { fNetwork as network } from './network';
 import { default as txConfig } from './txConfig.json';
+import { default as txConfigDeploy } from './txConfigDeploy.json';
 import { default as txConfigEIP1559 } from './txConfigEIP1559.json';
 
 export { fAssets, fStoreAssets, fRopDAI, fDAI } from './assets';
@@ -10,6 +11,7 @@ export * from './transaction';
 export { fSettings } from './settings';
 export const fTxConfig = { ...txConfig, network };
 export const fTxConfigEIP1559 = txConfigEIP1559;
+export const fTxConfigDeploy = txConfigDeploy;
 
 export { default as fTxConfigs } from './txConfigs.json';
 export { default as fTxReceipt } from './txReceipt.json';
@@ -61,3 +63,4 @@ export * from './swapQuote';
 export { fBalances } from './balances';
 export * from './ens';
 export * from './nft';
+export * from './hdWallet';

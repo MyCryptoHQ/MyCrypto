@@ -8,7 +8,7 @@ interface CloseIconProps {
   onClick?: MouseEventHandler<SVGSVGElement>;
 }
 
-const CloseIcon: FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }) => {
+const CloseIcon: FC<CloseIconProps> = ({ fillColor = COLORS.BLUE_SKY, size = 'sm', onClick }) => {
   const dimensions = (s: string) => {
     switch (s) {
       case 'sm':
@@ -30,18 +30,8 @@ const CloseIcon: FC<CloseIconProps> = ({ fillColor, size = 'sm', onClick }) => {
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
-      <path
-        d="M1 1L19 21"
-        stroke={fillColor || COLORS.BLUE_SKY}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <path
-        d="M19 1L1 21"
-        stroke={fillColor || COLORS.BLUE_SKY}
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M1 1L19 21" stroke={fillColor} strokeWidth="2" strokeLinecap="round" />
+      <path d="M19 1L1 21" stroke={fillColor} strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 };

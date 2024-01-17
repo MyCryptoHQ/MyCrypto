@@ -3,8 +3,9 @@
   "parser": "@typescript-eslint/parser",
   "extends": ["eslint:recommended", "eslint-config-prettier", "plugin:eslint-plugin-import/errors"],
   "plugins": ["eslint-plugin-react", "eslint-plugin-import"],
-  "ignorePatterns": ["**/static/matomo.js"],
+  "ignorePatterns": ["**/static/matomo.js", "hardhat.config.ts", "jest_config", "node-scripts"],
   "rules": {
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-deprecated": "error",
@@ -88,6 +89,7 @@
             "argsIgnorePattern": "^_"
           }
         ],
+        "@typescript-eslint/prefer-nullish-coalescing": "error",
         "react/display-name": "off",
         "react/no-unescaped-entities": "off",
         "react/prop-types": "off",
@@ -108,6 +110,7 @@
         }
       },
       "parserOptions": {
+        "project": "./tsconfig.json",
         "ecmaFeatures": {
           "jsx": true
         }

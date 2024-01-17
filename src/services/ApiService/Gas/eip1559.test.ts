@@ -12,6 +12,7 @@ const block = {
   timestamp: 1627469703,
   nonce: '0x0000000000000000',
   difficulty: 1,
+  _difficulty: BigNumber.from(1),
   gasLimit: BigNumber.from('0x01c9c380'),
   gasUsed: BigNumber.from('0x26aee4'),
   miner: '0x0000000000000000000000000000000000000000',

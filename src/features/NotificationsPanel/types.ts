@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 import { ExtendedNotification } from '@types';
 
 export interface NotificationConfig {
@@ -9,6 +11,8 @@ export interface NotificationConfig {
   repeatInterval?: number;
   preventDismisExisting?: boolean;
   condition?(notification: ExtendedNotification): boolean;
+  style?(isMobile: boolean): CSSProperties;
+  priority?: boolean; // Is sorted above any other notifications
 }
 
 export interface NotificationsConfigsProps {

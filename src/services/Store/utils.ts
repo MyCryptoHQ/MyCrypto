@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
+import { EXCLUDED_ASSETS } from '@config';
 import { translateRaw } from '@translations';
 import {
   Asset,
@@ -38,22 +39,24 @@ export const toStoreAccount = (
   network: Network,
   contact?: Contact
 ): StoreAccount => {
-  const accountAssets: StoreAsset[] = account.assets.reduce(
-    (acc, asset) => [
-      ...acc,
-      // @todo: Switch BN from ethers to unified BN
-      {
-        ...asset,
-        balance: BigNumber.from(asset.balance),
-        ...assets.find((a) => a.uuid === asset.uuid)!
-      }
-    ],
-    []
-  );
+  const accountAssets: StoreAsset[] = account.assets
+    .filter((a) => !EXCLUDED_ASSETS.includes(a.uuid))
+    .reduce(
+      (acc, asset) => [
+        ...acc,
+        // @todo: Switch BN from ethers to unified BN
+        {
+          ...asset,
+          balance: BigNumber.from(asset.balance),
+          ...assets.find((a) => a.uuid === asset.uuid)!
+        }
+      ],
+      []
+    );
   return {
     ...account,
     assets: accountAssets,
     network,
-    label: contact?.label || account.label || translateRaw('NO_LABEL')
+    label: contact?.label ?? account.label ?? translateRaw('NO_LABEL')
   };
 };

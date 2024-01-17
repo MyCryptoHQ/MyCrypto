@@ -25,6 +25,7 @@ export interface HardwareWalletInitArgs {
   address: TAddress;
   dPath: DerivationPath;
   index: number;
+  params?: unknown;
 }
 
 export interface ViewOnlyWalletInitArgs {

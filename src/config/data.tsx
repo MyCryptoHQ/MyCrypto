@@ -52,6 +52,10 @@ export const UNISWAP_UNI_CLAIM_API = 'https://uni.mycryptoapi.com/claims';
 export const UNISWAP_TOKEN_DISTRIBUTOR = '0x090D4613473dEE047c3f2706764f49E0821D256e';
 export const DAPPNODE_CLAIM_API = 'https://dappnode.mycryptoapi.com/claims';
 export const DAPPNODE_TOKEN_DISTRIBUTOR = '0x87d6180b65ad76a9443064dcd1596388fcc3ee2a';
+export const ENS_CLAIM_API = 'https://ensclaims.mycryptoapi.com/v1/claims';
+export const ENS_TOKEN_DISTRIBUTOR = '0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72';
+export const GIV_CLAIM_API = 'https://giveth.mycryptoapi.com/v1/claims';
+export const GIV_TOKEN_DISTRIBUTOR = '0xFad63adEFb8203F7605F25f6a921c8bf45604A5e';
 
 export const LETS_ENCRYPT_URL = 'https://letsencrypt.org/';
 

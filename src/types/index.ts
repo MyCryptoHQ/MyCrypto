@@ -44,7 +44,7 @@ export { NodeType } from './node';
 export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
 export { LocalStorage, LSKeys, DataStore } from './store';
-export { Notification, ExtendedNotification } from './notification';
+export * from './notification';
 export { IERC20, TokenInformation } from './erc20';
 export { IREPV2 } from './repV2';
 export { IAntMigrator } from './antMigrator';
@@ -75,12 +75,7 @@ export {
   IPrimaryAccountPermission,
   IExposedAccountsPermission
 } from './web3Permissions';
-export {
-  ITokenMigrationConfig,
-  ITokenMigrationTxConfig,
-  ITokenMigrationFormFull,
-  TokenMigrationState
-} from './tokenMigration';
+export * from './tokenMigration';
 export { IUniDistributor } from './uniDistributor';
 export {
   UserAction,
@@ -95,8 +90,9 @@ export { DomainEntry, DomainChild, DomainParent, DomainNameRecord } from './ens'
 export { IAaveMigrator } from './aaveMigrator';
 export { IGolemMigration } from './golemV2Migration';
 export { IRouteLink, IExternalLink, TTrayItem, INavTray, INavigationProps } from './navigation';
-export { Bigish } from '@utils/bigify';
-export { BusyBottomConfig } from './busyBottom';
+export * from './bigify';
+export * from './busyBottom';
 export * from './claims';
 export * from './omit';
 export * from './query';
+export * from './promoPoap';

@@ -12,7 +12,7 @@ export const MigrationSubHead = ({ assetUuid }: MigrationSubHeadProps) => {
   const accounts = useSelector(getStoreAccounts);
   const { getAssetByUUID } = useAssets();
 
-  const asset = (getAssetByUUID(assetUuid) || {}) as Asset;
+  const asset = (getAssetByUUID(assetUuid) ?? {}) as Asset;
   const relevantAccounts = getAccountsByAsset(accounts, asset);
 
   return (

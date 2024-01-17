@@ -59,10 +59,7 @@ import navLinkedin from '@assets/icons/navigation/linkedin.svg';
 import navMedium from '@assets/icons/navigation/medium.svg';
 import navMembership from '@assets/icons/navigation/membership.svg';
 import navMenu from '@assets/icons/navigation/menu.svg';
-import navMigrateAnt from '@assets/icons/navigation/migrate-ant.svg';
-import navMigrateGnt from '@assets/icons/navigation/migrate-gnt.svg';
-import navMigrateLend from '@assets/icons/navigation/migrate-lend.svg';
-import navMigrateRep from '@assets/icons/navigation/migrate-rep.svg';
+import navMigrate from '@assets/icons/navigation/migrate.svg';
 import navNew from '@assets/icons/navigation/new.svg';
 import navNewTab from '@assets/icons/navigation/newTab.svg';
 import navNftDashboard from '@assets/icons/navigation/nft-dashboard.svg';
@@ -103,6 +100,7 @@ import nansenLogo from '@assets/images/credits/credits-nansen.svg';
 import openSeaLogo from '@assets/images/credits/credits-opensea.svg';
 import zapperLogo from '@assets/images/defizap/zapperLogo.svg';
 import ensLogo from '@assets/images/ens/ens-icon.svg';
+import givLogo from '@assets/images/giveth-logo.svg';
 import golemLogo from '@assets/images/gol-logo.png';
 import addressBookIcon from '@assets/images/icn-address-book.svg';
 import buyIcon from '@assets/images/icn-buy.svg';
@@ -136,6 +134,7 @@ import membership from '@assets/images/membership/membership-none.svg';
 import nodeLogo from '@assets/images/node-logo.svg';
 import repLogo from '@assets/images/rep-logo.svg';
 import uniLogo from '@assets/images/uni-logo.png';
+import gridPlusLgIcon from '@assets/images/wallets/gridplus-large.svg';
 import ledgerIcon from '@assets/images/wallets/ledger.svg';
 import trezorIcon from '@assets/images/wallets/trezor.svg';
 
@@ -178,6 +177,7 @@ const svgIcons = {
   'ledger-icon-lg': ledgerLgIcon,
   'trezor-icon': trezorIcon,
   'trezor-icon-lg': trezorLgIcon,
+  'gridplus-icon-lg': gridPlusLgIcon,
   membership,
   feedback,
   newsletter,
@@ -200,6 +200,7 @@ const svgIcons = {
   zapperLogo,
   'rep-logo': repLogo,
   zeroxLogo,
+  givLogo,
 
   /* Social Icons */
   coinmarketcap,
@@ -269,10 +270,7 @@ const svgIcons = {
   'nav-desktop': navDesktop,
   'nav-ens': navEns,
   'nav-tx-status': navTxStatus,
-  'nav-migrate-rep': navMigrateRep,
-  'nav-migrate-gnt': navMigrateGnt,
-  'nav-migrate-ant': navMigrateAnt,
-  'nav-migrate-lend': navMigrateLend,
+  'nav-migrate': navMigrate,
   'nav-faucet': navFaucet,
   'nav-disclaimer': navDisclaimer,
   'nav-nft': navNftDashboard

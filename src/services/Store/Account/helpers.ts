@@ -1,5 +1,5 @@
 import { DEFAULT_NETWORK } from '@config';
-import { Asset, IAccount, NetworkId, StoreAccount, TAddress } from '@types';
+import { Asset, IAccount, NetworkId, StoreAccount, TAddress, WalletId } from '@types';
 import { isSameAddress } from '@utils';
 
 export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
@@ -9,6 +9,19 @@ export const getAccountByAddressAndNetworkName = (accounts: IAccount[]) => (
   return accounts.find(
     (account) =>
       isSameAddress(account.address, address as TAddress) && account.networkId === networkId
+  );
+};
+
+export const getIdenticalAccount = (accounts: IAccount[]) => (
+  address: string,
+  networkId: NetworkId,
+  walletId: WalletId
+): IAccount | undefined => {
+  return accounts.find(
+    (account) =>
+      isSameAddress(account.address, address as TAddress) &&
+      account.networkId === networkId &&
+      account.wallet === walletId
   );
 };
 

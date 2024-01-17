@@ -8,7 +8,7 @@ export default class ApiService {
       timeout: API_SERVICE_TIMEOUT,
       headers: {
         ...API_SERVICE_DEFAULT_HEADERS,
-        ...(config.headers || {})
+        ...(config.headers ?? {})
       },
       ...config
     });

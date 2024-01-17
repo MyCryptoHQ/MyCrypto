@@ -97,7 +97,7 @@ export const MembershipFormUI = ({
   const { getAssetByUUID } = useAssets();
   const defaultAccount = useSelector(getDefaultAccount());
   const defaultMembership = MEMBERSHIP_CONFIG[IMembershipId.twelvemonths];
-  const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) || {}) as Asset;
+  const defaultAsset = (getAssetByUUID(defaultMembership.assetUUID as TUuid) ?? {}) as Asset;
   const initialFormikValues: Overwrite<MembershipSimpleTxFormFull, { account?: StoreAccount }> = {
     membershipSelected: defaultMembership,
     account: defaultAccount,
@@ -263,11 +263,9 @@ export const MembershipFormUI = ({
                 loading={isSubmitting}
                 onClick={() => {
                   if (isValid) {
-                    fetchUniversalGasPriceEstimate(values.network, values.account).then(
-                      ({ estimate: gas }) => {
-                        onComplete({ ...values, ...gas });
-                      }
-                    );
+                    fetchUniversalGasPriceEstimate(values.network).then(({ estimate: gas }) => {
+                      onComplete({ ...values, ...gas });
+                    });
                   }
                 }}
               >

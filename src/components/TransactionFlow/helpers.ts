@@ -5,9 +5,9 @@ import pick from 'ramda/src/pick';
 import { Brand, ValuesType } from 'utility-types';
 
 import { WALLET_STEPS } from '@components';
-import { TokenMigrationReceiptProps } from '@components/TokenMigration/components/TokenMigrationReceipt';
 import { CONTRACT_INTERACTION_TYPES } from '@config';
 import { IMembershipPurchaseReceiptProps } from '@features/PurchaseMembership/components/MembershipPurchaseReceipt';
+import { TokenMigrationReceiptProps } from '@features/TokenMigration/components/TokenMigrationReceipt';
 import { fetchUniversalGasPriceEstimate } from '@services/ApiService/Gas';
 import { getAccountBalance, getStoreAccount } from '@services/Store';
 import {
@@ -21,7 +21,7 @@ import {
   StoreAccount,
   TxParcel
 } from '@types';
-import { bigify, bigNumGasPriceToViewableGwei } from '@utils';
+import { bigify, bigNumGasPriceToViewableGwei, stripHexPrefix } from '@utils';
 import { isType2Tx } from '@utils/typedTx';
 
 import { ISender } from './types';
@@ -143,7 +143,7 @@ export const constructSenderFromTxConfig = (
 
 // replacement gas price must be at least 10% higher than the replaced tx's gas price
 export const calculateReplacementGasPrice = async (txConfig: ITxConfig, network: Network) => {
-  const { estimate: gas } = await fetchUniversalGasPriceEstimate(network, txConfig.senderAccount);
+  const { estimate: gas } = await fetchUniversalGasPriceEstimate(network);
 
   return isType2Tx(txConfig.rawTransaction)
     ? {
@@ -169,8 +169,5 @@ export const calculateReplacementGasPrice = async (txConfig: ITxConfig, network:
 };
 
 export const isContractInteraction = (data: string, type?: ITxType) => {
-  if (type) {
-    return CONTRACT_INTERACTION_TYPES.includes(type);
-  }
-  return data !== '0x';
+  return (type && CONTRACT_INTERACTION_TYPES.includes(type)) || stripHexPrefix(data).length > 0;
 };

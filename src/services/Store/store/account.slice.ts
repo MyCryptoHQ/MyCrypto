@@ -2,12 +2,10 @@ import { BigNumber as EthersBN } from '@ethersproject/bignumber';
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { NotificationTemplates } from '@features/NotificationsPanel/constants';
 import { makeFinishedTxReceipt } from '@helpers';
 import { ProviderHandler } from '@services/EthService';
 import { IPollingPayload, pollingSaga } from '@services/Polling';
 import { deriveTxType, ITxHistoryEntry, makeTxReceipt, merge } from '@services/TxHistory';
-import { translateRaw } from '@translations';
 import {
   Asset,
   AssetBalanceObject,
@@ -23,6 +21,7 @@ import {
   LSKeys,
   Network,
   NetworkId,
+  NotificationTemplates,
   StoreAccount,
   StoreAsset,
   TUuid,
@@ -39,7 +38,7 @@ import {
 } from '@utils';
 import { findIndex, isEmpty, prop, propEq, sortBy, uniqBy } from '@vendor';
 
-import { getAccountByAddressAndNetworkName } from '../Account';
+import { getAccountByAddressAndNetworkName, getIdenticalAccount } from '../Account';
 import { getNewDefaultAssetTemplateByNetwork } from '../Asset';
 import { getAccountsAssetsBalances } from '../BalanceService';
 import {
@@ -81,6 +80,10 @@ const slice = createSlice({
       action.payload.forEach((a) => {
         state.push(sanitizeAccount(a));
       });
+    },
+    createOrUpdateMany(state, action: PayloadAction<IAccount[]>) {
+      const sanitized = action.payload.map(sanitizeAccount);
+      return uniqBy(prop('uuid'), [...sanitized, ...state]);
     },
     resetAndCreate(_, action: PayloadAction<IAccount>) {
       return [sanitizeAccount(action.payload)];
@@ -132,7 +135,7 @@ export default slice;
 
 export const addNewAccounts = createAction<{
   networkId: NetworkId;
-  accountType?: WalletId;
+  accountType: WalletId;
   newAccounts: IAccountAdditionData[];
 }>(`${slice.name}/addNewAccounts`);
 
@@ -221,6 +224,7 @@ export const getSwapAssets = createSelector(
   [getAssets, getAccountsAssets],
   (assets, accountAssets) =>
     assets.filter(
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       (a) => a.isCustom || a.isSwapRelevant || accountAssets.find((asset) => asset.uuid === a.uuid)
     )
 );
@@ -274,7 +278,7 @@ export const getMergedTxHistory = createSelector(
           );
           return {
             ...tx,
-            timestamp: tx.timestamp || 0,
+            timestamp: tx.timestamp ?? 0,
             txType: deriveTxType(txTypeMetas, accounts, tx),
             toAddressBookEntry,
             fromAddressBookEntry,
@@ -355,7 +359,7 @@ export function* addNewAccountsWorker({
   payload: { networkId, accountType, newAccounts }
 }: PayloadAction<{
   networkId: NetworkId;
-  accountType?: WalletId;
+  accountType: WalletId;
   newAccounts: IAccountAdditionData[];
 }>) {
   const accounts: StoreAccount[] = yield select(getStoreAccounts);
@@ -366,24 +370,27 @@ export function* addNewAccountsWorker({
 
   const network = getNetworkById(networkId, networks);
   if (!network || newAccounts.length === 0) return;
-  const accountsToAdd = newAccounts.filter(
-    ({ address }) => !getAccountByAddressAndNetworkName(accounts)(address, networkId)
-  );
   const walletType = accountType! === WalletId.WEB3 ? getWeb3Config().id : accountType!;
+  const accountsToAdd = newAccounts.filter(
+    ({ address }) => !getIdenticalAccount(accounts)(address, networkId, walletType)
+  );
   const newAsset = getNewDefaultAssetTemplateByNetwork(assets)(network);
-  const newRawAccounts = accountsToAdd.map(({ address, path, index }) => ({
-    uuid: generateDeterministicAddressUUID(networkId, address),
-    address,
-    networkId,
-    wallet: walletType,
-    path,
-    index,
-    assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
-    transactions: [],
-    mtime: 0,
-    favorite: false,
-    isPrivate: undefined
-  }));
+  const newRawAccounts = accountsToAdd.map(({ address, path, index }) => {
+    const existingAccount = getAccountByAddressAndNetworkName(accounts)(address, networkId);
+    return {
+      uuid: generateDeterministicAddressUUID(networkId, address),
+      address,
+      networkId,
+      assets: existingAccount?.assets ?? [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
+      wallet: walletType,
+      transactions: existingAccount?.transactions ?? [],
+      path,
+      index,
+      mtime: 0,
+      favorite: false,
+      isPrivate: existingAccount?.isPrivate ?? undefined
+    };
+  });
   if (newRawAccounts.length === 0) {
     yield put(displayNotification({ templateName: NotificationTemplates.walletsNotAdded }));
     return;
@@ -398,7 +405,7 @@ export function* addNewAccountsWorker({
         rawAccount.address,
         networkId
       );
-      if (existingContact && existingContact.label === translateRaw('NO_LABEL')) {
+      if (existingContact) {
         return {
           ...existingContact,
           label: newLabels[idx]
@@ -423,7 +430,7 @@ export function* addNewAccountsWorker({
   if (isDemoMode) {
     yield put(slice.actions.resetAndCreateMany(newRawAccounts));
   } else {
-    yield put(slice.actions.createMany(newRawAccounts));
+    yield put(slice.actions.createOrUpdateMany(newRawAccounts));
   }
   yield put(addAccountsToCurrents(newRawAccounts.map(({ uuid }) => uuid)));
   yield put(scanTokens({ accounts: newRawAccounts }));

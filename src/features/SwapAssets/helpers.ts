@@ -29,7 +29,7 @@ export const makeSwapTxConfig = (assets: StoreAsset[]) => (
 ): ITxConfig => {
   const { address, network } = account;
   const baseAsset = getAssetByUUID(assets)(network.baseAsset)!;
-  const asset = getAssetByTicker(assets)(fromAsset.ticker) || baseAsset;
+  const asset = getAssetByTicker(assets)(fromAsset.ticker) ?? baseAsset;
 
   const txConfig: ITxConfig = {
     from: address,
@@ -115,7 +115,7 @@ export const getAccountsWithAssetBalance = (
 
     const baseAssetUsed =
       asset.uuid === baseAssetUuid
-        ? toTokenBase(fromAmount, asset.decimal || DEFAULT_ASSET_DECIMAL)
+        ? toTokenBase(fromAmount, asset.decimal ?? DEFAULT_ASSET_DECIMAL)
         : 0;
 
     const baseAssetBalance = weiToFloat(

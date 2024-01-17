@@ -2,6 +2,9 @@ import { defaultSettings, getCurrentDBConfig } from '@database';
 import { LSKeys } from '@types';
 
 import { deMarshallState, marshallState } from '../DataManager/utils';
+import { ClaimsState } from './claims.slice';
+import { ConnectionsState } from './connections.slice';
+import { PromoPoapsState } from './promoPoaps.slice';
 
 export const emptyState = {
   version: getCurrentDBConfig().version,
@@ -14,7 +17,10 @@ export const emptyState = {
   [LSKeys.NETWORKS]: [],
   [LSKeys.NOTIFICATIONS]: [],
   [LSKeys.SETTINGS]: defaultSettings,
-  [LSKeys.USER_ACTIONS]: []
+  [LSKeys.USER_ACTIONS]: [],
+  [LSKeys.PROMO_POAPS]: { promos: {} } as PromoPoapsState,
+  [LSKeys.CONNECTIONS]: { wallets: {} } as ConnectionsState,
+  [LSKeys.CLAIMS]: { claims: {} } as ClaimsState
 };
 /**
  * @todo migrate to new store structure once redux-persist is in setup.

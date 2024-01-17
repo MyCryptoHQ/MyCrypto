@@ -40,8 +40,8 @@ import { isEmpty } from '@vendor';
 import { IFullTxParam } from './types';
 
 const createBaseTxObject = (formData: IFormikFields): ITxObject => {
-  const { network, account } = formData;
-  const gas = isEIP1559Supported(network, account)
+  const { network } = formData;
+  const gas = isEIP1559Supported(network)
     ? {
         maxFeePerGas: inputGasPriceToHex(formData.maxFeePerGasField),
         maxPriorityFeePerGas: inputGasPriceToHex(formData.maxPriorityFeePerGasField),
@@ -173,7 +173,7 @@ export const parseTransactionQueryParams = (queryParams: any) => (
   const asset = isERC20
     ? assets.find(
         ({ contractAddress }) => contractAddress && isSameAddress(contractAddress as TAddress, to)
-      ) || generateGenericErc20(to, i.chainId, network.id)
+      ) ?? generateGenericErc20(to!, i.chainId, network.id)
     : baseAsset;
   return {
     from: senderAccount.address,

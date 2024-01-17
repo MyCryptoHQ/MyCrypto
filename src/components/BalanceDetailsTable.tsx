@@ -216,7 +216,7 @@ export default function BalanceDetailsTable({
           </BalancesDetailViewTableRow>
 
           {balanceRow.accounts?.map((acc, index) => {
-            const isLastItem = index + 1 >= (balanceRow.accounts?.length || -1);
+            const isLastItem = index + 1 >= (balanceRow.accounts?.length ?? -1);
             return (
               <BalancesDetailViewTableRow
                 key={index}

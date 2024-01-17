@@ -228,7 +228,7 @@ function TransactionDetailsDisplay({
             <div className="TransactionDetails-row border">
               <div className="TransactionDetails-row-column">{translateRaw('NETWORK')}:</div>
               <div className="TransactionDetails-row-column">
-                <UINetwork color={network.color || 'blue'}>{network.name}</UINetwork>
+                <UINetwork color={network.color ?? 'blue'}>{network.name}</UINetwork>
               </div>
             </div>
             <div className="TransactionDetails-row border">

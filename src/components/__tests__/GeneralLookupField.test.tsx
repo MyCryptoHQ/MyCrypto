@@ -1,9 +1,9 @@
-import { FallbackProvider } from '@ethersproject/providers';
-import Resolution, { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
+import { ResolutionError, ResolutionErrorCode } from '@unstoppabledomains/resolution';
 import { fireEvent, simpleRender, waitFor } from 'test-utils';
 
 import GeneralLookupField from '@components/GeneralLookupField';
 import { fContacts, fNetwork } from '@fixtures';
+import { ProviderHandler } from '@services/EthService';
 import { translateRaw } from '@translations';
 import { ExtendedContact, IReceiverAddress, TUuid } from '@types';
 
@@ -84,7 +84,7 @@ describe('GeneralLookupField', () => {
 
   it('resolves ens and selects it by keypress enter', async () => {
     jest
-      .spyOn(FallbackProvider.prototype, 'resolveName')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockResolvedValue(mockMappedContacts[0].address);
     const address = mockMappedContacts[0].address;
     const ens = 'eth.eth';
@@ -101,8 +101,7 @@ describe('GeneralLookupField', () => {
   });
 
   it('handles non registrered domain', async () => {
-    // @ts-expect-error Ethers return type is wrong
-    jest.spyOn(FallbackProvider.prototype, 'resolveName').mockResolvedValue(null);
+    jest.spyOn(ProviderHandler.prototype, 'resolveName').mockResolvedValue(null);
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };
     const { container, getByText, rerender } = getComponent(getDefaultProps(), output);
@@ -120,7 +119,7 @@ describe('GeneralLookupField', () => {
 
   it('handles Unstoppable errors', async () => {
     jest
-      .spyOn(Resolution.prototype, 'addr')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockRejectedValue(new ResolutionError(ResolutionErrorCode.RecordNotFound));
     const ens = 'eth.crypto';
     const output = { data: { ...initialFormikValues } };
@@ -141,7 +140,7 @@ describe('GeneralLookupField', () => {
 
   it('handles Ethers errors', async () => {
     jest
-      .spyOn(FallbackProvider.prototype, 'resolveName')
+      .spyOn(ProviderHandler.prototype, 'resolveName')
       .mockRejectedValue(new Error('network does not support ENS'));
     const ens = 'eth.eth';
     const output = { data: { ...initialFormikValues } };

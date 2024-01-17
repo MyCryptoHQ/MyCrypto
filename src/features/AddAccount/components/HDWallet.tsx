@@ -23,7 +23,7 @@ import { DWAccountDisplay, ExtendedDPath, isValidPath } from '@services';
 import { useSelector } from '@store';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { Trans, translateRaw } from '@translations';
-import { ExtendedAsset, Network } from '@types';
+import { ExtendedAsset, IAccountAdditionData, Network } from '@types';
 import { filterValidAssets, sortByTicker, useScreenSize } from '@utils';
 
 import { DPathSelector } from './DPathSelector';
@@ -129,7 +129,7 @@ export interface HDWalletProps {
   addDPaths(dpaths: ExtendedDPath[]): void;
   scanMoreAddresses(dpath: ExtendedDPath): void;
   handleAssetUpdate(asset: ExtendedAsset): void;
-  onUnlock(param: any): void;
+  onUnlock(param: IAccountAdditionData[]): void;
 }
 
 interface FormValues {
@@ -167,7 +167,7 @@ const HDWallet = ({
   handleAssetUpdate,
   onUnlock
 }: HDWalletProps) => {
-  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) ?? '';
   const { isMobile } = useScreenSize();
   const [dpathAddView, setDpathAddView] = useState(false);
   const [displayEmptyAddresses, setDisplayEmptyAddresses] = useState(false);

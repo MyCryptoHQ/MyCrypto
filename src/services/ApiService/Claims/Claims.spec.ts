@@ -4,6 +4,7 @@ import mockAxios from 'jest-mock-axios';
 import { UNISWAP_UNI_CLAIM_API } from '@config';
 import { fAccount, fNetwork } from '@fixtures';
 import { ClaimState, ClaimType, ITxValue } from '@types';
+import { bigify, hexlify } from '@utils';
 
 import { ClaimsService } from '.';
 
@@ -57,7 +58,20 @@ describe('ClaimsService', () => {
       {
         address: fAccount.address,
         state: ClaimState.CLAIMED,
+        index: 102925,
         amount: mockClaim[fAccount.address].Amount
+      }
+    ]);
+  });
+
+  it('can process amounts if needed', async () => {
+    const claims = await ClaimsService.instance.isClaimed(fNetwork, ClaimType.GIV, mockClaim);
+    expect(claims).toStrictEqual([
+      {
+        address: fAccount.address,
+        state: ClaimState.CLAIMED,
+        index: 102925,
+        amount: hexlify(bigify(mockClaim[fAccount.address].Amount).div(10))
       }
     ]);
   });

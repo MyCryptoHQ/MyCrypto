@@ -67,7 +67,7 @@ const Column = styled.div<{ alignSelf?: string }>`
   flex: 1;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    ${({ alignSelf }) => `align-self: ${alignSelf || 'auto'};`};
+    ${({ alignSelf = 'auto' }) => `align-self: ${alignSelf};`};
 
     &:not(:first-child) {
       padding-left: ${SPACING.BASE};
@@ -127,7 +127,7 @@ const SError = styled.div`
   color: ${COLORS.PASTEL_RED};
 `;
 
-const DeleteButton = styled(Button) <{ disabled: boolean }>`
+const DeleteButton = styled(Button)<{ disabled: boolean }>`
   ${(props) =>
     !props.disabled &&
     `
@@ -307,31 +307,31 @@ export default function AddOrEditNetworkNode({
             const network: Network = !isAddingCustomNetwork
               ? getNetworkById(selectedNetworkId)
               : {
-                id: selectedNetworkId,
-                name: networkName!,
-                chainId: parseInt(chainId!, 10),
-                baseUnit: baseUnit as TTicker,
-                baseAsset: generateAssetUUID(chainId!),
-                isCustom: true,
-                nodes: [node],
-                dPaths: {
-                  [WalletId.TREZOR]: DEFAULT_ETH,
-                  [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
-                  default: DEFAULT_ETH
-                },
-                gasPriceSettings: {
-                  min: 1,
-                  max: 100,
-                  initial: 1
-                },
-                shouldEstimateGasPrice: false,
-                color: undefined,
-                selectedNode: node.name,
-                blockExplorer: makeExplorer({
+                  id: selectedNetworkId,
                   name: networkName!,
-                  origin: ETHPLORER_URL
-                })
-              };
+                  chainId: parseInt(chainId!, 10),
+                  baseUnit: baseUnit as TTicker,
+                  baseAsset: generateAssetUUID(chainId!),
+                  isCustom: true,
+                  nodes: [node],
+                  dPaths: {
+                    [WalletId.TREZOR]: DEFAULT_ETH,
+                    [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
+                    default: DEFAULT_ETH
+                  },
+                  gasPriceSettings: {
+                    min: 1,
+                    max: 100,
+                    initial: 1
+                  },
+                  shouldEstimateGasPrice: false,
+                  color: undefined,
+                  selectedNode: node.name,
+                  blockExplorer: makeExplorer({
+                    name: networkName!,
+                    origin: ETHPLORER_URL
+                  })
+                };
             const provider = new ProviderHandler({ ...network, nodes: [node] }, false);
             await provider.getLatestBlockNumber();
 

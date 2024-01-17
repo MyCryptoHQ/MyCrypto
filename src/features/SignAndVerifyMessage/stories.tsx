@@ -1,9 +1,4 @@
-import {
-  LedgerNanoSDecrypt,
-  TrezorDecrypt,
-  WalletConnectDecrypt,
-  Web3ProviderDecrypt
-} from '@components';
+import { HWLegacy, WalletConnectDecrypt, Web3ProviderDecrypt } from '@components';
 import { withWalletConnect } from '@services/WalletService';
 import { IStory, WalletId } from '@types';
 
@@ -14,11 +9,15 @@ export const getStories = (): IStory[] => [
   },
   {
     name: WalletId.LEDGER_NANO_S_NEW,
-    steps: [LedgerNanoSDecrypt]
+    steps: [HWLegacy]
   },
   {
     name: WalletId.TREZOR,
-    steps: [TrezorDecrypt]
+    steps: [HWLegacy]
+  },
+  {
+    name: WalletId.GRIDPLUS,
+    steps: [HWLegacy]
   },
   {
     name: WalletId.WALLETCONNECT,

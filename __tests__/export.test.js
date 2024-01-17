@@ -72,7 +72,7 @@ test('Can export AppState to file', async (t) => {
   const accountSettingsLens = lensPath(['settings']);
 
   const omitDynamicValues = pipe(
-    omit(['mtime']),
+    omit(['mtime', 'promoPoaps', 'notifications', 'connections', 'claims']),
     set(accountAssetsLens, removeKeysFromAccountAsset),
     set(accountSettingsLens, removeKeysFromAccountSettings)
   );

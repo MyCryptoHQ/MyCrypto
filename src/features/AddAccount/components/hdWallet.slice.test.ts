@@ -1,11 +1,18 @@
 import { DeterministicWallet } from '@mycrypto/wallets';
-import { expectSaga, mockAppState } from 'test-utils';
+import { expectSaga, mockAppState, mockStore } from 'test-utils';
 
-import { fAccount, fAssets, fNetwork, fNetworks } from '@fixtures';
-import { DWAccountDisplay, ExtendedDPath, getWallet } from '@services/WalletService';
+import {
+  fAssets,
+  fDWAccountDisplay,
+  fDWAccountDisplayPreBalance,
+  fExtendedDPath,
+  fNetwork,
+  fNetworks
+} from '@fixtures';
+import { getWallet } from '@services/WalletService';
 import { AppState } from '@store/root.reducer';
-import { DPathFormat, TAddress, WalletId } from '@types';
-import { bigify as mockBigify, noOp } from '@utils';
+import { DPathFormat, WalletId } from '@types';
+import { bigify as mockBigify } from '@utils';
 
 import {
   accountsQueueWorker,
@@ -19,6 +26,7 @@ import {
   selectHDWalletAccountQueue,
   selectHDWalletAsset,
   selectHDWalletNetwork,
+  setSession,
   default as slice
 } from './hdWallet.slice';
 
@@ -37,28 +45,6 @@ const {
   addCustomDPaths,
   triggerComplete
 } = slice.actions;
-const addressToTestWith = fAccount.address as TAddress;
-
-const fExtendedDPath: ExtendedDPath = {
-  name: 'Ledger (ETH)',
-  path: "m/44'/60'/0'",
-  offset: 0,
-  numOfAddresses: 1
-};
-
-const fDWAccountDisplayPreBalance: DWAccountDisplay = {
-  address: addressToTestWith,
-  pathItem: {
-    baseDPath: fExtendedDPath,
-    path: "m/44'/60'/0'/0",
-    index: 0
-  }
-};
-
-const fDWAccountDisplay: DWAccountDisplay = {
-  ...fDWAccountDisplayPreBalance,
-  balance: '0'
-};
 
 describe('HD Wallet Slice', () => {
   const err = {
@@ -162,15 +148,14 @@ describe('requestConnectionWorker()', () => {
       walletId: WalletId.LEDGER_NANO_S_NEW as DPathFormat,
       dpaths: [fExtendedDPath],
       network: fNetwork,
-      asset: fAssets[0],
-      setSession: noOp
+      asset: fAssets[0]
     };
     return expectSaga(requestConnectionWorker, connectHDWallet(inputPayload))
-      .withState(mockAppState({ networks: fNetworks }))
-      .call(getWallet, inputPayload.walletId)
-      .call([ledgerMock, 'getAddress'], inputPayload.dpaths[0], 0)
-      .call(inputPayload.setSession, ledgerMock)
+      .withState(mockAppState({ networks: fNetworks, connections: { wallets: {} } }))
+      .call(getWallet, inputPayload.walletId, undefined)
       .put(requestConnection())
+      .put(setSession((ledgerMock as unknown) as DeterministicWallet))
+      .call([ledgerMock, 'getAddress'], inputPayload.dpaths[0], 0)
       .put(requestConnectionSuccess({ asset: inputPayload.asset, network: inputPayload.network }))
       .silentRun();
   });
@@ -179,11 +164,15 @@ describe('requestConnectionWorker()', () => {
 describe('getAccountsWorker()', () => {
   it('attempts to fetch a collection of account addresses given specified dpaths extendedDPaths', () => {
     const inputPayload = {
-      session: (ledgerMock as unknown) as DeterministicWallet,
       dpaths: [fExtendedDPath]
     };
     return expectSaga(getAccountsWorker, getAccounts(inputPayload))
-      .withState(mockAppState({ networks: fNetworks }))
+      .withState(
+        mockStore({
+          dataStoreState: { networks: fNetworks },
+          storeSlice: { hdWallet: { session: (ledgerMock as unknown) as DeterministicWallet } }
+        })
+      )
       .put(requestAddresses())
       .call(
         [ledgerMock, 'getAddressesWithMultipleDPaths'],

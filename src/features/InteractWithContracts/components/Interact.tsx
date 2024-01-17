@@ -8,10 +8,13 @@ import { object, string } from 'yup';
 import {
   Button,
   ContractLookupField,
+  Icon,
   InlineMessage,
   InputField,
+  LinkApp,
   NetworkSelector
 } from '@components';
+import { getKBHelpArticle, KB_HELP_ARTICLE } from '@config';
 import { getNetworkById, isValidENSName, isValidETHAddress, useNetworks } from '@services';
 import { BREAK_POINTS, COLORS } from '@theme';
 import { translateRaw } from '@translations';
@@ -361,7 +364,17 @@ function Interact(props: CombinedProps) {
               <InputWrapper onClick={() => setWasContractInteracted(false)}>
                 <InputField
                   name="abi"
-                  label={translateRaw('CONTRACT_JSON')}
+                  label={
+                    <>
+                      {translateRaw('CONTRACT_JSON')}
+                      <LinkApp
+                        href={getKBHelpArticle(KB_HELP_ARTICLE.WHAT_IS_CONTRACT_ABI)}
+                        isExternal={true}
+                      >
+                        <Icon width="16px" type="questionBlack" />
+                      </LinkApp>
+                    </>
+                  }
                   value={abi}
                   placeholder={`[{"type":"constructor","inputs":[{"name":"param1","type":"uint256","indexed":true}],"name":"Event"},{"type":"function","inputs":[{"name":"a","type":"uint256"}],"name":"foo","outputs":[]}]`}
                   onChange={({ target: { value } }) => {

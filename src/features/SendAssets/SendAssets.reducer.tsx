@@ -49,7 +49,7 @@ export const sendAssetsReducer = (state: State, action: ReducerAction): State =>
         receiverAddress: form.address.value as TAddress,
         networkId: form.network.id,
         asset: form.asset,
-        baseAsset: baseAsset || ({} as Asset),
+        baseAsset: baseAsset ?? ({} as Asset),
         from: form.account.address
       };
       return { ...state, txConfig, error: undefined };

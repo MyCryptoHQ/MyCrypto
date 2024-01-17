@@ -2,12 +2,11 @@ import { useCallback } from 'react';
 
 import debounce from 'lodash/debounce';
 
-import { CREATION_ADDRESS } from '@config';
+import { CREATION_ADDRESS, DEFAULT_NETWORK } from '@config';
 import { makeBasicTxConfig, makePendingTxReceipt, makeTxFromForm, toTxReceipt } from '@helpers';
 import {
   EtherscanService,
   getGasEstimate,
-  getNetworkById,
   isValidETHAddress,
   ProviderHandler,
   useAccounts,
@@ -60,14 +59,15 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
   setState
 }) => {
   const { getContractsByNetwork, createContract, deleteContract } = useContracts();
-  const { networks } = useNetworks();
+  const { getNetworkById } = useNetworks();
   const { addTxToAccount } = useAccounts();
+  const ethNetwork = getNetworkById(DEFAULT_NETWORK);
 
   const handleNetworkSelected = (networkId: NetworkId) => {
     setState((prevState: InteractWithContractState) => ({
       ...prevState,
       account: undefined,
-      network: getNetworkById(networkId, networks),
+      network: getNetworkById(networkId),
       contract: undefined,
       contractAddress: '',
       addressOrDomainInput: '',
@@ -143,8 +143,8 @@ const InteractWithContractsFactory: TUseStateReducerFactory<InteractWithContract
       resolvingDomain: true
     }));
 
-    const provider = new ProviderHandler(state.network);
-    const resolvedAddress = (await provider.resolveENSName(domain)) || CREATION_ADDRESS;
+    const provider = new ProviderHandler(ethNetwork);
+    const resolvedAddress = (await provider.resolveName(domain, state.network)) ?? CREATION_ADDRESS;
 
     setState((prevState: InteractWithContractState) => ({
       ...prevState,

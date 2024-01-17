@@ -29,9 +29,10 @@ const buildAccountDisplayBalances = (
 
 const buildBalance = (
   accounts: StoreAccount[],
-  getAssetRate: (asset: Asset) => number | undefined
+  getAssetRate: (asset: Asset) => number | undefined,
+  getAssetChange: (asset: Asset) => number | undefined
 ) => (asset: StoreAsset): Balance => {
-  const exchangeRate = getAssetRate(asset) || 0;
+  const exchangeRate = getAssetRate(asset) ?? 0;
   return {
     id: `${asset.name}-${asset.ticker}`,
     name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
@@ -40,7 +41,8 @@ const buildBalance = (
     amount: weiToFloat(asset.balance, asset.decimal).toString(),
     fiatValue: convertToFiatFromAsset(asset, exchangeRate),
     accounts: buildAccountDisplayBalances(accounts, asset, exchangeRate),
-    exchangeRate: exchangeRate.toString()
+    exchangeRate: exchangeRate.toString(),
+    change: getAssetChange(asset)
   };
 };
 
@@ -48,11 +50,12 @@ export const buildBalances = (
   accounts: StoreAccount[],
   settings: ISettings,
   getAssetRate: (asset: Asset) => number | undefined,
+  getAssetChange: (asset: Asset) => number | undefined,
   assetFilter: (excludedAssetUuids: TUuid[]) => (asset: StoreAsset) => boolean
 ): Balance[] =>
   calculateTotals(accounts)
     .filter(assetFilter(settings.excludedAssets))
-    .map(buildBalance(accounts, getAssetRate))
+    .map(buildBalance(accounts, getAssetRate, getAssetChange))
     .sort((a, b) => bigify(b.fiatValue).comparedTo(a.fiatValue));
 
 export const buildTotalFiatValue = (balances: Balance[]) =>

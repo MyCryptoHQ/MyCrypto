@@ -103,10 +103,10 @@ export default class DexService {
         sellToken: sellToken.contractAddress ?? sellToken.ticker,
         buyToken: buyToken.contractAddress ?? buyToken.ticker,
         buyAmount: buyAmount
-          ? toWei(buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+          ? toWei(buyAmount, buyToken.decimal ?? DEFAULT_ASSET_DECIMAL).toString()
           : undefined,
         sellAmount: sellAmount
-          ? toWei(sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL).toString()
+          ? toWei(sellAmount, sellToken.decimal ?? DEFAULT_ASSET_DECIMAL).toString()
           : undefined,
         feeRecipient: DEX_FEE_RECIPIENT,
         buyTokenPercentageFee: MYC_DEX_COMMISSION_RATE,
@@ -120,7 +120,7 @@ export default class DexService {
       })
     });
 
-    const gasResult = await fetchUniversalGasPriceEstimate(network, account);
+    const gasResult = await fetchUniversalGasPriceEstimate(network);
     const { estimate: gas } = gasResult;
 
     const gasPrice = gas.gasPrice ?? gas.maxFeePerGas;
@@ -144,10 +144,10 @@ export default class DexService {
     return {
       price: bigify(data.price),
       buyAmount: bigify(
-        baseToConvertedUnit(data.buyAmount, buyToken.decimal || DEFAULT_ASSET_DECIMAL)
+        baseToConvertedUnit(data.buyAmount, buyToken.decimal ?? DEFAULT_ASSET_DECIMAL)
       ),
       sellAmount: bigify(
-        baseToConvertedUnit(data.sellAmount, sellToken.decimal || DEFAULT_ASSET_DECIMAL)
+        baseToConvertedUnit(data.sellAmount, sellToken.decimal ?? DEFAULT_ASSET_DECIMAL)
       ),
       gasPrice: inputGasPriceToHex(gasPrice),
       // @todo: Better way to calculate expiration? This is what matcha.xyz does

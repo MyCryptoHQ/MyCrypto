@@ -107,7 +107,7 @@ export default function GasSelector({
     try {
       const { network } = account;
       const [gasEstimate, fetchedNonce] = await Promise.all([
-        fetchUniversalGasPriceEstimate(network, account),
+        fetchUniversalGasPriceEstimate(network),
         getNonce(network, account.address)
       ]);
       const { estimate: gas } = gasEstimate;
@@ -140,7 +140,7 @@ export default function GasSelector({
         name="autoGasSet"
         label={translateRaw('TRANS_AUTO_GAS_TOGGLE')}
       />
-      {isEIP1559Supported(network, account) ? (
+      {isEIP1559Supported(network) ? (
         <>
           <FieldWrapper>
             <InputField

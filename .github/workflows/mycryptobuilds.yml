@@ -190,7 +190,7 @@ jobs:
       - name: E2E - run
         run: yarn test:e2e:ci
         env:
-          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+          INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
 
       - name: Update PR status
         uses: actions/github-script@v1

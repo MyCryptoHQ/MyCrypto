@@ -3,7 +3,9 @@ import { ITxValue } from './transactionFlow';
 
 export enum ClaimType {
   UNI = 'UNI',
-  NODE = 'NODE'
+  NODE = 'NODE',
+  ENS = 'ENS',
+  GIV = 'GIV'
 }
 
 export enum ClaimState {
@@ -16,4 +18,6 @@ export interface ClaimResult {
   address: TAddress;
   state: ClaimState;
   amount: ITxValue;
+  // Index in MerkleTree
+  index?: number;
 }

@@ -4,7 +4,8 @@ import {
   DEFAULT_ASK,
   DEFAULT_ATH,
   DEFAULT_AUX,
-  DEFAULT_AVAX,
+  DEFAULT_AVAXC,
+  DEFAULT_BSC,
   DEFAULT_CLO,
   DEFAULT_EGEM,
   DEFAULT_ETC,
@@ -14,6 +15,7 @@ import {
   DEFAULT_EVRICE,
   DEFAULT_EWC,
   DEFAULT_EXP,
+  DEFAULT_FTM,
   DEFAULT_GO,
   DEFAULT_HECO,
   DEFAULT_METADIUM,
@@ -26,6 +28,7 @@ import {
   DEFAULT_VOLTA,
   DEFAULT_WEB,
   DEFAULT_XDAI,
+  DEFAULT_XDC,
   LEDGER_ETC,
   LEDGER_ETH,
   MAINNET_RSK,
@@ -72,6 +75,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: DEFAULT_ETH
     },
     gasPriceSettings: GAS_PRICE_DEFAULT,
@@ -97,6 +101,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
@@ -121,6 +126,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_DEFAULT
@@ -144,6 +150,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
@@ -168,6 +175,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_ETH,
       [WalletId.TREZOR_NEW]: TESTNET_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: TESTNET_ETH
     },
     gasPriceSettings: GAS_PRICE_TESTNET,
@@ -192,6 +200,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETC,
       [WalletId.TREZOR_NEW]: DEFAULT_ETC,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETC,
+      [WalletId.GRIDPLUS]: DEFAULT_ETC,
       default: DEFAULT_ETC
     },
     gasPriceSettings: {
@@ -218,6 +227,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_UBQ,
       [WalletId.TREZOR_NEW]: DEFAULT_UBQ,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_UBQ,
+      [WalletId.GRIDPLUS]: DEFAULT_UBQ,
       default: DEFAULT_UBQ
     },
     gasPriceSettings: {
@@ -244,6 +254,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_EXP,
       [WalletId.TREZOR_NEW]: DEFAULT_EXP,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_EXP,
+      [WalletId.GRIDPLUS]: DEFAULT_EXP,
       default: DEFAULT_EXP
     },
     gasPriceSettings: {
@@ -272,6 +283,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_POA,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_POA,
       default: DEFAULT_POA
     },
     gasPriceSettings: {
@@ -298,6 +310,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_TOMO,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_TOMO,
+      [WalletId.GRIDPLUS]: DEFAULT_TOMO,
       default: DEFAULT_TOMO
     },
     gasPriceSettings: {
@@ -324,6 +337,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_EGEM,
       [WalletId.TREZOR_NEW]: DEFAULT_EGEM,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_EGEM,
+      [WalletId.GRIDPLUS]: DEFAULT_EGEM,
       default: DEFAULT_EGEM
     },
     gasPriceSettings: {
@@ -351,6 +365,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_CLO,
       [WalletId.TREZOR_NEW]: DEFAULT_CLO,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_CLO,
+      [WalletId.GRIDPLUS]: DEFAULT_CLO,
       default: DEFAULT_CLO
     },
     gasPriceSettings: {
@@ -379,6 +394,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: MAINNET_RSK,
       [WalletId.TREZOR_NEW]: MAINNET_RSK,
       [WalletId.LEDGER_NANO_S_NEW]: MAINNET_RSK,
+      [WalletId.GRIDPLUS]: MAINNET_RSK,
       default: MAINNET_RSK
     },
     gasPriceSettings: {
@@ -386,7 +402,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 1.5,
       initial: 0.06
     },
-    //unsupportedTabs: [TAB.ENS],
     hideEquivalentValues: true
   },
 
@@ -409,6 +424,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: TESTNET_RSK,
       [WalletId.TREZOR_NEW]: TESTNET_RSK,
       [WalletId.LEDGER_NANO_S_NEW]: TESTNET_RSK,
+      [WalletId.GRIDPLUS]: TESTNET_RSK,
       default: TESTNET_RSK
     },
     gasPriceSettings: {
@@ -416,7 +432,6 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 1.5,
       initial: 0.06
     }
-    //unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
@@ -437,12 +452,13 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_GO,
       [WalletId.TREZOR_NEW]: DEFAULT_GO,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_GO,
+      [WalletId.GRIDPLUS]: DEFAULT_GO,
       default: DEFAULT_GO
     },
     gasPriceSettings: {
-      min: 2,
-      max: 60,
-      initial: 2
+      min: 2000,
+      max: 60000,
+      initial: 2000
     }
   },
 
@@ -463,6 +479,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.TREZOR]: DEFAULT_GO,
       [WalletId.TREZOR_NEW]: DEFAULT_GO,
+      [WalletId.GRIDPLUS]: DEFAULT_GO,
       default: DEFAULT_GO
     },
     gasPriceSettings: {
@@ -489,6 +506,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
       default: DEFAULT_ETH
     },
     gasPriceSettings: {
@@ -515,6 +533,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_ATH,
       [WalletId.TREZOR_NEW]: DEFAULT_ATH,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_ATH,
+      [WalletId.GRIDPLUS]: DEFAULT_ATH,
       default: DEFAULT_ATH
     },
     gasPriceSettings: {
@@ -541,6 +560,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_ETHO,
       [WalletId.TREZOR_NEW]: DEFAULT_ETHO,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_ETHO,
+      [WalletId.GRIDPLUS]: DEFAULT_ETHO,
       default: DEFAULT_ETHO
     },
     gasPriceSettings: {
@@ -567,6 +587,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_MIX,
       [WalletId.TREZOR_NEW]: DEFAULT_MIX,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_MIX,
+      [WalletId.GRIDPLUS]: DEFAULT_MIX,
       default: DEFAULT_MIX
     },
     gasPriceSettings: {
@@ -596,6 +617,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ARTIS_SIGMA1,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ARTIS_SIGMA1,
       default: DEFAULT_ARTIS_SIGMA1
     },
     gasPriceSettings: {
@@ -625,6 +647,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ARTIS_TAU1,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ARTIS_TAU1,
       default: DEFAULT_ARTIS_TAU1
     },
     gasPriceSettings: {
@@ -651,6 +674,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR_NEW]: DEFAULT_THUNDERCORE,
       [WalletId.LEDGER_NANO_S]: DEFAULT_THUNDERCORE,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_THUNDERCORE,
+      [WalletId.GRIDPLUS]: DEFAULT_THUNDERCORE,
       default: DEFAULT_THUNDERCORE
     },
     gasPriceSettings: {
@@ -673,6 +697,11 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
+      [WalletId.TREZOR]: DEFAULT_WEB,
+      [WalletId.TREZOR_NEW]: DEFAULT_WEB,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_WEB,
       default: DEFAULT_WEB
     },
     gasPriceSettings: {
@@ -697,6 +726,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     dPaths: {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_METADIUM,
       default: DEFAULT_METADIUM
     },
     gasPriceSettings: {
@@ -723,6 +753,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR_NEW]: DEFAULT_ETI,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETI,
       default: DEFAULT_ETI
     },
     gasPriceSettings: {
@@ -752,6 +783,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR_NEW]: DEFAULT_ASK,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ASK,
       default: DEFAULT_ASK
     },
     gasPriceSettings: {
@@ -775,6 +807,11 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
+      [WalletId.TREZOR]: DEFAULT_AUX,
+      [WalletId.TREZOR_NEW]: DEFAULT_AUX,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_AUX,
       default: DEFAULT_AUX
     },
     gasPriceSettings: {
@@ -803,6 +840,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_VOLTA,
       [WalletId.TREZOR_NEW]: DEFAULT_VOLTA,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_VOLTA,
+      [WalletId.GRIDPLUS]: DEFAULT_VOLTA,
       default: DEFAULT_VOLTA
     },
     gasPriceSettings: {
@@ -810,7 +848,8 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       max: 10,
       initial: 1
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   EnergyWebChain: {
     id: 'EnergyWebChain',
@@ -832,13 +871,15 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_EWC,
       [WalletId.TREZOR_NEW]: DEFAULT_EWC,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_EWC,
+      [WalletId.GRIDPLUS]: DEFAULT_EWC,
       default: DEFAULT_EWC
     },
     gasPriceSettings: {
       min: 0.01,
       max: 10,
       initial: 0.01
-    }
+    },
+    supportsEIP1559: true
   },
   MATIC: {
     id: 'MATIC',
@@ -857,14 +898,17 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_POLYGON,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_POLYGON,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_POLYGON,
+      default: DEFAULT_POLYGON
     },
     gasPriceSettings: {
-      min: 0.01,
-      max: 30,
-      initial: 1
+      min: 30,
+      max: 100,
+      initial: 30
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   xDAI: {
     id: 'xDAI',
@@ -885,14 +929,17 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_XDAI,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_XDAI,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_XDAI,
+      default: DEFAULT_XDAI
     },
     gasPriceSettings: {
       min: 0.01,
       max: 30,
       initial: 1
     },
-    shouldEstimateGasPrice: false
+    shouldEstimateGasPrice: false,
+    supportsEIP1559: true
   },
   SmartChain: {
     id: 'SmartChain',
@@ -908,10 +955,12 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_BSC,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_BSC,
+      [WalletId.GRIDPLUS]: DEFAULT_BSC,
+      default: DEFAULT_BSC
     },
     gasPriceSettings: {
       min: 1,
@@ -937,7 +986,9 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.TREZOR]: DEFAULT_ETH,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_ETH,
-      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_ETH
     },
     gasPriceSettings: {
       min: 20,
@@ -963,17 +1014,19 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_AVAX,
+      [WalletId.TREZOR]: DEFAULT_AVAXC,
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_AVAX,
+      [WalletId.TREZOR_NEW]: DEFAULT_AVAXC,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
-      default: DEFAULT_AVAX
+      [WalletId.GRIDPLUS]: DEFAULT_AVAXC,
+      default: DEFAULT_AVAXC
     },
     gasPriceSettings: {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   AvalancheTestnet: {
     id: 'AvalancheTestnet',
@@ -993,16 +1046,19 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_AVAX,
-      [WalletId.LEDGER_NANO_S]: DEFAULT_AVAX,
-      [WalletId.TREZOR_NEW]: DEFAULT_AVAX,
-      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAX
+      [WalletId.TREZOR]: DEFAULT_AVAXC,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_AVAXC,
+      [WalletId.TREZOR_NEW]: DEFAULT_AVAXC,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_AVAXC,
+      [WalletId.GRIDPLUS]: DEFAULT_AVAXC,
+      default: DEFAULT_AVAXC
     },
     gasPriceSettings: {
       min: 10,
       max: 470,
       initial: 470
-    }
+    },
+    supportsEIP1559: true
   },
   EVRICE: {
     id: 'EVRICE',
@@ -1022,6 +1078,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: DEFAULT_EVRICE,
       [WalletId.TREZOR_NEW]: DEFAULT_EVRICE,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_EVRICE,
+      [WalletId.GRIDPLUS]: DEFAULT_EVRICE,
       default: DEFAULT_EVRICE
     },
     gasPriceSettings: {
@@ -1044,16 +1101,71 @@ export const NETWORKS_CONFIG: NetworkConfig = {
     tokens: [],
     contracts: [],
     dPaths: {
-      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.TREZOR]: DEFAULT_FTM,
       [WalletId.LEDGER_NANO_S]: DEFAULT_ETH,
-      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_FTM,
       [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_ETH,
-      default: DEFAULT_ETH
+      [WalletId.GRIDPLUS]: DEFAULT_FTM,
+      default: DEFAULT_FTM
     },
     gasPriceSettings: {
       min: 1,
       max: 60,
       initial: 1
+    }
+  },
+  XDC: {
+    id: 'XDC',
+    name: 'XDC Network',
+    unit: 'XDC' as TTicker,
+    chainId: 50,
+    isCustom: false,
+    color: '#385686',
+    blockExplorer: makeExplorer({
+      name: 'BlocksScan Explorer',
+      origin: 'https://xdc.blocksscan.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_XDC,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_XDC,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_XDC
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 10
+    }
+  },
+  XDCApothem: {
+    id: 'XDC',
+    name: 'XDC Apothem Network',
+    unit: 'XDC' as TTicker,
+    chainId: 51,
+    isCustom: false,
+    color: '#385686',
+    blockExplorer: makeExplorer({
+      name: 'Apothem BlocksScan Explorer',
+      origin: 'https://apothem.blocksscan.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S]: DEFAULT_XDC,
+      [WalletId.TREZOR_NEW]: DEFAULT_ETH,
+      [WalletId.LEDGER_NANO_S_NEW]: DEFAULT_XDC,
+      [WalletId.GRIDPLUS]: DEFAULT_ETH,
+      default: DEFAULT_XDC
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 10
     }
   },
   HECO: {
@@ -1074,12 +1186,14 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
       [WalletId.TREZOR_NEW]: DEFAULT_HECO,
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_HECO,
       default: DEFAULT_HECO
     },
     gasPriceSettings: {
       min: 1,
       max: 60,
       initial: 1
-    }
+    },
+    supportsEIP1559: true
   }
 };

@@ -1,6 +1,9 @@
 import { FeeData } from '@ethersproject/abstract-provider';
+import { getAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
+import { hexZeroPad } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
+import { hashMessage } from '@ethersproject/hash';
 import {
   BaseProvider,
   Block,
@@ -12,13 +15,22 @@ import { formatEther } from '@ethersproject/units';
 import any from '@ungap/promise-any';
 import Resolution from '@unstoppabledomains/resolution';
 
-import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { DEFAULT_ASSET_DECIMAL, DEFAULT_COIN_TYPE } from '@config';
 import { ERC20 } from '@services/EthService';
 import { erc20Abi } from '@services/EthService/contracts/erc20';
-import { Asset, ITxObject, ITxSigned, Network, TAddress, TokenInformation } from '@types';
-import { baseToConvertedUnit } from '@utils';
+import {
+  Asset,
+  ISignedMessage,
+  ITxObject,
+  ITxSigned,
+  Network,
+  TAddress,
+  TokenInformation
+} from '@types';
+import { baseToConvertedUnit, getCoinType } from '@utils';
 import { FallbackProvider } from '@vendor';
 
+import { EIP1271_ABI } from '../contracts';
 import { EthersJS } from './ethersJsProvider';
 import { createCustomNodeProvider } from './helpers';
 
@@ -76,7 +88,7 @@ export class ProviderHandler {
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
     return this.getRawTokenBalance(address, token).then((balance) =>
-      baseToConvertedUnit(balance, token.decimal || DEFAULT_ASSET_DECIMAL)
+      baseToConvertedUnit(balance, token.decimal ?? DEFAULT_ASSET_DECIMAL)
     );
   }
 
@@ -94,13 +106,13 @@ export class ProviderHandler {
       if (!useMultipleProviders) {
         return client.getTransaction(txhash);
       } else {
-        const providers = (client as FallbackProvider).providerConfigs;
+        const providers = (client as FallbackProvider).providers;
         return any(
           providers.map((p) => {
             // If the node returns undefined, the TX isn't present, but we don't want to resolve the promise with undefined as that would return undefined in the any() promise
             // Instead, we reject if the tx is undefined such that we keep searching in other nodes
             return new Promise((resolve, reject) =>
-              p.provider
+              p
                 .getTransaction(txhash)
                 .then((tx) => (tx ? resolve(tx) : reject()))
                 .catch((err) => reject(err))
@@ -174,15 +186,46 @@ export class ProviderHandler {
     });
   }
 
-  public resolveENSName(name: string): Promise<string | null> {
-    return this.injectClient((client) => {
+  public async isValidEIP1271Signature({ address, msg, sig }: ISignedMessage): Promise<boolean> {
+    return this.injectClient(async (client) => {
+      try {
+        const hash = hashMessage(msg);
+        const contract = new Contract(address, EIP1271_ABI, client);
+        const result = await contract.isValidSignature(hash, sig);
+
+        return result;
+      } catch (e) {
+        return false;
+      }
+    });
+  }
+
+  public resolveName(name: string, network?: Network): Promise<string | null> {
+    return this.injectClient(async (client) => {
       // Use Unstoppable if supported, otherwise is probably an ENS name
       const unstoppable = Resolution.fromEthersProvider(client);
       if (unstoppable.isSupportedDomain(name)) {
         return unstoppable.addr(name, this.network.baseUnit);
       }
 
-      return client.resolveName(name);
+      const resolver = await client.getResolver(name);
+      if (!resolver) {
+        return null;
+      }
+      const path = network?.dPaths.default;
+      const coinType = path && getCoinType(path);
+
+      if (coinType && coinType !== DEFAULT_COIN_TYPE) {
+        const coinTypeParam = hexZeroPad(BigNumber.from(coinType).toHexString(), 32);
+        const resolvedBytes = await resolver._fetchBytes('0xf1cb7e06', coinTypeParam);
+        const resolved =
+          resolvedBytes != null && resolvedBytes !== '0x' && getAddress(resolvedBytes);
+        if (resolved) {
+          return resolved;
+        }
+      }
+
+      return resolver.getAddress();
     });
   }
 
@@ -203,7 +246,7 @@ export class ProviderHandler {
   }> {
     return this.injectClient((client) =>
       // @ts-expect-error Temp until Ethers supports eth_feeHistory
-      (client as FallbackProvider).providerConfigs[0].provider.send('eth_feeHistory', [
+      (client as FallbackProvider).providers[0].send('eth_feeHistory', [
         blockCount,
         newestBlock,
         rewardPercentiles ?? []

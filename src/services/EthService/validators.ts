@@ -15,11 +15,11 @@ import {
 import translate, { translateRaw } from '@translations';
 import { InlineMessageType } from '@types';
 import {
-  baseToConvertedUnit,
   bigify,
   bigNumGasPriceToViewableGwei,
   convertedToBaseUnit,
-  gasStringsToMaxGasBN
+  gasStringsToMaxGasBN,
+  gasStringsToMaxGasNumber
 } from '@utils';
 
 import { isValidENSName } from './ens/validators';
@@ -227,72 +227,45 @@ export const validateTxFee = (
   ) {
     return { type: TxFeeResponseType.Invalid };
   }
-  const DEFAULT_RATE_DECIMAL = 4;
-  const DEFAULT_DECIMAL = DEFAULT_ASSET_DECIMAL + DEFAULT_RATE_DECIMAL;
-  const getAssetRate = () => convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL);
-  const getAssetRateLocal = () =>
-    convertedToBaseUnit(assetRateFiat.toString(), DEFAULT_RATE_DECIMAL);
-  const getEthAssetRate = () =>
-    ethAssetRate ? convertedToBaseUnit(assetRateUSD.toString(), DEFAULT_RATE_DECIMAL) : 0;
 
-  const txAmount = bigify(convertedToBaseUnit(amount, DEFAULT_DECIMAL));
-  const txFee = bigify(gasStringsToMaxGasBN(gasPrice, gasLimit).toString());
-  const txFeeFiatValue = bigify(getAssetRate()).multipliedBy(txFee);
-
-  const txTransactionFeeInEthFiatValue =
-    ethAssetRate && ethAssetRate > 0 ? bigify(getEthAssetRate()).multipliedBy(txFee) : null;
+  const txAmount = bigify(amount);
+  const txFee = gasStringsToMaxGasNumber(gasPrice, gasLimit);
+  const txFeeFiatValue = bigify(assetRateUSD).multipliedBy(txFee);
 
   const createTxFeeResponse = (type: TxFeeResponseType) => {
-    const txAmountFiatLocalValue = bigify(getAssetRateLocal()).multipliedBy(txAmount);
-    const txFeeFiatLocalValue = bigify(getAssetRateLocal()).multipliedBy(txFee);
+    const txAmountFiatLocalValue = bigify(assetRateFiat).multipliedBy(txAmount);
+    const txFeeFiatLocalValue = bigify(assetRateFiat).multipliedBy(txFee);
     return {
       type,
-      amount: bigify(
-        baseToConvertedUnit(
-          txAmountFiatLocalValue.toString(),
-          DEFAULT_DECIMAL + DEFAULT_RATE_DECIMAL
-        )
-      ).toFixed(4),
-      fee: bigify(baseToConvertedUnit(txFeeFiatLocalValue.toString(), DEFAULT_DECIMAL)).toFixed(4)
+      amount: txAmountFiatLocalValue.toFixed(4),
+      fee: txFeeFiatLocalValue.toFixed(4)
     };
   };
-  const isGreaterThanEthFraction = (ethFraction: number) => {
-    if (ethAssetRate && txTransactionFeeInEthFiatValue) {
-      return txTransactionFeeInEthFiatValue.gte(
-        convertedToBaseUnit((ethAssetRate * ethFraction).toString(), DEFAULT_DECIMAL)
-      );
-    }
-    return false;
-  };
+  const isGreaterThanEthFraction = (ethFraction: number) =>
+    ethAssetRate && txFeeFiatValue.gt(ethAssetRate * ethFraction);
 
   // In case of fractions of amount being send
-  if (txAmount.lt(convertedToBaseUnit('0.000001', DEFAULT_DECIMAL))) {
+  if (txAmount.lt(0.000001)) {
     return createTxFeeResponse(TxFeeResponseType.None);
   }
 
   // More than 100$ OR 0.5 ETH
-  if (
-    txFeeFiatValue.gt(convertedToBaseUnit('100', DEFAULT_DECIMAL)) ||
-    isGreaterThanEthFraction(0.5)
-  ) {
+  if (txFeeFiatValue.gt(100) || isGreaterThanEthFraction(0.5)) {
     return createTxFeeResponse(TxFeeResponseType.ErrorVeryHighTxFee);
   }
 
   // More than 25$ OR 0.15 ETH
-  if (
-    txFeeFiatValue.gt(convertedToBaseUnit('25', DEFAULT_DECIMAL)) ||
-    isGreaterThanEthFraction(0.15)
-  ) {
+  if (txFeeFiatValue.gt(25) || isGreaterThanEthFraction(0.15)) {
     return createTxFeeResponse(TxFeeResponseType.ErrorHighTxFee);
   }
 
   // More than 15$ for ERC20 or 10$ for ETH
-  if (txFeeFiatValue.gt(convertedToBaseUnit(isERC20 ? '15' : '10', DEFAULT_DECIMAL))) {
+  if (txFeeFiatValue.gt(isERC20 ? 15 : 10)) {
     return createTxFeeResponse(TxFeeResponseType.WarningUseLower);
   }
 
   // Erc token where txFee is higher than amount
-  if (!isERC20 && txAmount.lt(convertedToBaseUnit(txFee.toString(), DEFAULT_RATE_DECIMAL))) {
+  if (!isERC20 && txAmount.lt(txFee)) {
     return createTxFeeResponse(TxFeeResponseType.Warning);
   }
 

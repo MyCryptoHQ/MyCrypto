@@ -108,7 +108,7 @@ export default function HDWList({
   handleUpdate
 }: HDWListProps) {
   const { isMobile } = useScreenSize();
-  const csv = useSelector(selectHDWalletScannedAccountsCSV) || '';
+  const csv = useSelector(selectHDWalletScannedAccountsCSV) ?? '';
   const [tableAccounts, setTableAccounts] = useState<ITableAccounts>([]);
 
   // setTableAccounts to be accountsToUse on update with isDefault set if it isn't already set
@@ -151,25 +151,18 @@ export default function HDWList({
   };
 
   const handleSelection = (account: TableAccountDisplay) => {
+    const filtered = tableAccounts.filter(
+      (a) =>
+        a.pathItem.index !== account.pathItem.index ||
+        a.pathItem.baseDPath.path !== account.pathItem.baseDPath.path
+    );
     if (account.isSelected) {
-      setTableAccounts({
-        ...tableAccounts,
-        [account.address]: {
-          ...account,
-          isSelected: !account.isSelected
-        }
-      });
+      setTableAccounts([...filtered, { ...account, isSelected: !account.isSelected }]);
       return;
     }
     // disallows selecting an account that is empty if MAX_EMPTY_ADDRESSES is already met
     if (emptySelectedAccounts.length >= MAX_EMPTY_ADDRESSES && !hasBalance(account.balance)) return;
-    setTableAccounts({
-      ...tableAccounts,
-      [account.address]: {
-        ...account,
-        isSelected: !account.isSelected
-      }
-    });
+    setTableAccounts([...filtered, { ...account, isSelected: !account.isSelected }]);
   };
   return (
     <ListContainer variant="columnAlign" justifyContent="center">

@@ -96,8 +96,8 @@ const ProtectTxProvider: FC = ({ children }) => {
 
   const handleTransactionReport = useCallback(
     async (receiverAddress?: string, n?: Network): Promise<void> => {
-      const address = receiverAddress || state.receiverAddress;
-      const network = n || state.network;
+      const address = receiverAddress ?? state.receiverAddress;
+      const network = n ?? state.network;
       if (!address) return Promise.reject();
 
       const [

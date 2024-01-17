@@ -31,6 +31,7 @@ import {
   inputGasPriceToHex,
   isWeb3Wallet,
   noOp,
+  useEffectAllDepsChange,
   useMinimumWait,
   useTimeout
 } from '@utils';
@@ -140,7 +141,7 @@ export const TxPendingState = ({
     maxPriorityFeePerGas: values.maxPriorityFeePerGasField
   });
 
-  const handleGasPriceEstimation = () => performGasPriceEstimation(network, account);
+  const handleGasPriceEstimation = () => performGasPriceEstimation(network);
   const handleGasLimitEstimation = () => performGasLimitEstimation(network, tx);
 
   const {
@@ -168,18 +169,18 @@ export const TxPendingState = ({
     }
   }, CROWDED_TIMEOUT);
 
-  useEffect(() => {
+  useEffectAllDepsChange(() => {
     if (!timeout || state !== PendingState.PENDING) {
       return;
     }
-    // Either value should be increased by at least 10%
+    // Both values should be increased by at least 10%
     if (
-      bigify(bigNumGasPriceToViewableGwei(oldTx.maxFeePerGas))
-        .multipliedBy(1.101)
-        .lt(newMaxFeePerGas) ||
-      bigify(bigNumGasPriceToViewableGwei(oldTx.maxPriorityFeePerGas))
-        .multipliedBy(1.101)
-        .lt(newMaxPriorityFeePerGas)
+      bigify(newMaxFeePerGas).gt(
+        bigify(bigNumGasPriceToViewableGwei(oldTx.maxFeePerGas)).multipliedBy(1.1)
+      ) &&
+      bigify(newMaxPriorityFeePerGas).gt(
+        bigify(bigNumGasPriceToViewableGwei(oldTx.maxPriorityFeePerGas)).multipliedBy(1.1)
+      )
     ) {
       setState(PendingState.CROWDED);
     } else {

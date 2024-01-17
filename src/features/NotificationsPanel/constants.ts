@@ -1,3 +1,6 @@
+import winterBg from '@assets/images/winter-bg.svg';
+import { NotificationTemplates } from '@types';
+
 import {
   GetHardwareWalletNotification,
   OnboardingPleaseUnderstandNotification,
@@ -7,27 +10,17 @@ import {
   WalletCreatedNotification,
   WalletNotAddedNotification,
   WalletsAddedNotification,
-  WalletsNotAddedNotification
+  WalletsNotAddedNotification,
+  WinterNotification
 } from './components';
 import {
   getHardwareWalletCheck,
   onboardingPleaseUnderstandCheck,
   onboardingResponsibleCheck,
+  promoPoapCheck,
   saveSettingsCheck
 } from './helpers';
 import { NotificationsConfigsProps } from './types';
-
-export const NotificationTemplates = {
-  walletCreated: 'wallet-created',
-  walletAdded: 'wallet-added',
-  walletsAdded: 'wallets-added',
-  walletNotAdded: 'wallet-not-added',
-  walletsNotAdded: 'wallets-not-added',
-  saveSettings: 'save-settings',
-  getHardwareWallet: 'get-hardware-wallet',
-  onboardingPleaseUnderstand: 'onboarding-please-understand',
-  onboardingResponsible: 'onboarding-responsible'
-};
 
 export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.walletCreated]: {
@@ -85,5 +78,15 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     dismissForever: true,
     condition: onboardingResponsibleCheck,
     preventDismisExisting: true
+  },
+  [NotificationTemplates.winterPoap]: {
+    analyticsEvent: 'Winter Poap',
+    layout: WinterNotification,
+    condition: promoPoapCheck,
+    priority: true,
+    style: (isMobile) => ({
+      backgroundImage: `url(${winterBg})`,
+      backgroundSize: isMobile ? 'cover' : '100% 100%'
+    })
   }
 };

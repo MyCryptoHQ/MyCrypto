@@ -27,7 +27,9 @@ const slice = createSlice({
 
 export const { create: createNotification, update: updateNotification } = slice.actions;
 
-export const selectNotifications = createSelector(getAppState, (s) => s.notifications);
+export const selectNotifications = createSelector(getAppState, (s) =>
+  s.notifications.filter((n) => n.template in notificationsConfigs)
+);
 
 export default slice;
 
@@ -54,7 +56,7 @@ export function* displayNotificationWorker({
 }: PayloadAction<{ templateName: string; templateData?: TObject }>) {
   const notifications: ExtendedNotification[] = yield select(selectNotifications);
   // Dismiss previous notifications that need to be dismissed
-  if (!notificationsConfigs[templateName].preventDismisExisting) {
+  if (!notificationsConfigs[templateName]?.preventDismisExisting) {
     const dismissableNotifications = notifications.filter(
       (x) => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
     );
@@ -81,8 +83,8 @@ export function* displayNotificationWorker({
     /* Prevent displaying notifications that have been dismissed forever and repeating notifications
      before their waiting period is over.*/
     if (
-      notificationsConfigs[templateName].repeatInterval ||
-      notificationsConfigs[templateName].dismissForever
+      notificationsConfigs[templateName]?.repeatInterval ||
+      notificationsConfigs[templateName]?.dismissForever
     ) {
       notification.dismissed = existingNotification.dismissed;
       notification.dateDismissed = existingNotification.dateDismissed;

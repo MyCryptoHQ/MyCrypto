@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
+import { getContractAddress } from '@ethersproject/address';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -361,7 +362,7 @@ export const TxReceiptUI = ({
         <div className="TransactionReceipt-row">
           <div className="TransactionReceipt-row-desc">
             {protectTxEnabled && !web3Wallet && <SSpacer />}
-            {customBroadcastText || translate('TRANSACTION_BROADCASTED_DESC')}
+            {customBroadcastText ?? translate('TRANSACTION_BROADCASTED_DESC')}
           </div>
         </div>
       )}
@@ -383,6 +384,18 @@ export const TxReceiptUI = ({
       {rawTransaction.to && isContractCall && (
         <div className="TransactionReceipt-row">
           <TxIntermediaryDisplay address={rawTransaction.to} contractName={contractName} />
+        </div>
+      )}
+
+      {!rawTransaction.to && rawTransaction.from && (
+        <div className="TransactionReceipt-row">
+          <TxIntermediaryDisplay
+            address={getContractAddress({
+              from: rawTransaction.from,
+              nonce: rawTransaction.nonce
+            })}
+            label={translateRaw('TX_DEPLOY_ADDRESS_LABEL')}
+          />
         </div>
       )}
 

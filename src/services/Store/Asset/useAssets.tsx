@@ -1,10 +1,4 @@
-import {
-  addAssetsFromAPI as addAssetsFromAPIRedux,
-  createAsset as createAssetRedux,
-  getAssets,
-  useDispatch,
-  useSelector
-} from '@store';
+import { createAsset as createAssetRedux, getAssets, useDispatch, useSelector } from '@store';
 import { ExtendedAsset, TUuid } from '@types';
 
 import { getAssetByUUID as getAssetByUUIDFunc } from './helpers';
@@ -24,10 +18,7 @@ function useAssets() {
 
   const getAssetByUUID = (uuid: TUuid) => getAssetByUUIDFunc(assets)(uuid);
 
-  const addAssetsFromAPI = (newAssets: Record<TUuid, ExtendedAsset>) =>
-    dispatch(addAssetsFromAPIRedux(newAssets));
-
-  return { assets, createAsset, getAssetByUUID, addAssetsFromAPI };
+  return { assets, createAsset, getAssetByUUID };
 }
 
 export default useAssets;

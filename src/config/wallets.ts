@@ -3,6 +3,7 @@
 import viewOnlyIcon from '@assets/images/icn-view-only.svg';
 import CoinbaseWalletIcon from '@assets/images/wallets/coinbase.svg';
 import FrameIcon from '@assets/images/wallets/frame.svg';
+import GridPlusSVG from '@assets/images/wallets/gridplus.svg';
 import LedgerSVG from '@assets/images/wallets/ledger.svg';
 import MetamaskIcon from '@assets/images/wallets/metamask.svg';
 import StatusSVG from '@assets/images/wallets/status.svg';
@@ -10,7 +11,7 @@ import TrezorSVG from '@assets/images/wallets/trezor.svg';
 import TrustIcon from '@assets/images/wallets/trust-3.svg';
 import WalletConnectSVG from '@assets/images/wallets/walletconnect.svg';
 import Web3DefaultIcon from '@assets/images/wallets/web3-default.svg';
-import { WalletId, WalletType } from '@types';
+import { BusyBottomConfig, WalletId, WalletType } from '@types';
 import { filterObjectOfObjects } from '@utils/filterObjectOfObjects';
 
 import { getKBHelpArticle, HELP_ARTICLE, KB_HELP_ARTICLE } from './helpArticles';
@@ -66,7 +67,9 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     description: 'ADD_WEB3DESC',
     helpLink: getKBHelpArticle(MIGRATE_TO_METAMASK),
     install: {
-      getItLink: 'https://metamask.io'
+      getItLink: 'https://metamask.io',
+      appStore: 'https://apps.apple.com/us/app/metamask/id1438144202',
+      googlePlay: 'https://play.google.com/store/apps/details?id=io.metamask'
     },
     flags: {
       supportsNonce: false
@@ -237,6 +240,21 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     flags: {
       supportsNonce: false
     }
+  },
+  [WalletId.GRIDPLUS]: {
+    id: WalletId.GRIDPLUS,
+    name: 'GridPlus',
+    isDeterministic: true,
+    isSecure: true,
+    isDesktopOnly: false,
+    type: WalletType.HARDWARE,
+    lid: 'GridPlus',
+    icon: GridPlusSVG,
+    description: 'ADD_HARDWAREDESC',
+    helpLink: '',
+    flags: {
+      supportsNonce: true
+    }
   }
 };
 
@@ -257,3 +275,60 @@ export const WEB3_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)
 );
 
 export const getWalletConfig = (walletId: WalletId): IWalletConfig => WALLETS_CONFIG[walletId];
+
+export interface HWConfig {
+  walletTypeTransKey: string;
+
+  unlockTipTransKey: string;
+
+  scanTransKey: string;
+  iconId: string;
+  busyBottom: BusyBottomConfig;
+}
+
+type THardwareConfigs = Record<
+  | WalletId.LEDGER_NANO_S_NEW
+  | WalletId.TREZOR_NEW
+  | WalletId.GRIDPLUS
+  | WalletId.LEDGER_NANO_S
+  | WalletId.TREZOR,
+  HWConfig
+>;
+
+export const HARDWARE_CONFIG: THardwareConfigs = {
+  [WalletId.LEDGER_NANO_S]: {
+    walletTypeTransKey: 'X_LEDGER',
+    scanTransKey: 'ADD_LEDGER_SCAN',
+    unlockTipTransKey: 'LEDGER_TIP',
+    iconId: 'ledger-icon-lg',
+    busyBottom: BusyBottomConfig.LEDGER
+  },
+  [WalletId.TREZOR]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg',
+    busyBottom: BusyBottomConfig.TREZOR
+  },
+  [WalletId.LEDGER_NANO_S_NEW]: {
+    walletTypeTransKey: 'X_LEDGER',
+    scanTransKey: 'ADD_LEDGER_SCAN',
+    unlockTipTransKey: 'LEDGER_TIP',
+    iconId: 'ledger-icon-lg',
+    busyBottom: BusyBottomConfig.LEDGER
+  },
+  [WalletId.TREZOR_NEW]: {
+    walletTypeTransKey: 'X_TREZOR',
+    scanTransKey: 'ADD_TREZOR_SCAN',
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'trezor-icon-lg',
+    busyBottom: BusyBottomConfig.TREZOR
+  },
+  [WalletId.GRIDPLUS]: {
+    walletTypeTransKey: 'X_GRIDPLUS',
+    scanTransKey: 'GRIDPLUS_CONNECT',
+    unlockTipTransKey: 'TREZOR_TIP',
+    iconId: 'gridplus-icon-lg',
+    busyBottom: BusyBottomConfig.GRIDPLUS
+  }
+};

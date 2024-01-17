@@ -2,8 +2,9 @@ import BigNumber from 'bignumber.js';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 
 import { DEFAULT_ASSET_DECIMAL } from '@config';
+import { BigifySupported, Bigish } from '@types';
 
-import { bigify, Bigish } from './bigify';
+import { bigify } from './bigify';
 
 type UnitKey = keyof typeof Units;
 type Wei = BigNumber;
@@ -38,7 +39,7 @@ export const Units = {
   gether: '1000000000000000000000000000',
   tether: '1000000000000000000000000000000'
 };
-const handleValues = (input: string | BigNumber) => {
+const handleValues = (input: BigifySupported) => {
   return bigify(input);
 };
 
@@ -83,7 +84,7 @@ const fromWei = (wei: Wei, unit: UnitKey) => {
   return baseToConvertedUnit(wei.toString(), decimal);
 };
 
-const toWei = (value: string, decimal: number): Wei => {
+const toWei = (value: BigifySupported, decimal: number): Wei => {
   const wei = convertedToBaseUnit(bigify(value).toString(10), decimal);
   return Wei(wei);
 };

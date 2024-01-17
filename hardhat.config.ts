@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
       chainId: 1,
       hardfork: 'london',
       forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
         blockNumber: 13373860
       },
       accounts: {

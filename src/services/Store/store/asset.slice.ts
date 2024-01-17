@@ -1,12 +1,13 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { EXCLUDED_ASSETS } from '@config';
 import { MyCryptoApiService } from '@services';
-import { ExtendedAsset, LSKeys, Network, NetworkId, TUuid } from '@types';
+import { ExtendedAsset, LSKeys, Network, NetworkId, StoreAsset, TUuid } from '@types';
 import { arrayToObj } from '@utils';
 import { filter, findIndex, map, mergeRight, pipe, propEq, toPairs } from '@vendor';
 
+import { getAccountsAssets } from './account.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { appReset } from './root.reducer';
 import { getAppState } from './selectors';
@@ -41,18 +42,9 @@ const slice = createSlice({
         state[idx] = asset;
       });
     },
-    addFromAPI(state, action: PayloadAction<Record<string, ExtendedAsset>>) {
-      const currentAssets = arrayToObj('uuid')(
-        state.filter((a) => a.isCustom || a.type === 'base')
-      );
-      const mergeAssets = pipe(
-        (assets: Record<TUuid, ExtendedAsset>) => mergeRight(currentAssets, assets),
-        toPairs,
-        // Asset API returns certain assets we don't want to show in the UI (as their balance is infinity)
-        filter(([uuid, _]) => !EXCLUDED_ASSETS.includes(uuid)),
-        map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset))
-      );
-      return mergeAssets(action.payload);
+    addFromAPI(_state, action: PayloadAction<ExtendedAsset[]>) {
+      // Sets the state directly since the payload is merged in the saga
+      return action.payload;
     },
     reset() {
       return initialState;
@@ -104,5 +96,25 @@ export function* assetSaga() {
 export function* fetchAssetsWorker() {
   const fetchedAssets = yield call(MyCryptoApiService.instance.getAssets);
 
-  yield put(slice.actions.addFromAPI(fetchedAssets));
+  const lsAssets: ExtendedAsset[] = yield select(getAssets);
+  const accountAssets: StoreAsset[] = yield select(getAccountsAssets);
+  const currentAssets = arrayToObj('uuid')(
+    lsAssets.filter(
+      (a) =>
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        a.isCustom ||
+        a.type === 'base' ||
+        accountAssets.some((accAsset) => accAsset.uuid === a.uuid && accAsset.balance.gt(0))
+    )
+  );
+  const mergeAssets = pipe(
+    (assets: Record<TUuid, ExtendedAsset>) => mergeRight(currentAssets, assets),
+    toPairs,
+    // Asset API returns certain assets we don't want to show in the UI (as their balance is infinity)
+    filter(([uuid, _]) => !EXCLUDED_ASSETS.includes(uuid)),
+    map(([uuid, a]) => ({ ...a, uuid } as ExtendedAsset))
+  );
+  const merged = mergeAssets(fetchedAssets);
+
+  yield put(slice.actions.addFromAPI(merged));
 }

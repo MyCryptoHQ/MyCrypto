@@ -150,15 +150,15 @@ export const makeUnknownTxReceipt = (txHash: ITxHash) => (
 export const makeFinishedTxReceipt = (
   previousTxReceipt: IPendingTxReceipt,
   newStatus: ITxStatus.FAILED | ITxStatus.SUCCESS,
-  timestamp?: number,
-  blockNumber?: number,
+  timestamp: number = 0,
+  blockNumber: number = 0,
   gasUsed?: BigNumber,
   confirmations?: number
 ): IFinishedTxReceipt => ({
   ...previousTxReceipt,
   status: newStatus,
-  timestamp: timestamp || 0,
-  blockNumber: blockNumber || 0,
+  timestamp: timestamp,
+  blockNumber: blockNumber,
   gasUsed,
   confirmations
 });
@@ -170,7 +170,7 @@ const getGasPriceFromTx = (tx: {
   gasPrice?: BigNumber | string;
 }) =>
   // Possibly revisit this when more tx types are available
-  tx.type && tx.type == 2
+  tx.type && tx.type === 2
     ? {
         maxFeePerGas: hexlify(tx.maxFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
         maxPriorityFeePerGas: hexlify(tx.maxPriorityFeePerGas!, { hexPad: 'left' }) as ITxGasPrice,
@@ -245,7 +245,7 @@ export const makeTxConfigFromSignedTx = (
       ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal)
       : bigNumValueToViewableEther(decodedTx.value),
     networkId: networkDetected?.id ?? networkId,
-    asset: contractAsset || baseAsset,
+    asset: contractAsset ?? baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(decodedTx.from as TAddress, networkDetected?.id)!,
     from: decodedTx.from as TAddress
@@ -279,7 +279,7 @@ export const makeTxConfigFromTx = (
 
   const txConfig: ITxConfig = {
     rawTransaction: {
-      to: getAddress(to) as ITxToAddress,
+      to: to && (getAddress(to) as ITxToAddress),
       value: hexlify(decodedTx.value, hexConfig) as ITxValue,
       gasLimit: hexlify(decodedTx.gasLimit, hexConfig) as ITxGasLimit,
       data: decodedTx.data as ITxData,
@@ -290,7 +290,7 @@ export const makeTxConfigFromTx = (
       // @todo Cleaner way of doing this?
       type: decodedTx.type as any
     },
-    receiverAddress: getAddress(receiverAddress) as TAddress,
+    receiverAddress: receiverAddress && (getAddress(receiverAddress) as TAddress),
     amount,
     networkId: network.id,
     asset,
@@ -333,7 +333,7 @@ export const makeTxConfigFromTxReceipt = (
       ? fromTokenBase(toWei(decodeTransfer(txReceipt.data)._value, 0), contractAsset.decimal)
       : txReceipt.amount,
     networkId: network.id,
-    asset: contractAsset || baseAsset,
+    asset: contractAsset ?? baseAsset,
     baseAsset,
     senderAccount: getStoreAccount(accounts)(txReceipt.from, network.id)!,
     from: getAddress(txReceipt.from) as TAddress
@@ -367,7 +367,7 @@ export const makeTxItem = (
 export const deriveTxFields = (
   ercType: ERCType,
   data: ITxData,
-  toAddress: ITxToAddress,
+  toAddress: ITxToAddress | undefined,
   value: ITxValue,
   baseAsset: Asset,
   contractAsset?: Asset
@@ -410,12 +410,14 @@ export const guessERC20Type = (data: string): ERCType => {
 export const deriveTxRecipientsAndAmount = (
   ercType: ERCType,
   data: ITxData,
-  toAddress: ITxToAddress,
+  toAddress: ITxToAddress | undefined,
   value: ITxValue
 ) => {
   switch (ercType) {
     case ERCType.TRANSFER: {
-      const { _to, _value } = decodeTransfer(data);
+      const { _to, _value }: { _to: ITxToAddress | undefined; _value: ITxValue } = decodeTransfer(
+        data
+      );
       return { to: toAddress, amount: _value, receiverAddress: _to };
     }
 
@@ -435,14 +437,14 @@ export const appendSender = (senderAddress: ITxFromAddress) => (
   };
 };
 
-export const appendGasPrice = (network: Network, account: StoreAccount) => async (
+export const appendGasPrice = (network: Network) => async (
   tx: TxBeforeGasPrice
 ): Promise<TxBeforeGasLimit> => {
   // Respect gas price if present
   if (tx.gasPrice || (tx.maxFeePerGas && tx.maxPriorityFeePerGas)) {
     return tx as TxBeforeGasLimit;
   }
-  const gas = await fetchUniversalGasPriceEstimate(network, account)
+  const gas = await fetchUniversalGasPriceEstimate(network)
     .then(({ estimate: r }) => mapObjIndexed((v) => v && inputGasPriceToHex(v), r))
     .catch((err) => {
       throw new Error(`getGasPriceEstimate: ${err}`);
@@ -463,10 +465,7 @@ export const appendGasLimit = (network: Network) => async (
     return tx as TxBeforeNonce;
   }
   try {
-    const gasLimit = await getGasEstimate(network, tx)
-      .then(bigify)
-      .then((n) => n.multipliedBy(1.2).integerValue(7))
-      .then(inputGasLimitToHex);
+    const gasLimit = await getGasEstimate(network, tx).then(inputGasLimitToHex);
 
     return {
       ...tx,
@@ -539,16 +538,15 @@ export const makeTxFromForm = (
   value: string,
   data: ITxData
 ): ITxObject => {
-  const gas =
-    form.account && isEIP1559Supported(form.network, form.account)
-      ? {
-          maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
-          maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
-          type: 2 as const
-        }
-      : {
-          gasPrice: inputGasPriceToHex(form.gasPrice)
-        };
+  const gas = isEIP1559Supported(form.network)
+    ? {
+        maxFeePerGas: inputGasPriceToHex(form.maxFeePerGas),
+        maxPriorityFeePerGas: inputGasPriceToHex(form.maxPriorityFeePerGas),
+        type: 2 as const
+      }
+    : {
+        gasPrice: inputGasPriceToHex(form.gasPrice)
+      };
 
   return {
     ...gas,

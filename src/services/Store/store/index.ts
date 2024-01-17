@@ -85,7 +85,8 @@ export {
   getAssets,
   getBaseAssetByNetwork,
   getCoinGeckoAssetManifest,
-  getAssetsByNetwork
+  getAssetsByNetwork,
+  getAssetByUUID
 } from './asset.slice';
 export {
   fetchMemberships,
@@ -111,7 +112,8 @@ export {
   setProductAnalyticsAuthorisation,
   getAnalyticsUserID,
   setAnalyticsUserID,
-  getSettings
+  getSettings,
+  getFiatInformation
 } from './settings.slice';
 export { importSuccess, importError, importRequest, importComplete } from './import.slice';
 export { scanTokens, isScanning } from './tokenScanning.slice';
@@ -126,3 +128,6 @@ export { fetchENS, getENSRecords, getENSFetched } from './ens.slice';
 export { getClaims, getAllClaims } from './claims.slice';
 export { restoreAccount, deleteAccount, getAccountUndoCache } from './accountUndo.slice';
 export { fetchNFTs, getFetched, getNFTsByCollection, getTotalValue } from './nft.slice';
+export { getBaseFee } from './gas.slice';
+export { checkForPromos, getPromoPoap, claimPromo } from './promoPoaps.slice';
+export { getWalletConnection, connectWallet } from './connections.slice';

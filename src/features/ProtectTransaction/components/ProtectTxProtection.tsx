@@ -355,7 +355,7 @@ export const ProtectTxProtectionUI = ({
             <p className="fee-label">{translateRaw('PROTECTED_TX_PRICE')}</p>
             <Amount
               asset={{
-                amount: feeAmount?.fee?.toFixed(6) || '--',
+                amount: feeAmount?.fee?.toFixed(6) ?? '--',
                 ticker: DEFAULT_NETWORK_TICKER
               }}
               fiat={{
@@ -370,7 +370,7 @@ export const ProtectTxProtectionUI = ({
             <p className="fee-label">{translateRaw('PROTECTED_TX_FEE')}</p>
             <Amount
               asset={{
-                amount: feeAmount?.fee?.toFixed(6) || '---',
+                amount: feeAmount?.fee?.toFixed(6) ?? '---',
                 ticker: DEFAULT_NETWORK_TICKER
               }}
               fiat={{

@@ -1,6 +1,14 @@
 import { ISimpleTxFormFull, ITxObject, ITxType, StoreAccount, TAddress, TUuid } from '@types';
 
+export enum MigrationType {
+  REP = 'REP',
+  GOLEM = 'GOLEM',
+  ANT = 'ANT',
+  AAVE = 'AAVE'
+}
+
 export interface TokenMigrationState {
+  migration: MigrationType;
   account?: StoreAccount;
   amount?: string;
 }
@@ -24,7 +32,6 @@ export interface ITokenMigrationConfig {
   fromContractAddress: TAddress;
   fromAssetUuid: TUuid;
   toAssetUuid: TUuid;
-  formTitle: string;
   formActionBtn: string;
   formAmountTooltip: string;
   receiptTitle: string;

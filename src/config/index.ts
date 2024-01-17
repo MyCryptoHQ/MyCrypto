@@ -24,7 +24,8 @@ export {
   INSECURE_WALLETS,
   HARDWARE_WALLETS,
   WEB3_WALLETS,
-  getWalletConfig
+  getWalletConfig,
+  HARDWARE_CONFIG
 } from './wallets';
 export { KB_HELP_ARTICLE, HELP_ARTICLE, getKBHelpArticle } from './helpArticles';
 export { Fiats } from './fiats';
@@ -38,3 +39,4 @@ export {
 export * from './txTypes';
 export { STATIC_CONTACTS } from './staticContacts';
 export { getFiat } from './fiats';
+export * from './poapPromos';

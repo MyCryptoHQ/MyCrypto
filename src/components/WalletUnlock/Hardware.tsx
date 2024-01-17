@@ -1,37 +1,32 @@
+import { useState } from 'react';
+
+import { DEFAULT_ETH, DerivationPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
-import {
-  Body,
-  Box,
-  BusyBottom,
-  Button,
-  Heading,
-  InlineMessage,
-  Spinner,
-  Text,
-  TIcon
-} from '@components';
+import { Body, Box, BusyBottom, Button, Heading, InlineMessage, Spinner, Text } from '@components';
 import Icon from '@components/Icon';
-import { EXT_URLS } from '@config';
-import { TDWActionError } from '@services';
+import { DEFAULT_GAP_TO_SCAN_FOR, DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN, HARDWARE_CONFIG } from '@config';
+import { HDWallet } from '@features/AddAccount';
+import {
+  getAssetByUUID,
+  getDPaths,
+  getNetworkById,
+  TDWActionError,
+  useAssets,
+  useHDWallet,
+  useNetworks
+} from '@services';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { BusyBottomConfig, InlineMessageType, Network, WalletId } from '@types';
-
-interface HWConfig {
-  walletTypeTransKey: string;
-
-  unlockTipTransKey: string;
-
-  scanTransKey: string;
-  referralTransKey: string;
-  referralURL: string;
-  iconId: TIcon;
-}
-
-type THardwareConfigs = {
-  [key in WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW]: HWConfig;
-};
+import {
+  ExtendedAsset,
+  FormData,
+  IAccountAdditionData,
+  InlineMessageType,
+  Network,
+  WalletId
+} from '@types';
+import { prop, uniqBy } from '@vendor';
 
 const HardwareImage = styled(Icon)`
   vertical-align: center;
@@ -63,46 +58,105 @@ const HardwareConnectBtn = styled(Button)`
   }
 `;
 
+export interface Props {
+  formData: FormData;
+  wallet: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS;
+  extraDPaths: DerivationPath[];
+  onUnlock(param: IAccountAdditionData[]): void;
+}
+
+export const Hardware = ({ formData, onUnlock, wallet, extraDPaths }: Props) => {
+  const { networks } = useNetworks();
+  const { assets } = useAssets();
+  const network = getNetworkById(formData.network, networks);
+  const baseAsset = getAssetByUUID(assets)(network.baseAsset) as ExtendedAsset;
+  const dpaths = uniqBy(prop('path'), [...getDPaths([network], wallet), ...extraDPaths]);
+  const defaultDPath = network.dPaths[wallet] ?? DEFAULT_ETH;
+  const [selectedDPath, setSelectedDPath] = useState(defaultDPath);
+  const numOfAccountsToCheck = DEFAULT_NUM_OF_ACCOUNTS_TO_SCAN;
+  const extendedDPaths = dpaths.map((dpath) => ({
+    ...dpath,
+    offset: 0,
+    numOfAddresses: numOfAccountsToCheck
+  }));
+
+  const [assetToUse, setAssetToUse] = useState(baseAsset);
+  const {
+    isCompleted,
+    isConnected,
+    isConnecting,
+    connectionError,
+    selectedAsset,
+    accountQueue,
+    scannedAccounts,
+    requestConnection,
+    updateAsset,
+    addDPaths,
+    scanMoreAddresses,
+    mergedDPaths
+  } = useHDWallet(extendedDPaths, wallet, DEFAULT_GAP_TO_SCAN_FOR);
+
+  const handleNullConnect = () => {
+    requestConnection(network, assetToUse);
+  };
+
+  const handleAssetUpdate = (newAsset: ExtendedAsset) => {
+    setAssetToUse(newAsset);
+    updateAsset(newAsset);
+  };
+
+  if (isConnected && selectedAsset && (accountQueue ?? scannedAccounts)) {
+    return (
+      <HDWallet
+        scannedAccounts={scannedAccounts}
+        isCompleted={isCompleted}
+        selectedAsset={selectedAsset}
+        selectedDPath={selectedDPath}
+        assets={assets}
+        assetToUse={assetToUse}
+        network={network}
+        dpaths={mergedDPaths}
+        setSelectedDPath={setSelectedDPath}
+        updateAsset={updateAsset}
+        addDPaths={addDPaths}
+        scanMoreAddresses={scanMoreAddresses}
+        handleAssetUpdate={handleAssetUpdate}
+        onUnlock={onUnlock}
+      />
+    );
+  }
+  return (
+    <HardwareWalletUI
+      isConnecting={isConnecting}
+      connectionError={connectionError}
+      network={network}
+      handleNullConnect={handleNullConnect}
+      walletId={wallet}
+    />
+  );
+};
+
 export interface HardwareUIProps {
   network: Network;
   isConnecting: boolean;
   connectionError?: TDWActionError;
-  walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW;
+  walletId: WalletId.LEDGER_NANO_S_NEW | WalletId.TREZOR_NEW | WalletId.GRIDPLUS;
 
   handleNullConnect(): void;
 }
 
-const hardwareConfigs: THardwareConfigs = {
-  [WalletId.LEDGER_NANO_S_NEW]: {
-    walletTypeTransKey: 'X_LEDGER',
-    scanTransKey: 'ADD_LEDGER_SCAN',
-    referralTransKey: 'LEDGER_REFERRAL_2',
-    referralURL: EXT_URLS.LEDGER_REFERRAL.url,
-    unlockTipTransKey: 'LEDGER_TIP',
-    iconId: 'ledger-icon-lg'
-  },
-  [WalletId.TREZOR_NEW]: {
-    walletTypeTransKey: 'X_TREZOR',
-    scanTransKey: 'ADD_TREZOR_SCAN',
-    referralTransKey: 'ORDER_TREZOR',
-    referralURL: EXT_URLS.TREZOR_REFERRAL.url,
-    unlockTipTransKey: 'TREZOR_TIP',
-    iconId: 'trezor-icon-lg'
-  }
-};
-
-const HardwareWalletUI = ({
+export const HardwareWalletUI = ({
   network,
   connectionError,
   isConnecting,
   walletId,
   handleNullConnect
 }: HardwareUIProps) => (
-  <Box p="2.5em">
-    <Heading fontSize="32px" textAlign="center" fontWeight="bold">
+  <Box>
+    <Heading fontSize="32px" textAlign="center" fontWeight="bold" mt="0">
       {translate('UNLOCK_WALLET')}{' '}
       {translateRaw('YOUR_WALLET_TYPE', {
-        $walletType: translateRaw(hardwareConfigs[walletId].walletTypeTransKey)
+        $walletType: translateRaw(HARDWARE_CONFIG[walletId].walletTypeTransKey)
       })}
     </Heading>
     <Box variant="columnCenter" minHeight="400px">
@@ -114,9 +168,9 @@ const HardwareWalletUI = ({
         color={COLORS.GREY_DARKEST}
         textAlign="center"
       >
-        {translate(hardwareConfigs[walletId].unlockTipTransKey, { $network: network.id })}
+        {translate(HARDWARE_CONFIG[walletId].unlockTipTransKey, { $network: network.id })}
       </Text>
-      <HardwareImage type={hardwareConfigs[walletId].iconId} />
+      <HardwareImage type={HARDWARE_CONFIG[walletId].iconId} />
       <Text
         lineHeight="1.5"
         letterSpacing="normal"
@@ -140,7 +194,7 @@ const HardwareWalletUI = ({
           </>
         ) : (
           <HardwareConnectBtn onClick={() => handleNullConnect()} disabled={isConnecting}>
-            {translate(hardwareConfigs[walletId].scanTransKey)}
+            {translate(HARDWARE_CONFIG[walletId].scanTransKey)}
           </HardwareConnectBtn>
         )}
       </Text>
@@ -150,16 +204,8 @@ const HardwareWalletUI = ({
         </Body>
       )}
       <HardwareFooter>
-        <BusyBottom
-          type={
-            walletId === WalletId.LEDGER_NANO_S_NEW
-              ? BusyBottomConfig.LEDGER
-              : BusyBottomConfig.TREZOR
-          }
-        />
+        <BusyBottom type={HARDWARE_CONFIG[walletId].busyBottom} />
       </HardwareFooter>
     </Box>
   </Box>
 );
-
-export default HardwareWalletUI;

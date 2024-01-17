@@ -34,6 +34,8 @@ export const OPENSEA_IMAGE_PROXY_API = 'https://opensea.assets.mycryptoapi.com/v
 
 export const OPENSEA_IMAGE_PROXY = 'https://mycryptoapi.com/api/v1/images/opensea';
 
+export const POAP_CLAIM_API = 'https://poap.mycryptoapi.com/v1';
+
 // The URL and site ID for the Matomo analytics instance.
 export const ANALYTICS_API = 'https://analytics.mycryptoapi.com';
 export const ANALYTICS_SITE_ID_PROD = 17;
@@ -52,6 +54,8 @@ export const DEFAULT_NETWORK_TICKER = 'ETH' as TTicker;
 
 export const DEFAULT_ASSET_DECIMAL = 18;
 
+export const DEFAULT_COIN_TYPE = 60;
+
 export const MYC_DEX_COMMISSION_RATE = 0.0025;
 
 export const CREATION_ADDRESS = '0x0000000000000000000000000000000000000000';
@@ -67,7 +71,8 @@ export const EXCLUDED_ASSETS = [
   '17da00cc-4901-5e04-87e0-f7e3cf9b382a',
   '2e96d50d-af13-5186-8ece-fc33872ab70c',
   'b1ef1841-6348-584e-a12e-ff2e3bbcd7ff',
-  'd41becc2-9f3a-57e8-a60a-e93ad17d1ea7'
+  'd41becc2-9f3a-57e8-a60a-e93ad17d1ea7',
+  'f383cc01-4942-5d0e-8442-3dbbc8cc8836'
 ];
 
 export const ETH_SCAN_BATCH_SIZE = 300;

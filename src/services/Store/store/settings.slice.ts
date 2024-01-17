@@ -1,8 +1,9 @@
 import { createAction, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
+import { Fiats } from '@config';
 import { LSKeys, TFiatTicker, TUuid } from '@types';
-import { equals, findIndex } from '@vendor';
+import { equals, findIndex, uniq } from '@vendor';
 
 import { initialLegacyState } from './legacy.initialState';
 import { getAppState } from './selectors';
@@ -19,7 +20,7 @@ const slice = createSlice({
       state.dashboardAccounts.push(action.payload);
     },
     addCurrents(state, action: PayloadAction<TUuid[]>) {
-      state.dashboardAccounts = [...state.dashboardAccounts, ...action.payload];
+      state.dashboardAccounts = uniq([...state.dashboardAccounts, ...action.payload]);
     },
     resetCurrentsTo(state, action: PayloadAction<TUuid[]>) {
       state.dashboardAccounts = action.payload;
@@ -71,6 +72,7 @@ export const getSettings = createSelector(getAppState, (s) => s.settings);
 export const getCurrents = createSelector(getSettings, (s) => s.dashboardAccounts);
 export const getLanguage = createSelector(getSettings, (s) => s.language);
 export const getFiat = createSelector(getSettings, (s) => s.fiatCurrency);
+export const getFiatInformation = createSelector(getSettings, (s) => Fiats[s.fiatCurrency]);
 export const getExcludedAssets = createSelector(getSettings, (s) => s.excludedAssets);
 export const getIsDemoMode = createSelector(getSettings, (s) => s.isDemoMode);
 export const canTrackProductAnalytics = createSelector(

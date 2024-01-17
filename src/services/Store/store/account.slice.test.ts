@@ -5,7 +5,6 @@ import { APP_STATE, expectSaga, mockAppState } from 'test-utils';
 
 import { DEFAULT_NETWORK, ETHUUID, REPV1UUID, REPV2UUID } from '@config';
 import { ITxHistoryType } from '@features/Dashboard/types';
-import { NotificationTemplates } from '@features/NotificationsPanel';
 import {
   fAccount,
   fAccounts,
@@ -33,6 +32,7 @@ import {
   ITxType,
   ITxType2Object,
   NetworkId,
+  NotificationTemplates,
   TUuid,
   WalletId
 } from '@types';
@@ -69,7 +69,16 @@ import { displayNotification } from './notification.slice';
 import { scanTokens } from './tokenScanning.slice';
 
 const reducer = slice.reducer;
-const { create, createMany, destroy, update, updateMany, reset, updateAssets } = slice.actions;
+const {
+  create,
+  createMany,
+  createOrUpdateMany,
+  destroy,
+  update,
+  updateMany,
+  reset,
+  updateAssets
+} = slice.actions;
 
 jest.mock('uuid/v4', () => jest.fn().mockImplementation(() => 'foo'));
 
@@ -89,6 +98,15 @@ describe('AccountSlice', () => {
     const a3 = { uuid: 'third' } as IAccount;
     const actual = reducer([a1], createMany([a2, a3]));
     const expected = [a1, a2, a3];
+    expect(actual).toEqual(expected);
+  });
+
+  it('createOrUpdateMany(): adds multiple entities by uuid and overwrites if needed', () => {
+    const a1 = { uuid: 'first' } as IAccount;
+    const a2 = { uuid: 'first', label: 'foo' } as IAccount;
+    const a3 = { uuid: 'second' } as IAccount;
+    const actual = reducer([a1], createOrUpdateMany([a2, a3]));
+    const expected = [a2, a3];
     expect(actual).toEqual(expected);
   });
 
@@ -338,7 +356,7 @@ describe('AccountSlice', () => {
           blockNumber: BigNumber.from(fTxHistoryAPI.blockNumber!).toNumber(),
           gasLimit: BigNumber.from(fTxHistoryAPI.gasLimit),
           gasPrice: BigNumber.from(fTxHistoryAPI.gasPrice),
-          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed || 0),
+          gasUsed: BigNumber.from(fTxHistoryAPI.gasUsed ?? 0),
           value: parseEther(fromWei(Wei(BigNumber.from(fTxHistoryAPI.value).toString()), 'ether'))
         }
       ]);
@@ -466,9 +484,69 @@ describe('AccountSlice', () => {
             }
           ])
         )
-        .put(createMany(newAccounts))
+        .put(createOrUpdateMany(newAccounts))
         .put(fetchMemberships(newAccounts))
         .put(scanTokens({ accounts: newAccounts }))
+        .put(
+          displayNotification({
+            templateName: NotificationTemplates.walletAdded,
+            templateData: { address: newAccounts[0].address }
+          })
+        )
+        .silentRun();
+    });
+
+    it('overwrites existing accounts', () => {
+      const output = [
+        {
+          ...newAccounts[0],
+          assets: [
+            {
+              uuid: '356a192b-7913-504c-9457-4d18c28d46e6' as TUuid,
+              balance: BigNumber.from('0x00'),
+              mtime: 1623248693738,
+              name: 'Ether',
+              networkId: 'Ethereum',
+              type: 'base',
+              ticker: 'ETH',
+              decimal: 18,
+              isCustom: false
+            }
+          ]
+        }
+      ];
+      return expectSaga(
+        addNewAccountsWorker,
+        addNewAccounts({
+          networkId: 'Ethereum',
+          accountType: WalletId.WALLETCONNECT,
+          newAccounts
+        })
+      )
+        .withState(
+          mockAppState({
+            accounts: [{ ...newAccounts[0], wallet: WalletId.METAMASK }],
+            networks: APP_STATE.networks,
+            assets: fAssets,
+            addressBook: [],
+            contracts: [],
+            settings: fSettings
+          })
+        )
+        .put(
+          createOrUpdateContacts([
+            {
+              label: 'WalletConnect Account 1',
+              address: fAccounts[0].address,
+              notes: '',
+              network: 'Ethereum',
+              uuid: 'foo' as TUuid
+            }
+          ])
+        )
+        .put(createOrUpdateMany(output))
+        .put(fetchMemberships(output))
+        .put(scanTokens({ accounts: output }))
         .put(
           displayNotification({
             templateName: NotificationTemplates.walletAdded,
@@ -586,7 +664,7 @@ describe('AccountSlice', () => {
         .silentRun();
     });
 
-    it('updates unknown labels', () => {
+    it('updates labels', () => {
       return expectSaga(
         addNewAccountsWorker,
         addNewAccounts({
@@ -614,47 +692,6 @@ describe('AccountSlice', () => {
           })
         )
         .put(
-          createOrUpdateContacts([
-            {
-              label: 'WalletConnect Account 1',
-              address: fAccounts[0].address,
-              notes: '',
-              network: 'Ethereum',
-              uuid: 'foo' as TUuid
-            }
-          ])
-        )
-        .silentRun();
-    });
-
-    it('doesnt update labels if no updates are needed', () => {
-      return expectSaga(
-        addNewAccountsWorker,
-        addNewAccounts({
-          networkId: 'Ethereum',
-          accountType: WalletId.WALLETCONNECT,
-          newAccounts
-        })
-      )
-        .withState(
-          mockAppState({
-            accounts: [],
-            networks: APP_STATE.networks,
-            assets: fAssets,
-            addressBook: [
-              {
-                uuid: 'foo' as TUuid,
-                address: fAccounts[0].address,
-                label: 'Foobar',
-                notes: '',
-                network: 'Ethereum'
-              }
-            ],
-            contracts: [],
-            settings: fSettings
-          })
-        )
-        .not.put(
           createOrUpdateContacts([
             {
               label: 'WalletConnect Account 1',

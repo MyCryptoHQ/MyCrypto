@@ -22,7 +22,7 @@ export function AssetSelectorItem({
   uuid,
   ticker,
   name,
-  paddingLeft,
+  paddingLeft = '0',
   onClick
 }: ItemProps) {
   return (
@@ -30,7 +30,7 @@ export function AssetSelectorItem({
       display="flex"
       alignItems="center"
       flexDirection="row"
-      padding={`11px 10px 11px ${paddingLeft || '0px'}`}
+      padding={`11px 10px 11px ${paddingLeft}`}
       {...(onClick ? { onPointerDown: onClick } : null)}
       data-testid={`asset-selector-option-${ticker}`}
     >

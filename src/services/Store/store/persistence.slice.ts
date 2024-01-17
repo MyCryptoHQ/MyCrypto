@@ -6,15 +6,18 @@ import { trackInit } from '@services';
 
 import accountSlice, { startBalancesPolling, startTxPolling } from './account.slice';
 import assetSlice, { fetchAssets } from './asset.slice';
-import { fetchClaims } from './claims.slice';
+import claimsSlice, { fetchClaims } from './claims.slice';
+import connectionsSlice from './connections.slice';
 import contactSlice from './contact.slice';
 import contractSlice from './contract.slice';
 import { fetchENS } from './ens.slice';
+import { startGasPolling } from './gas.slice';
 import { initialLegacyState } from './legacy.initialState';
 import { fetchMemberships } from './membership.slice';
 import networkSlice from './network.slice';
 import notificationSlice from './notification.slice';
 import { APP_PERSIST_CONFIG } from './persist.config';
+import promoPoapsSlice, { checkForPromos } from './promoPoaps.slice';
 import ratesSlice, { startRatesPolling } from './rates.slice';
 import settingsSlice from './settings.slice';
 import trackedAssetsSlice from './trackedAssets.slice';
@@ -37,7 +40,10 @@ const persistenceReducer = combineReducers({
   [networkSlice.name]: networkSlice.reducer,
   [notificationSlice.name]: notificationSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
-  [userActionSlice.name]: userActionSlice.reducer
+  [userActionSlice.name]: userActionSlice.reducer,
+  [promoPoapsSlice.name]: promoPoapsSlice.reducer,
+  [connectionsSlice.name]: connectionsSlice.reducer,
+  [claimsSlice.name]: claimsSlice.reducer
 });
 
 const slice = {
@@ -66,5 +72,7 @@ function* handleRehydrateSuccess(action: IRehydrate) {
     yield put(startBalancesPolling());
     yield put(fetchENS());
     yield put(fetchClaims());
+    yield put(startGasPolling());
+    yield put(checkForPromos());
   }
 }

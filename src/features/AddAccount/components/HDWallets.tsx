@@ -1,6 +1,6 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
-import { DerivationPath as DPath } from '@mycrypto/wallets';
+import { DeterministicWallet, DerivationPath as DPath } from '@mycrypto/wallets';
 import styled from 'styled-components';
 
 import questionSVG from '@assets/images/icn-question.svg';
@@ -12,10 +12,10 @@ import { DEFAULT_NETWORK_TICKER, HELP_ARTICLE } from '@config';
 import { getBaseAssetByNetwork, getLabelByAddressAndNetwork, isValidPath } from '@services';
 import { useAssets, useContacts } from '@services/Store';
 import { BalanceMap, getBaseAssetBalancesForAddresses } from '@services/Store/BalanceService';
-import { getWallet, HDWalletData } from '@services/WalletService';
+import { HDWalletData } from '@services/WalletService';
 import { BREAK_POINTS, COLORS, FONT_SIZE, SPACING } from '@theme';
 import translate, { translateRaw } from '@translations';
-import { Network, TAddress, TTicker, WalletId } from '@types';
+import { Network, TAddress, TTicker } from '@types';
 import { bigify, buildAddressUrl, fromWei } from '@utils';
 
 import { DPathSelector } from './DPathSelector';
@@ -154,7 +154,7 @@ const FooterLink = styled.div`
 const WALLETS_PER_PAGE = 5;
 
 interface OwnProps {
-  walletId: WalletId;
+  wallet: DeterministicWallet;
   network: Network | undefined;
   dPath: DPath;
   dPaths: DPath[];
@@ -174,7 +174,7 @@ const customDPath: DPath = {
 };
 
 export function HDWalletsClass({
-  walletId,
+  wallet,
   network,
   dPath,
   dPaths,
@@ -192,8 +192,6 @@ export function HDWalletsClass({
   const [wallets, setWallets] = useState([] as HDWalletData[]);
   const { contacts } = useContacts();
   const { assets } = useAssets();
-
-  const wallet = useMemo(() => getWallet(walletId), [walletId]);
 
   /* Used to update addresses displayed */
   useEffect(() => {
