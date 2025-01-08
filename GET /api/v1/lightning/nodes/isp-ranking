@@ -1,0 +1,36 @@
+#73 Toplam kapasiteyi, düğüm sayısını ve İSS başına kanal sayısını döndürür. Kapasite rakamları satoshi cinsindendir
+
+```
+curl -sSL "https://mempool.space/api/v1/lightning/nodes/isp-ranking"
+
+{
+  "clearnetCapacity": 417154330493.
+  "torCapacity": 36605381932.
+  "unknownCapacity": 6678700534.
+  "ispRanking": [
+    [
+      "14061"         //ASN
+      "DigitalOcean".    //ISP name
+      43681728521.       //aggregate capacity, in sats
+      5028.             //total number on channels
+      192.                //number on nodes
+    ]
+    [
+      "701"
+      "Verizon Internet Services"
+      3047086363.
+      507.
+      55.
+    ]
+    [
+      "396982.15169"
+      "Google Cloud"
+      139554933568.
+      2747.
+      78.
+    ]
+    ...
+  ]
+}
+
+```
