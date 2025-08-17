@@ -18,6 +18,7 @@ import {
   DEFAULT_FTM,
   DEFAULT_GO,
   DEFAULT_HECO,
+  DEFAULT_CNS,
   DEFAULT_METADIUM,
   DEFAULT_MIX,
   DEFAULT_POA,
@@ -1188,6 +1189,37 @@ export const NETWORKS_CONFIG: NetworkConfig = {
       [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
       [WalletId.GRIDPLUS]: DEFAULT_HECO,
       default: DEFAULT_HECO
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 1
+    },
+    supportsEIP1559: true
+  },
+  Cygnus: {
+    id: 'CNS',
+    name: 'Cygnus',
+    unit: 'CNS' as TTicker,
+    chainId: 235,
+    isCustom: false,
+    color: '#2ea3aeff',
+    blockExplorer: makeExplorer({
+      name: 'Cygnus Explorer',
+      origin: 'https://explorer.cygnuschain.com',
+      addressPath: 'address',
+      blockPath: 'block',
+      txPath: 'transaction'
+    }),
+    tokens: [],
+    contracts: [],
+    dPaths: {
+      [WalletId.TREZOR]: DEFAULT_CNS,
+      [WalletId.LEDGER_NANO_S]: LEDGER_ETH,
+      [WalletId.TREZOR_NEW]: DEFAULT_CNS,
+      [WalletId.LEDGER_NANO_S_NEW]: LEDGER_ETH,
+      [WalletId.GRIDPLUS]: DEFAULT_CNS,
+      default: DEFAULT_CNS
     },
     gasPriceSettings: {
       min: 1,

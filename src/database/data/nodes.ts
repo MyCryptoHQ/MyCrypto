@@ -443,6 +443,14 @@ export const NODES_CONFIG: { [key in NetworkId]: StaticNodeConfig[] } = {
       url: 'https://http-mainnet.hecochain.com/'
     }
   ],
+  Cygnus: [
+    {
+      name: NetworkUtils.makeNodeName('CNS', 'cygnuschain.com'),
+      type: NodeType.RPC,
+      service: 'Cygnuschain.com',
+      url: 'https://rpc.cygnuschain.com'
+    }
+  ],
   XDC: [
     {
       name: NetworkUtils.makeNodeName('XDC', 'blocksscan.io'),
