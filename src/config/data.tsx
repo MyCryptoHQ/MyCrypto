@@ -24,9 +24,9 @@ export const donationAddressMap = {
 };
 
 export const PROTECTED_TX_FEE_ADDRESS = '0xe9c593dc6FaDC38401896C21987E2976f0AF6914';
-export const PROTECTED_TX_FIXED_FEE_AMOUNT = 0.5; // Fixed half dollar fee
-export const PROTECTED_TX_FEE_PERCENTAGE = 0.001; // 1 / 1000 percentage
-export const PROTECTED_TX_MIN_AMOUNT = 5; // 5 dollars minimum fee
+export const PROTECTED_TX_FIXED_FEE_AMOUNT = 0; // Fixed no fee
+export const PROTECTED_TX_FEE_PERCENTAGE = 0.001; // 1 / 0.001 percentage
+export const PROTECTED_TX_MIN_AMOUNT = 0; // no fee
 
 export const gasEstimateCacheTime = 60000;
 
@@ -42,7 +42,7 @@ export const DEX_BASE_URLS: Partial<Record<NetworkId, string>> = {
 };
 export const DEX_NETWORKS = Object.keys(DEX_BASE_URLS);
 export const DEX_FEE_RECIPIENT = '0xD8D46494e200Fa585FC98f86e6A5Ea0DC1F18aD0';
-export const DEX_TRADE_EXPIRATION = 31; // in seconds
+export const DEX_TRADE_EXPIRATION = 31; // in 5 minutes
 
 export const MOONPAY_PUBLIC_API_KEY = 'pk_live_Fi1kufUL8EflbE49vbZRKa71S2a4Y1D';
 export const MOONPAY_API_QUERYSTRING = `?apiKey=${MOONPAY_PUBLIC_API_KEY}&colorCode=%23163150`;
