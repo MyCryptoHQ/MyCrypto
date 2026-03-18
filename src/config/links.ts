@@ -17,7 +17,7 @@ interface IExtUrl {
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com';
 
-export const SUBSCRIBE_NEWSLETTER_LINK = 'http://eepurl.com/ggh4r5';
+export const SUBSCRIBE_NEWSLETTER_LINK = 'https://eepurl.com/ggh4r5';
 
 export const MYCRYPTO_PROD_LINK = 'https://app.mycrypto.com';
 
@@ -130,7 +130,7 @@ const affiliateLinks: IExtUrl[] = [
   },
   {
     name: 'GRIDPLUS_REFERRAL',
-    url: 'http://www.gridplus.io?afmc=MyCrypto' as TURL
+    url: 'https://www.gridplus.io?afmc=MyCrypto' as TURL
   }
 ];
 
